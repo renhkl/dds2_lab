@@ -1,0 +1,183 @@
+# ** Note: (vsim-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
+# vsim -c -assertdebug test_NtnuTfe4171Lab1Fifo -l run_fifo.log -do "run -all; quit" 
+# Start time: 13:32:03 on Feb 05,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Note: (vopt-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
+# ** Warning: ./tb/test_NtnuTfe4171Lab1Fifo.sv.architecturalTest.sv(326): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# //  Questa Sim
+# //  Version 2025.2 linux May 31 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.test_NtnuTfe4171Lab1Fifo(fast)
+# run -all
+# [4248] SUCCESS: (1) FIFO data pushed and emptied after equal write/read
+# 
+# [7967] SUCCESS: (2) FIFO data pushed and empty de-asserted
+# 
+# [12617] SUCCESS: (3a) FIFO filled and full asserted
+# 
+# [16586] SUCCESS: (3b) FIFO emptied after filling and empty asserted
+# 
+#                16741 : transmitting packet number 0
+# 
+# 
+# ****                16741 : TX starting new packet 0
+#                18476 : TX packet sent 0
+#                18477 : transmitting packet number 1
+# 
+# 
+# ****                18477 : TX starting new packet 1
+#                18538 : RX packet popped 0 with ID 0
+#                20212 : TX packet sent 1
+#                20213 : transmitting packet number 2
+# 
+# 
+# ****                20213 : TX starting new packet 2
+#                21607 : RX packet processed 0 with ID 0
+#                21608 : TX ack received 0
+#                23002 : TX packet sent 2
+#                23003 : transmitting packet number 3
+# 
+# 
+# ****                23003 : TX starting new packet 3
+#                23312 : RX packet popped 1 with ID 1
+#                23577 : TX timeout detected 1
+# ** Error: Assertion error.
+#    Time: 23577 ns  Scope: test_NtnuTfe4171Lab1Fifo.#ublk#221800815#312.transmitPacketAndWaitForTimeout File: ./tb/test_NtnuTfe4171Lab1Fifo.sv.architecturalTest.sv Line: 320
+# ****                23622 : TX packet 3 flushed waiting for TX to complete.
+# ****                23622 : RX packet 1 (ID=1) flushed.
+#                23685 : transmitting packet number 4
+# 
+# 
+# ****                23685 : TX starting new packet 4
+#                25420 : TX packet sent 4
+#                25421 : transmitting packet number 5
+# 
+# 
+# ****                25421 : TX starting new packet 5
+#                25482 : RX packet popped 1 with ID 4
+#                27156 : TX packet sent 5
+#                27157 : transmitting packet number 6
+# 
+# 
+# ****                27157 : TX starting new packet 6
+#                28551 : RX packet processed 1 with ID 4
+#                28552 : TX ack received 4
+#                29946 : TX packet sent 6
+#                29947 : transmitting packet number 7
+# 
+# 
+# ****                29947 : TX starting new packet 7
+#                30256 : RX packet popped 2 with ID 5
+#                30521 : TX timeout detected 5
+# ** Error: Assertion error.
+#    Time: 30521 ns  Scope: test_NtnuTfe4171Lab1Fifo.#ublk#221800815#312.transmitPacketAndWaitForTimeout File: ./tb/test_NtnuTfe4171Lab1Fifo.sv.architecturalTest.sv Line: 320
+# ****                30566 : TX packet 7 flushed waiting for TX to complete.
+# ****                30566 : RX packet 2 (ID=5) flushed.
+#                30629 : transmitting packet number 8
+# 
+# 
+# ****                30629 : TX starting new packet 8
+#                32364 : TX packet sent 8
+#                32365 : transmitting packet number 9
+# 
+# 
+# ****                32365 : TX starting new packet 9
+#                32426 : RX packet popped 2 with ID 8
+#                34100 : TX packet sent 9
+#                34101 : transmitting packet number 10
+# 
+# 
+# ****                34101 : TX starting new packet 10
+#                35495 : RX packet processed 2 with ID 8
+#                35496 : TX ack received 8
+#                36890 : TX packet sent 10
+#                36891 : transmitting packet number 11
+# 
+# 
+# ****                36891 : TX starting new packet 11
+#                37200 : RX packet popped 3 with ID 9
+#                37465 : TX timeout detected 9
+# ** Error: Assertion error.
+#    Time: 37465 ns  Scope: test_NtnuTfe4171Lab1Fifo.#ublk#221800815#312.transmitPacketAndWaitForTimeout File: ./tb/test_NtnuTfe4171Lab1Fifo.sv.architecturalTest.sv Line: 320
+# ****                37510 : TX packet 11 flushed waiting for TX to complete.
+# ****                37510 : RX packet 3 (ID=9) flushed.
+#                37573 : transmitting packet number 12
+# 
+# 
+# ****                37573 : TX starting new packet 12
+#                39308 : TX packet sent 12
+#                39309 : transmitting packet number 13
+# 
+# 
+# ****                39309 : TX starting new packet 13
+#                39370 : RX packet popped 3 with ID 12
+#                41044 : TX packet sent 13
+#                41045 : transmitting packet number 14
+# 
+# 
+# ****                41045 : TX starting new packet 14
+#                42439 : RX packet processed 3 with ID 12
+#                42440 : TX ack received 12
+#                43834 : TX packet sent 14
+#                43835 : transmitting packet number 15
+# 
+# 
+# ****                43835 : TX starting new packet 15
+#                44144 : RX packet popped 4 with ID 13
+#                44409 : TX timeout detected 13
+# ** Error: Assertion error.
+#    Time: 44409 ns  Scope: test_NtnuTfe4171Lab1Fifo.#ublk#221800815#312.transmitPacketAndWaitForTimeout File: ./tb/test_NtnuTfe4171Lab1Fifo.sv.architecturalTest.sv Line: 320
+# ****                44454 : TX packet 15 flushed waiting for TX to complete.
+# ****                44454 : RX packet 4 (ID=13) flushed.
+#                44517 : transmitting packet number 16
+# 
+# 
+# ****                44517 : TX starting new packet 16
+#                46252 : TX packet sent 16
+#                46253 : transmitting packet number 17
+# 
+# 
+# ****                46253 : TX starting new packet 17
+#                46314 : RX packet popped 4 with ID 16
+#                47988 : TX packet sent 17
+#                47989 : transmitting packet number 18
+# 
+# 
+# ****                47989 : TX starting new packet 18
+#                49383 : RX packet processed 4 with ID 16
+#                49384 : TX ack received 16
+#                50778 : TX packet sent 18
+#                50779 : transmitting packet number 19
+# 
+# 
+# ****                50779 : TX starting new packet 19
+#                51088 : RX packet popped 5 with ID 17
+#                51353 : TX timeout detected 17
+# ** Error: Assertion error.
+#    Time: 51353 ns  Scope: test_NtnuTfe4171Lab1Fifo.#ublk#221800815#312.transmitPacketAndWaitForTimeout File: ./tb/test_NtnuTfe4171Lab1Fifo.sv.architecturalTest.sv Line: 320
+# ****                51398 : TX packet 19 flushed waiting for TX to complete.
+# ****                51398 : RX packet 5 (ID=17) flushed.
+# [152780] ERROR: (4) Packets transmitted (20) not equal to packets received (5)
+# ** Error: Assertion error.
+#    Time: 152780 ns  Scope: test_NtnuTfe4171Lab1Fifo File: ./tb/test_NtnuTfe4171Lab1Fifo.sv.architecturalTest.sv Line: 486
+# [152780] SUCCESS: (4) FIFO emptied and empty asserted
+# 
+# [152780] TEST FAILED: 6 errors detected.
+# 
+# ** Note: $finish    : ./tb/test_NtnuTfe4171Lab1Fifo.sv.architecturalTest.sv(507)
+#    Time: 153780 ns  Iteration: 0  Instance: /test_NtnuTfe4171Lab1Fifo
+# End time: 13:32:08 on Feb 05,2026, Elapsed time: 0:00:05
+# Errors: 6, Warnings: 1
