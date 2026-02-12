@@ -1,0 +1,38 @@
+# ** Note: (vsim-220) 'modelsim.ini' is used as the ini file.
+# vsim -coverage -c -L work -L design -assertdebug -suppress 13219 -voptargs="+acc" test_NtnuTfe4171Lab2Fifo -l run_fifo.log -do "run -all; quit" 
+# Start time: 13:04:54 on Feb 12,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vopt-220) 'modelsim.ini' is used as the ini file.
+# ** Warning: ./tb/cl_FifoWriter.sv(146): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Warning: ./tb/cl_FifoWriter.sv(146): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=3.
+# //  Questa Sim
+# //  Version 2025.2 linux May 31 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.cl_Scoreboard_sv_unit(fast)
+# Loading work.test_NtnuTfe4171Lab2Fifo(fast)
+# Loading work.if_Fifo(fast__2)
+# Loading work.if_TbEvents(fast__2)
+# Loading design.NtnuTfe4171Lab1Fifo(fast)
+# Loading work.if_Fifo(fast)
+# run -all
+#                  289, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ** Fatal: WATCHDOG TIMER : simulation seems stuck
+#    Time: 1 ms  Scope: test_NtnuTfe4171Lab2Fifo File: ./tb/test_NtnuTfe4171Lab2Fifo.sv Line: 73
+# ** Note: $finish    : ./tb/test_NtnuTfe4171Lab2Fifo.sv(73)
+#    Time: 1 ms  Iteration: 0  Instance: /test_NtnuTfe4171Lab2Fifo
+# End time: 13:04:59 on Feb 12,2026, Elapsed time: 0:00:05
+# Errors: 1, Warnings: 3, Suppressed Errors: 7

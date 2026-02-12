@@ -1,0 +1,65 @@
+#!/bin/csh -fx
+
+rm -rf design.work tb.work
+rm -f transcript vsim.wlf *.ucdb
+ 
+# vlib work
+vlib design.work    # create a separate library for the "design" (i.e. DUT)
+vmap design design.work
+vlib tb.work        # create a separate library for the "TB"
+vmap work tb.work
+
+ 
+# compile the design
+# --------------------
+# +cover : enable coverage
+# -sv : parse files as SystemVerilog
+# -work : library to place the compiled code into
+
+vlog  +cover \
+      -sv    \
+      -work design \
+        ./rtl/NtnuTfe4171Lab1Fifo.sv   # the source file to compile
+
+# compile the TB
+# --------------------
+# -sv : parse files as SystemVerilog
+# -L : use this compiled library as well
+# -work : library to place the compiled code into
+# -mfcu : merge ALL the files in THIS vlog command into ONE big compilation unit (as if all code was in one file)
+
+vlog  -sv \
+      -L design \
+      -work work \
+      -mfcu \
+        ./tb/cl_Scoreboard.sv \
+        ./tb/cl_TbUtils.sv \
+        ./tb/cl_FifoReader.sv \
+        ./tb/cl_FifoWriter.sv \
+        ./tb/if_Fifo.sv \
+        ./tb/if_TbEvents.sv \
+        ./tb/test_NtnuTfe4171Lab2Fifo.sv
+
+        #./tb/if_TbEvents.sv \
+ 
+        
+# simulate the TB
+# --------------------
+# -coverage : collect coverage
+# -c : run in command line mode (no GUI)
+# -L : use this compiled library as well
+# -assertdebug : enable debugging of assertions
+# -voptargs="+acc" : allow access to all signals when logging them in the waveform
+# -l : log file name
+# -do : script to run do-commands
+
+vsim  -coverage \
+      -c \
+      -L work -L design \
+      -assertdebug \
+      -suppress 13219 \
+      -voptargs="+acc" \
+      test_NtnuTfe4171Lab2Fifo \
+     -l run_fifo.log \
+     -do "run -all; quit"
+

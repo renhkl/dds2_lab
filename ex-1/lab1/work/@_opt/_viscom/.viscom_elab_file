@@ -1,0 +1,1 @@
+/eda/tools/siemens/questasim.2025.2/linux/VisualizerRls/bin/viscom -nolock -quiet -jmem_size 393216 work.test_NtnuTfe4171Lab1Fifo -quiet -auto_acc_if_foreign -work work -allow_unnamed -o _opt -id 1-90b11c1d54d8-6985d0a4-9478e-20465a

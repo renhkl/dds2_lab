@@ -1,0 +1,349 @@
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid this.
+
+                           Design Compiler Graphical 
+                                 DC Ultra (TM)
+                                  DFTMAX (TM)
+                              Power Compiler (TM)
+                                 DesignWare (R)
+                                 DC Expert (TM)
+                               Design Vision (TM)
+                               HDL Compiler (TM)
+                               VHDL Compiler (TM)
+                                  DFT Compiler
+                               Design Compiler(R)
+
+               Version W-2024.09-SP4 for linux64 - Feb 26, 2025 
+
+                    Copyright (c) 1988 - 2025 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+Initializing...
+Current time:       Fri Feb  6 12:14:26 2026
+Hostname:           venus.tele.ntnu.no
+CPU Model:          Intel(R) Xeon(R) CPU E5-2640 0 @ 2.50GHz
+CPU Details:        Cores = 12 : Sockets = 2 : Cache Size = 15360 KB : Freq = 3.00 GHz
+OS:                 Linux 5.15.0-316.196.4.1.el8uek.x86_64
+RAM:                125 GB (Free  93 GB)
+Swap:                 4 GB (Free   4 GB)
+Work Filesystem:    /home mounted to 129.241.2.65:/home
+Tmp Filesystem:     / mounted to /dev/mapper/ol-root
+Work Disk:          6142 GB (Free 6059 GB)
+Tmp Disk:           3548 GB (Free 3227 GB)
+
+CPU Load: 5%, Ram Free: 93 GB, Swap Free: 4 GB, Work Disk Free: 6059 GB, Tmp Disk Free: 3227 GB
+# 1. Setup the Libraries
+set_app_var target_library {/eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/class.db}
+/eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/class.db
+set_app_var link_library [list * \
+    /eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/class.db \
+    /eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/dw_foundation.sldb]
+* /eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/class.db /eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/dw_foundation.sldb
+set_app_var hdlin_check_no_latch true
+true
+analyze -format sverilog ./rtl/NtnuTfe4171Lab1Fifo.sv
+Running PRESTO HDLC
+Compiling source file ./rtl/NtnuTfe4171Lab1Fifo.sv
+Presto compilation completed successfully.
+Loading db file '/eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/class.db'
+Loading db file '/eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/dw_foundation.sldb'
+1
+elaborate NtnuTfe4171Lab1Fifo
+Loading db file '/eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/gtech.db'
+Loading db file '/eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/standard.sldb'
+  Loading link library 'class'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+
+Inferred memory devices in process in routine 'NtnuTfe4171Lab1Fifo' in file
+	 ./rtl/NtnuTfe4171Lab1Fifo.sv'.
+==================================================================================
+|    Register Name    |   Type    | Width | Bus | MB |  Set  | Reset | ST | Line |
+==================================================================================
+|     wr_ptr_reg      | Flip-flop |   6   |  Y  | N  | None  | Async | N  |  36  |
+|       mem_reg       | Flip-flop |  256  |  Y  | N  | None  | None  | N  |  47  |
+|     rd_ptr_reg      | Flip-flop |   6   |  Y  | N  | None  | Async | N  |  59  |
+==================================================================================
+Statistics for MUX_OPs
+============================================================
+|    block name/line     | Inputs | Outputs | # sel inputs |
+============================================================
+| NtnuTfe4171Lab1Fifo/72 |   32   |    8    |      5       |
+============================================================
+Presto compilation completed successfully. (NtnuTfe4171Lab1Fifo)
+Module: NtnuTfe4171Lab1Fifo, Ports: 23, Input: 13, Output: 10, Inout: 0
+Module: NtnuTfe4171Lab1Fifo, Registers: 268, Async set/reset: 12, Sync set/reset: 0
+Information: Module NtnuTfe4171Lab1Fifo report end. (ELAB-965)
+Elaborated 1 design.
+Current design is now 'NtnuTfe4171Lab1Fifo'.
+1
+# 3. Define Constraints
+create_clock -name clk -period 62.5 [get_ports clk]
+1
+# Verify the design is ready for synthesis
+check_design
+ 
+****************************************
+check_design summary:
+Version:     W-2024.09-SP4
+Date:        Fri Feb  6 12:14:27 2026
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Cells                                                               2
+    Cells do not drive (LINT-1)                                     2
+--------------------------------------------------------------------------------
+
+Warning: In design 'NtnuTfe4171Lab1Fifo', cell 'C695' does not drive any nets. (LINT-1)
+Warning: In design 'NtnuTfe4171Lab1Fifo', cell 'C709' does not drive any nets. (LINT-1)
+1
+# 4. Synthesis Flow
+compile_ultra
+Information: Performing leakage power optimization. (PWR-850)
+CPU Load: 5%, Ram Free: 93 GB, Swap Free: 4 GB, Work Disk Free: 6059 GB, Tmp Disk Free: 3227 GB
+Alib files are up-to-date.
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | W-2024.09-DWBB_202409.4 |     *     |
+| Licensed DW Building Blocks        | W-2024.09-DWBB_202409.4 |     *     |
+============================================================================
+
+====================================================================================================
+| Flow Information                                                                                 |
+----------------------------------------------------------------------------------------------------
+| Flow         | Design Compiler WLM                                                               |
+| Command Line | compile_ultra                                                                     |
+====================================================================================================
+| Design Information                                      | Value                                  |
+====================================================================================================
+| Number of Scenarios                                     | 0                                      |
+| Leaf Cell Count                                         | 369                                    |
+| Number of User Hierarchies                              | 0                                      |
+| Sequential Cell Count                                   | 268                                    |
+| Macro Count                                             | 0                                      |
+| Pad Count                                               | 0                                      |
+| Number of Power Domains                                 | 0                                      |
+| Number of Path Groups                                   | 2                                      |
+| Number of VT Class                                      | 0                                      |
+| Number of Clocks                                        | 1                                      |
+| Number of Dont Touch Cells                              | 22                                     |
+| Number of Dont Touch Nets                               | 0                                      |
+| Number of Size Only Cells                               | 0                                      |
+| Design with Target Library Subset (with clock_path)     | false  (false )                        |
+| Design with UPF Data                                    | false                                  |
+====================================================================================================
+Information: Sequential output inversion is enabled.  SVF file must be used for formal verification. (OPT-1208)
+
+Information: There are 2 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+  Simplifying Design 'NtnuTfe4171Lab1Fifo'
+
+Loaded alib file './alib-52/class.db.alib'
+Module: DW01_NAND2, Ports: 3, Input: 2, Output: 1, Inout: 0
+Module: DW01_NAND2, Registers: 0, Async set/reset: 0, Sync set/reset: 0
+  Building model 'DW01_NAND2'
+Information: Ungrouping 0 of 1 hierarchies before Pass 1 (OPT-775)
+CPU Load: 6%, Ram Free: 93 GB, Swap Free: 4 GB, Work Disk Free: 6059 GB, Tmp Disk Free: 3227 GB
+Information: State dependent leakage is now switched from on to off.
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'NtnuTfe4171Lab1Fifo'
+Information: Added key list 'DesignWare' to design 'NtnuTfe4171Lab1Fifo'. (DDB-72)
+ Implement Synthetic for 'NtnuTfe4171Lab1Fifo'.
+CPU Load: 6%, Ram Free: 92 GB, Swap Free: 4 GB, Work Disk Free: 6059 GB, Tmp Disk Free: 3227 GB
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+Warning: Main library 'class' does not specify the following unit required for power: 'Leakage Power'. (PWR-424)
+Warning: Target library(s) are not characterized for internal power.  Compile with power constraints is NOT recommended. (PWR-13)
+
+  Beginning Mapping Optimizations  (Ultra High effort)
+  -------------------------------
+Information: There is no timing violation in design NtnuTfe4171Lab1Fifo. Delay-based auto_ungroup will not be performed. (OPT-780)
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:04    3483.0      0.00       0.0       0.0                              0.0000
+    0:00:04    3483.0      0.00       0.0       0.0                              0.0000
+
+  Beginning Constant Register Removal
+  -----------------------------------
+    0:00:04    3483.0      0.00       0.0       0.0                              0.0000
+    0:00:04    3483.0      0.00       0.0       0.0                              0.0000
+
+  Beginning Global Optimizations
+  ------------------------------
+No buffer cells compatible for Numerical Synthesis
+  Global Optimization (Phase 1)
+  Global Optimization (Phase 2)
+  Global Optimization (Phase 3)
+  Global Optimization (Phase 4)
+  Global Optimization (Phase 5)
+  Global Optimization (Phase 6)
+  Global Optimization (Phase 7)
+  Global Optimization (Phase 8)
+  Global Optimization (Phase 9)
+  Global Optimization (Phase 10)
+  Global Optimization (Phase 11)
+  Global Optimization (Phase 12)
+  Global Optimization (Phase 13)
+  Global Optimization (Phase 14)
+  Global Optimization (Phase 15)
+  Global Optimization (Phase 16)
+  Global Optimization (Phase 17)
+  Global Optimization (Phase 18)
+  Global Optimization (Phase 19)
+  Global Optimization (Phase 20)
+  Global Optimization (Phase 21)
+  Global Optimization (Phase 22)
+  Global Optimization (Phase 23)
+  Global Optimization (Phase 24)
+  Global Optimization (Phase 25)
+  Global Optimization (Phase 26)
+  Global Optimization (Phase 27)
+  Global Optimization (Phase 28)
+  Global Optimization (Phase 29)
+  Global Optimization (Phase 30)
+
+  Beginning Isolate Ports
+  -----------------------
+
+  Beginning Delay Optimization
+  ----------------------------
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+
+  Beginning WLM Backend Optimization
+  --------------------------------------
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:05    2971.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2970.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2970.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2970.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2970.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+    0:00:05    2967.0      0.00       0.0       0.0                              0.0000
+CPU Load: 6%, Ram Free: 92 GB, Swap Free: 4 GB, Work Disk Free: 6059 GB, Tmp Disk Free: 3227 GB
+Loading db file '/eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/class.db'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Information: State dependent leakage is now switched from off to on.
+Warning: Main library 'class' does not specify the following unit required for power: 'Leakage Power'. (PWR-424)
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+CPU Load: 7%, Ram Free: 92 GB, Swap Free: 4 GB, Work Disk Free: 6059 GB, Tmp Disk Free: 3227 GB
+Information: Total number of MV cells in the design.
+----------------------------------------------------------------------------------------------------
+ MV Cells                                           Total Number                                   
+----------------------------------------------------------------------------------------------------
+ Level Shifter:                                     0                                             
+ Enable Level Shifter:                              0                                             
+ Isolation Cell:                                    0                                             
+ Retention Cell:                                    0                                             
+ Retention Clamp Cell:                              0                                             
+ Switch Cell:                                       0                                             
+ Always-On Cell:                                    0                                             
+ Repeater Cell:                                     0                                             
+
+----------------------------------------------------------------------------------------------------
+Unmapped MV Cells 
+----------------------------------------------------------------------------------------------------
+0 Isolation Cells are unmapped 
+0 Retention Clamp Cells are unmapped 
+----------------------------------------------------------------------------------------------------
+1
+# 5. Generate Reports
+file mkdir reports
+report_area   > reports/area.rpt
+report_timing > reports/timing.rpt
+report_qor    > reports/qor.rpt
+# 6. Export Netlist
+write -format verilog -hierarchy -output synthesized_netlist.v
+Writing verilog file '/home/courses/desdigsys2/2026s/dds226s27/ex-1/lab1/synthesized_netlist.v'.
+1
+puts "Synthesis Finished. Check reports/timing.rpt for slack values."
+Synthesis Finished. Check reports/timing.rpt for slack values.
+dc_shell> 

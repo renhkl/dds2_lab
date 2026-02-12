@@ -1,0 +1,31 @@
+ 
+****************************************
+Report : area
+Design : NtnuTfe4171Lab1Fifo
+Version: W-2024.09-SP4
+Date   : Fri Feb  6 12:14:33 2026
+****************************************
+
+Information: Updating design information... (UID-85)
+Library(s) Used:
+
+    class (File: /eda/tools/synopsys/dc.w-2024.09-sp4/libraries/syn/class.db)
+
+Number of ports:                           23
+Number of nets:                          1158
+Number of cells:                          876
+Number of combinational cells:            608
+Number of sequential cells:               268
+Number of macros/black boxes:               0
+Number of buf/inv:                         58
+Number of references:                      15
+
+Combinational area:               1067.000000
+Buf/Inv area:                       58.000000
+Noncombinational area:            1900.000000
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  2967.000000
+Total area:                 undefined
+1

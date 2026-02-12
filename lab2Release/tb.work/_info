@@ -1,0 +1,156 @@
+m255
+K4
+z2
+!s12c _opt
+Z0 !s99 nomlopt
+!s11f vlog 2025.2 2025.05, May 31 2025
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z1 d/home/courses/desdigsys2/2026s/dds226s27/lab2Release
+T_opt
+!i145 1
+!s11d cl_Scoreboard_sv_unit /home/courses/desdigsys2/2026s/dds226s27/lab2Release/tb.work 2 if_TbEvents 1 /home/courses/desdigsys2/2026s/dds226s27/lab2Release/tb.work if_Fifo 1 /home/courses/desdigsys2/2026s/dds226s27/lab2Release/tb.work 
+!i144 0
+!s110 1770897896
+V_E@zX]lW=nZ1PWnZXFgHN2
+04 24 4 work test_NtnuTfe4171Lab2Fifo fast 0
+=1-90b11c1d54d8-698dc1e6-66c6c-62a4e
+R0
+!s12f OEM100
+!s12b OEM100
+!s124 OEM100
+!s135 nogc
+o-quiet -auto_acc_if_foreign -work work -L work -L design -suppress 13219 +acc
+Z2 tCvgOpt 0
+n@_opt
+OE;O;2025.2;82
+Xcl_Scoreboard_sv_unit
+!i114 1
+Z3 2./tb/cl_Scoreboard.sv|./tb/cl_TbUtils.sv|./tb/cl_FifoReader.sv|./tb/cl_FifoWriter.sv|./tb/if_Fifo.sv|./tb/if_TbEvents.sv|./tb/test_NtnuTfe4171Lab2Fifo.sv
+!s115 if_TbEvents
+!s115 if_Fifo
+Z4 DXx6 sv_std 3 std 0 22 @5XbY]_OacJl=`ToSm<M^0
+Z5 !s110 1770897891
+V5?TBH0oD>]Hgb@]860g770
+r1
+!s85 0
+!i10b 1
+!s100 BG<a<8=F?nBGkeaEa]kl:1
+I5?TBH0oD>]Hgb@]860g770
+!i103 1
+S1
+R1
+Z6 w1770212920
+8./tb/cl_Scoreboard.sv
+F./tb/cl_Scoreboard.sv
+8./tb/cl_TbUtils.sv
+F./tb/cl_TbUtils.sv
+8./tb/cl_FifoReader.sv
+F./tb/cl_FifoReader.sv
+8./tb/cl_FifoWriter.sv
+F./tb/cl_FifoWriter.sv
+Z7 8./tb/if_Fifo.sv
+Z8 F./tb/if_Fifo.sv
+Z9 8./tb/if_TbEvents.sv
+Z10 F./tb/if_TbEvents.sv
+Z11 8./tb/test_NtnuTfe4171Lab2Fifo.sv
+Z12 F./tb/test_NtnuTfe4171Lab2Fifo.sv
+!i122 0
+Z13 L0 9 0
+Z14 OE;L;2025.2;82
+31
+Z15 !s108 1770897891.000000
+Z16 !s107 ./tb/test_NtnuTfe4171Lab2Fifo.sv|./tb/if_TbEvents.sv|./tb/if_Fifo.sv|./tb/cl_FifoWriter.sv|./tb/cl_FifoReader.sv|./tb/cl_TbUtils.sv|./tb/cl_Scoreboard.sv|
+Z17 !s90 -sv|-L|design|-work|work|-mfcu|./tb/cl_Scoreboard.sv|./tb/cl_TbUtils.sv|./tb/cl_FifoReader.sv|./tb/cl_FifoWriter.sv|./tb/if_Fifo.sv|./tb/if_TbEvents.sv|./tb/test_NtnuTfe4171Lab2Fifo.sv|
+!i113 0
+Z18 o-sv -L design -work work -mfcu -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R2
+ncl_@scoreboard_sv_unit
+Yif_Fifo
+R3
+R4
+Z19 DXx4 work 21 cl_Scoreboard_sv_unit 0 22 5?TBH0oD>]Hgb@]860g770
+R5
+Z20 VDg1SIo80bB@j0V0VzS_@n1
+r1
+!s85 0
+!i10b 1
+!s100 I2z@XD9BigC34MYL486;M2
+I9dVl>2?e9FmB[39`^6ekn3
+Z21 !s105 cl_Scoreboard_sv_unit
+S1
+R1
+R6
+R7
+R8
+!i122 0
+R13
+R14
+31
+R15
+R16
+R17
+!i113 0
+R18
+R2
+nif_@fifo
+Yif_TbEvents
+R3
+R4
+R19
+R5
+R20
+r1
+!s85 0
+!i10b 1
+!s100 IGI0:WXi9z4N@VK_k=[163
+I2kUAB95ORmQY40?iJ2MSj1
+R21
+S1
+R1
+R6
+R9
+R10
+!i122 0
+L0 10 0
+R14
+31
+R15
+R16
+R17
+!i113 0
+R18
+R2
+nif_@tb@events
+vtest_NtnuTfe4171Lab2Fifo
+R3
+R4
+R19
+R5
+R20
+r1
+!s85 0
+!i10b 1
+!s100 hjn[ihcbBNCC<^U6[h25f2
+I3QK8:P<BYiCLkLhBG0;nE1
+R21
+S1
+R1
+w1770212919
+R11
+R12
+!i122 0
+L0 7 184
+R14
+31
+R15
+R16
+R17
+!i113 0
+R18
+R2
+ntest_@ntnu@tfe4171@lab2@fifo

@@ -1,0 +1,59 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : NtnuTfe4171Lab1Fifo
+Version: W-2024.09-SP4
+Date   : Fri Feb  6 12:14:33 2026
+****************************************
+
+Operating Conditions: nom_pvt   Library: class
+Wire Load Model Mode: top
+
+  Startpoint: wr_ptr_reg[0]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: mem_reg[16][0]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  NtnuTfe4171Lab1Fifo
+                     20x20                 class
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  wr_ptr_reg[0]/CP (FD2)                   0.00       0.00 r
+  wr_ptr_reg[0]/QN (FD2)                   2.17       2.17 f
+  U879/Z (AO2)                             1.57       3.74 r
+  U881/Z (AO1P)                            0.36       4.10 f
+  U885/Z (ND4)                             1.27       5.37 r
+  U888/Z (NR2I)                            0.24       5.62 f
+  U1115/Z (NR2I)                           2.03       7.65 r
+  U1117/Y (IVDA)                           0.85       8.50 f
+  U1131/Z (NR2I)                           1.14       9.64 r
+  U1134/Z (ND2I)                           0.96      10.60 f
+  U1309/Z (NR2I)                           2.61      13.22 r
+  U1310/Y (IVDA)                           1.03      14.24 f
+  U1311/Z (AO2)                            1.31      15.55 r
+  mem_reg[16][0]/D (FD1)                   0.00      15.55 r
+  data arrival time                                  15.55
+
+  clock clk (rise edge)                   62.50      62.50
+  clock network delay (ideal)              0.00      62.50
+  mem_reg[16][0]/CP (FD1)                  0.00      62.50 r
+  library setup time                      -0.80      61.70
+  data required time                                 61.70
+  -----------------------------------------------------------
+  data required time                                 61.70
+  data arrival time                                 -15.55
+  -----------------------------------------------------------
+  slack (MET)                                        46.15
+
+
+1
