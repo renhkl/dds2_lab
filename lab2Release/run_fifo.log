@@ -1,11 +1,11 @@
 # ** Note: (vsim-220) 'modelsim.ini' is used as the ini file.
 # vsim -coverage -c -L work -L design -assertdebug -suppress 13219 -voptargs="+acc" test_NtnuTfe4171Lab2Fifo -l run_fifo.log -do "run -all; quit" 
-# Start time: 13:04:54 on Feb 12,2026
+# Start time: 15:24:21 on Feb 19,2026
 # ** Note: (vsim-3812) Design is being optimized...
 # ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
 # ** Note: (vopt-220) 'modelsim.ini' is used as the ini file.
-# ** Warning: ./tb/cl_FifoWriter.sv(146): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
-# ** Warning: ./tb/cl_FifoWriter.sv(146): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Warning: ./tb/cl_FifoWriter.sv(159): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Warning: ./tb/cl_FifoWriter.sv(159): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
 # ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=3.
 # //  Questa Sim
 # //  Version 2025.2 linux May 31 2025
@@ -24,15 +24,142 @@
 # Loading sv_std.std
 # Loading work.cl_Scoreboard_sv_unit(fast)
 # Loading work.test_NtnuTfe4171Lab2Fifo(fast)
-# Loading work.if_Fifo(fast__2)
+# Loading work.if_Fifo(fast__3)
 # Loading work.if_TbEvents(fast__2)
 # Loading design.NtnuTfe4171Lab1Fifo(fast)
 # Loading work.if_Fifo(fast)
 # run -all
-#                  289, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
-# ** Fatal: WATCHDOG TIMER : simulation seems stuck
-#    Time: 1 ms  Scope: test_NtnuTfe4171Lab2Fifo File: ./tb/test_NtnuTfe4171Lab2Fifo.sv Line: 73
-# ** Note: $finish    : ./tb/test_NtnuTfe4171Lab2Fifo.sv(73)
-#    Time: 1 ms  Iteration: 0  Instance: /test_NtnuTfe4171Lab2Fifo
-# End time: 13:04:59 on Feb 12,2026, Elapsed time: 0:00:05
-# Errors: 1, Warnings: 3, Suppressed Errors: 7
+# ta_writeburst_started
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                  289, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   16
+#                  341, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   16 data:                   16
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                  403, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   17
+#                  465, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   17 data:                   17
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                  527, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   18
+#                  589, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   18 data:                   18
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                  651, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   19
+#                  713, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   19 data:                   19
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                  775, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   20
+#                  837, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   20 data:                   20
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                  899, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   21
+#                  961, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   21 data:                   21
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                 1023, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   22
+#                 1085, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   22 data:                   22
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                 1147, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   23
+#                 1209, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   23 data:                   23
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                 1271, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   24
+#                 1333, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   24 data:                   24
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                 1395, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   25
+#                 1457, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   25 data:                   25
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                 1519, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   26
+#                 1581, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   26 data:                   26
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                 1643, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   27
+#                 1705, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   27 data:                   27
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                 1767, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   28
+#                 1829, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   28 data:                   28
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                 1891, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   29
+#                 1953, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   29 data:                   29
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                 2015, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   30
+#                 2077, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   30 data:                   30
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:                   16 seed:                   16 vif.clk:                    1 vif.full:                    0 wr_en:                    0
+# Time                 2139, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    0 wr_data:                    0 data:                   31
+#                 2201, clock edge
+# ta_writeWord: vif.clk:                    1 vif.full:                    0 wr_en:                    1 wr_data:                   31 data:                   31
+# ta_writeWord finished
+# ta_writeBurst finished
+# [4248] SUCCESS: (1) FIFO data pushed and emptied after equal write/read
+# 
+#                 4744 : transmitting packet number 0
+# 
+# 
+# ****                 4744 : TX starting new packet 0
+#                 6448 : TX packet sent 0
+#                 9844 : TX timeout detected 0
+# ** Error: Assertion error.
+#    Time: 9844 ns  Scope: cl_Scoreboard_sv_unit.cl_FifoWriter__1.run.tx_proc_B.transmitPacketAndWaitForTimeout File: ./tb/cl_FifoWriter.sv Line: 153
+# [9855] ERROR: (4) Packets transmitted (1) not equal to packets received (0)
+# ** Error: Assertion error.
+#    Time: 9855 ns  Scope: test_NtnuTfe4171Lab2Fifo File: ./tb/test_NtnuTfe4171Lab2Fifo.sv Line: 211
+# [9855] SUCCESS: (4) FIFO emptied and empty asserted
+# 
+# [9855] TEST FAILED: 2 errors detected.
+# 
+# ** Note: $finish    : ./tb/test_NtnuTfe4171Lab2Fifo.sv(224)
+#    Time: 10855 ns  Iteration: 0  Instance: /test_NtnuTfe4171Lab2Fifo
+# End time: 15:24:26 on Feb 19,2026, Elapsed time: 0:00:05
+# Errors: 2, Warnings: 3, Suppressed Errors: 7

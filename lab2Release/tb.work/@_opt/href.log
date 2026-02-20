@@ -8,7 +8,7 @@ BEGIN 3:if_TbEvents:fast__2:work
     tx :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     rxTrig :  1:test_NtnuTfe4171Lab2Fifo:fast:work
 END 
-BEGIN 3:if_Fifo:fast__2:work
+BEGIN 3:if_Fifo:fast__3:work
     wr_en :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     empty :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     arst :  1:test_NtnuTfe4171Lab2Fifo:fast:work

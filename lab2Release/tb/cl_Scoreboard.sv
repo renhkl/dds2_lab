@@ -10,6 +10,17 @@ class cl_Scoreboard #(parameter int WIDTH = 8);
   local rand logic [WIDTH-1:0] q[$];
   // function new(); endfunction  // what happens when new function is not explicity defined?
 
+/*
+function new(
+rand logic [WIDTH-1:0] q[$]
+);
+
+this.q = q;
+
+endfunction
+*/
+
+
   task ta_queuePush(input logic [WIDTH-1:0] data);
     q.push_back(data);
   endtask

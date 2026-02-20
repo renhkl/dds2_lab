@@ -4,6 +4,21 @@
 //====================================================================
 // Top-level testbench module integrating classes
 
+/*
+class tb_top;
+// virtual interface declaration
+virtual If_Dut if_Fifo;
+// point virtual interface to actual interface in constructor
+function new (virtual If_Dut vif);
+this.if_Fifo = vif;
+endfunction
+endclass
+
+frame tb_top;
+initial tb_top = new (tb_dut_interface_inst);
+*/
+
+
 module test_NtnuTfe4171Lab2Fifo;
 
   localparam WIDTH = 8;
@@ -12,6 +27,18 @@ module test_NtnuTfe4171Lab2Fifo;
   // Interfaces
   if_Fifo    #(WIDTH) tb_if();
   if_TbEvents         ev_if();
+
+/*
+  virtual if_Fifo tb_if;
+  // point virtual interface to actual interface in constructor
+  function new (virtual if_Fifo vif);
+  this.tb_if = vif;
+  endfunction
+
+  if_Fifo tb_if;
+  initial tb_if = new (tb_dut_interface_inst);
+  */
+virtual if_Fifo vif;
 
   // DUT
   NtnuTfe4171Lab1Fifo #(
@@ -32,8 +59,8 @@ module test_NtnuTfe4171Lab2Fifo;
 
   cl_Scoreboard #(WIDTH) sb     = new();
   cl_TbUtils    #(WIDTH) utils  = new(tb_if, sb);
-  cl_FifoWriter #(WIDTH) writer = new(sb, ev_if, utils);
-  cl_FifoReader #(WIDTH) reader = new(sb, ev_if);
+  cl_FifoWriter #(WIDTH) writer = new(sb, ev_if.writer, utils, tb_if.writer);
+  cl_FifoReader #(WIDTH) reader = new(sb, ev_if.reader, tb_if.reader);
   
   
   int errorCnt = 0;
@@ -67,10 +94,15 @@ module test_NtnuTfe4171Lab2Fifo;
 
   // Clock 16 MHz
   realtime clock_period = (1s/16e6);
-  initial begin tb_if.clk = 0; forever #(clock_period/2.0) tb_if.clk = !tb_if.clk; end
+  initial begin 
+    tb_if.clk = 0; 
+    forever 
+      #(clock_period/2.0) 
+      tb_if.clk = !tb_if.clk; 
+    end
   initial begin
-    #1ms;
-    $fatal (1, "WATCHDOG TIMER : simulation seems stuck");
+      #1ms;
+      $fatal (1, "WATCHDOG TIMER : simulation seems stuck");
   end
 
   // Main stimulus
@@ -104,7 +136,7 @@ module test_NtnuTfe4171Lab2Fifo;
                  tb_if.clk, tb_if.flush, tb_if.full, tb_if.empty, tb_if.wr_en, tb_if.wr_data);
       reader.run(currentPacketRxNum, rxPacketId, errorCnt, packetAck,
                  numWordsInPacket, numCyclesToProcessPacket,
-                 tb_if.clk, tb_if.flush, tb_if.rd_en, tb_if.rd_data, tb_if.empty);
+                 tb_if.flush, tb_if.rd_en, tb_if.rd_data, tb_if.empty);
     join_none
   end
 
@@ -116,7 +148,7 @@ module test_NtnuTfe4171Lab2Fifo;
 
     // 1) burst write partial packet (e.g. 16 bytes) then read back
     writer.ta_writeBurst(16, 8'h10, tb_if.clk, tb_if.full, tb_if.wr_en, tb_if.wr_data);
-    reader.ta_readBurst(16, tb_if.clk, tb_if.empty, tb_if.rd_en, tb_if.rd_data, localErrCnt1);
+    reader.ta_readBurst(16, tb_if.empty, tb_if.rd_en, tb_if.rd_data, localErrCnt1);
     errorCnt += localErrCnt1;
     #1; if (!tb_if.empty) begin $display("[%0t] ERROR: (1) FIFO should be empty after equal write/read", $time); errorCnt++; $error; end
         else                    $display("[%0t] SUCCESS: (1) FIFO data pushed and emptied after equal write/read\n", $time);
@@ -131,7 +163,7 @@ module test_NtnuTfe4171Lab2Fifo;
 */
 
     // Attempt to read after flush
-    reader.ta_readBurst(4, tb_if.clk, tb_if.empty, tb_if.rd_en, tb_if.rd_data, localErrCnt2);
+    reader.ta_readBurst(4, tb_if.empty, tb_if.rd_en, tb_if.rd_data, localErrCnt2);
     errorCnt += localErrCnt2;
 
     // removing test-vector 3 to simplify Lab2 - can bring back for increased testing.
@@ -162,13 +194,18 @@ module test_NtnuTfe4171Lab2Fifo;
       begin : readerThread
         forever begin
           wait ( (tb_if.empty === 0) && (tb_if.flush == 0) ); #1;
+          //-> ev_if.rxTrig;
           ev_if.rxTrig = 1; #1;
-          wait (ev_if.rxDone == 1); ev_if.rxTrig = 0; wait (ev_if.rxDone == 0); #1ns;
+          wait (ev_if.rxDone == 1); 
+          ev_if.rxTrig = 0; 
+          wait (ev_if.rxDone == 0); 
+          #1ns;
         end
       end
     join_any
 
-    #(NUM_PACKETS_TO_TRANSMIT * packetTimeoutVal); #1;
+    #(NUM_PACKETS_TO_TRANSMIT * packetTimeoutVal); #1; 
+    #10;
     if (currentPacketRxNum != currentPacketTxNum) begin
       $display("[%0t] ERROR: (4) Packets transmitted (%0d) not equal to packets received (%0d)", $time, currentPacketTxNum, currentPacketRxNum);
       errorCnt++; $error;
