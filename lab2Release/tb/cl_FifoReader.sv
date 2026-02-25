@@ -7,7 +7,7 @@
 // =========================================
 // cl_FifoReader : tasks take DUT/event signals as args
 // =========================================
-class cl_FifoReader #(parameter int WIDTH = 8); 
+class cl_FifoReader #(parameter int WIDTH = 8); //extends cl_TbUtils; 
   local virtual if_TbEvents.reader  eif;
   local virtual if_Fifo vif;
   local cl_Scoreboard #(WIDTH) sb;
@@ -32,17 +32,17 @@ class cl_FifoReader #(parameter int WIDTH = 8);
     errors_added = 0;
     @(posedge vif.clk);
     if (!vif.empty) begin
-      rd_en = 1'b1;
+      vif.rd_en = 1'b1;
     end else begin
-      rd_en = 1'b0;
+      vif.rd_en = 1'b0;
     end
     @(posedge vif.clk);
-    if (rd_en && !vif.empty) begin
+    if (vif.rd_en && !vif.empty) begin
       int localErrCount;
       sb.ta_popAndCheck(vif.rd_data, localErrCount);
       errors_added += localErrCount;
     end
-    rd_en = 1'b0;
+    vif.rd_en = 1'b0;
   endtask
 
   // Burst read
@@ -56,7 +56,7 @@ class cl_FifoReader #(parameter int WIDTH = 8);
     errors_added = 0;
     for (int i = 0; i < n; i++) begin
       int localErrCount; 
-      ta_readWord(vif.empty, rd_en, vif.rd_data, localErrCount); 
+      ta_readWord(vif.empty, vif.rd_en, vif.rd_data, localErrCount); 
       errors_added += localErrCount;
     end
   endtask
@@ -76,12 +76,12 @@ class cl_FifoReader #(parameter int WIDTH = 8);
     for (int i=0; i<numWordsInPacket; i++) begin
       int localErrCount;
       if (vif.empty) wait (!vif.empty);
-      @(negedge vif.clk); rd_en = 1'b1;
+      @(negedge vif.clk); vif.rd_en = 1'b1;
       @(posedge vif.clk) data = vif.rd_data;
       sb.ta_popAndCheck(data, localErrCount); errors_added += localErrCount;
       if (i == 0) rxPacketId = data;
     end
-    @(negedge vif.clk); rd_en = 1'b0;
+    @(negedge vif.clk); vif.rd_en = 1'b0;
   endtask
 
   // Background RX model. Call once; it will run forever and react to posedge of eif.rxTrig.
@@ -102,7 +102,8 @@ class cl_FifoReader #(parameter int WIDTH = 8);
       fork
         begin : receivePacket
           int localErrors, id;
-          ta_receiveOnePacket(numWordsInPacket, vif.empty, rd_en, vif.rd_data, vif.flush, id, localErrors);
+          $display ("%t : RX packet processing %0d with ID %0d", $realtime, currentPacketRxNum, rxPacketId);
+          ta_receiveOnePacket(numWordsInPacket, vif.empty, vif.rd_en, vif.rd_data, vif.flush, id, localErrors);
           rxPacketId = id;
           errorCnt  += localErrors;
           repeat (numCyclesToProcessPacket) @(posedge vif.clk);
@@ -114,8 +115,8 @@ class cl_FifoReader #(parameter int WIDTH = 8);
 
         begin : waitForflush
           wait (vif.flush);
-          $display ("**** %t : RX packet %0d (ID=%0d) vif.flushed.", $realtime, currentPacketRxNum, rxPacketId);
-          @(negedge vif.clk) rd_en = 1'b0;
+          $display ("**** %t : RX packet %0d (ID=%0d) flushed.", $realtime, currentPacketRxNum, rxPacketId);
+          @(negedge vif.clk) vif.rd_en = 1'b0;
           wait (!vif.flush);
         end : waitForflush
       join_any

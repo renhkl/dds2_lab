@@ -44,7 +44,7 @@ virtual if_Fifo vif;
   NtnuTfe4171Lab1Fifo #(
     .WIDTH (WIDTH),
     .DEPTH (DEPTH)
-  ) u_NtnuTfe4171Lab1Fifo (
+  ) u_NtnuTfe4172Lab1Fifo (
     .clk     (tb_if.clk),
     .arst    (tb_if.arst),
     .wr_en   (tb_if.wr_en),
@@ -91,6 +91,81 @@ virtual if_Fifo vif;
     end
   end
   endtask
+
+
+  //CONCURRENT ASSERTIONS
+
+property empty_after_flush_property;
+  @(posedge tb_if.clk) (tb_if.flush |=> tb_if.empty);
+endproperty
+
+ empty_after_flush_assert: assert property(empty_after_flush_property) $display("YES1");
+        else begin
+          $display("[%0t] ERROR1: empty should be 1 after flush", $time);
+          errorCnt = errorCnt + 1;
+          //$fatal(1);
+        end
+
+property not_full_after_flush_property; 
+  @(posedge tb_if.clk) (tb_if.flush |=> !tb_if.full);
+endproperty
+
+not_full_after_flush_assert: assert property(not_full_after_flush_property) $display("YES2");
+        else begin
+          $display("[%0t] ERROR2: full should be 0 after flush", $time);
+          errorCnt = errorCnt + 1;
+          //$fatal(1);
+        end
+
+
+property not_empty_after_write_property;
+  @(posedge tb_if.clk) disable iff (tb_if.arst) (tb_if.wr_en |=> !tb_if.empty);
+endproperty
+
+ not_empty_after_write_assert: assert property(not_empty_after_write_property) $display("YES3");
+        else begin
+          $display("[%0t] ERROR3: empty should be deasserted after wr_en", $time);
+          errorCnt = errorCnt + 1;
+          //$fatal(1);
+        end
+
+/*
+property write_data_is_zero_if_write_enable_is_deasserted_property;
+  @(posedge tb_if.clk) (!tb_if.wr_en |-> !tb_if.wr_data || tb_if.wr_data == 8'bx);
+endproperty
+
+ write_data_is_zero_if_write_enable_is_deasserted_assert: assert property(write_data_is_zero_if_write_enable_is_deasserted_property) $display("YES4");
+        else begin
+          $display("[%0t] ERROR4: wr_data should be zero if wr_en is deasserted %d %d", $time, tb_if.wr_en, tb_if.wr_data);
+          errorCnt = errorCnt + 1;
+          //$fatal(1);
+        end
+
+
+property delay_between_each_read_enable_property; 
+  @(posedge tb_if.clk) (tb_if.rd_en |=> !tb_if.rd_en);
+endproperty
+
+ delay_between_each_read_enable_assert: assert property(delay_between_each_read_enable_property)  $display("YES4");
+        else begin
+          $display("[%0t] ERROR4: there's no delay between each rd_en during reader operation", $time);
+          errorCnt = errorCnt + 1;
+          //$fatal(1);
+        end
+
+
+property write_enable_asserted_then_read_enable_deasserted_property; 
+  @(posedge tb_if.clk) disable iff (tb_if.arst) (tb_if.wr_en |-> !tb_if.rd_en);
+endproperty
+
+ write_enable_asserted_then_read_enable_deasserted_assert:  assert property(write_enable_asserted_then_read_enable_deasserted_property)  $display("YES5");
+        else begin
+          $display("[%0t] ERROR5: if wr_en is asserted, rd_en cannot be asserted in the same clock cycle %d %d", $time, tb_if.wr_en, tb_if.rd_en);
+          errorCnt = errorCnt + 1;
+          //$fatal(1);
+        end
+*/
+
 
   // Clock 16 MHz
   realtime clock_period = (1s/16e6);
@@ -154,13 +229,13 @@ virtual if_Fifo vif;
         else                    $display("[%0t] SUCCESS: (1) FIFO data pushed and emptied after equal write/read\n", $time);
 
     // removing test-vector 2 to simplify Lab2 - can bring back for increased testing.
-/*
+
     // 2) Write near-full, then flush
-    writer.ta_writeBurst(DEPTH - 2, 8'h20, clk, full, wr_en, wr_data);
-    if (empty) begin $display("[%0t] ERROR: (2) FIFO should not be empty after writes", $time); errorCnt++; $error; end
+    writer.ta_writeBurst(DEPTH - 2, 8'h20, tb_if.clk, tb_if.full, tb_if.wr_en, tb_if.wr_data);
+    if (tb_if.empty) begin $display("[%0t] ERROR: (2) FIFO should not be empty after writes", $time); errorCnt++; $error; end
     else $display("[%0t] SUCCESS: (2) FIFO data pushed and empty de-asserted\n", $time);
     utils.ta_flushFifo(errorCnt);
-*/
+
 
     // Attempt to read after flush
     reader.ta_readBurst(4, tb_if.empty, tb_if.rd_en, tb_if.rd_data, localErrCnt2);
@@ -169,17 +244,19 @@ virtual if_Fifo vif;
     // removing test-vector 3 to simplify Lab2 - can bring back for increased testing.
 /*
     // 3) Fill to full, then drain and compare
-    writer.ta_writeBurst(DEPTH, 8'h40, clk, full, wr_en, wr_data);
-    @(posedge clk);
-    if (!full) $display("[%0t] WARNING: (3a) full is not asserted after DEPTH writes (check pointer/flag logic)", $time);
+    writer.ta_writeBurst(DEPTH, 8'h40, tb_if.clk, tb_if.full, tb_if.wr_en, tb_if.wr_data);
+    @(posedge tb_if.clk);
+    if (!tb_if.full) begin
+      $display("[%0t] WARNING: (3a) full is not asserted after DEPTH writes (check pointer/flag logic)", $time); end
     else        $display("[%0t] SUCCESS: (3a) FIFO filled and full asserted\n", $time);
-    reader.ta_readBurst(DEPTH, clk, empty, rd_en, tb_if.rd_data, localErrCnt3);
+    reader.ta_readBurst(DEPTH, tb_if.clk, tb_if.empty, tb_if.rd_en, tb_if.rd_data, localErrCnt3);
     errorCnt += localErrCnt3;
-    #1; if (!empty) begin $display("[%0t] ERROR: (3b) FIFO should be empty after draining", $time); errorCnt++; $error; end
-        else              $display("[%0t] SUCCESS: (3b) FIFO emptied after filling and empty asserted\n", $time);
+    #1; 
+    if (!tb_if.empty) begin 
+      $display("[%0t] ERROR: (3b) FIFO should be empty after draining", $time); errorCnt++; $error; end
+    else              $display("[%0t] SUCCESS: (3b) FIFO emptied after filling and empty asserted\n", $time);
     utils.ta_flushFifo(errorCnt);
 */
-
     // 4) Interleaved traffic: keep existing TX/RX orchestrators
     //    read/write (same-cycle ops) to exercise FIFO data integrity
     //    Write 27 bytes while reading in parallel after some delay
@@ -193,8 +270,9 @@ virtual if_Fifo vif;
       end
       begin : readerThread
         forever begin
-          wait ( (tb_if.empty === 0) && (tb_if.flush == 0) ); #1;
+          wait ((tb_if.empty === 0) && (tb_if.flush == 0) ); #1;
           //-> ev_if.rxTrig;
+
           ev_if.rxTrig = 1; #1;
           wait (ev_if.rxDone == 1); 
           ev_if.rxTrig = 0; 

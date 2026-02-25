@@ -6,7 +6,7 @@
 // =========================================
 // cl_FifoWriter : tasks take DUT signals as args
 // =========================================
-class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils(ta_vif.flushFifo);
+class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils; //extends cl_TbUtils(ta_flushFifo);
   local virtual if_TbEvents.writer eif;
   local virtual if_Fifo vif;
   local cl_Scoreboard #(WIDTH) sb;
@@ -35,22 +35,22 @@ class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils(ta_vif.flus
   );
     $display ("Time %t, %m", $realtime);
     @(posedge vif.clk);
-    $display("ta_writeWord: vif.clk: %t vif.full: %t wr_en: %t wr_data: %t data: %t", vif.clk, vif.full, wr_en, wr_data, data);
+    $display("ta_writeWord: clk: %d full: %d wr_en: %d wr_data: %d data: %d", vif.clk, vif.full, wr_en, wr_data, data);
     $display ("%t, clock edge", $realtime);
     if (!vif.full) begin
-      wr_en   = 1'b1;
-      wr_data = data;
+      vif.wr_en   = 1'b1;
+      vif.wr_data = data;
       //$display("ta_writeWord: %t %t", wr_data, data);
-      $display("ta_writeWord: vif.clk: %t vif.full: %t wr_en: %t wr_data: %t data: %t", vif.clk, vif.full, wr_en, wr_data, data);
+      $display("ta_writeWord: clk: %d full: %d wr_en: %d wr_data: %d data: %d", vif.clk, vif.full, vif.wr_en, vif.wr_data, data);
       sb.ta_queuePush(data);
     end 
     else begin
-      wr_en   = 1'b0;
-      wr_data = '0;
+      vif.wr_en   = 1'b0;
+      vif.wr_data = '0;
     end
     @(posedge vif.clk);
-    wr_en   = 1'b0;
-    wr_data = '0;
+    vif.wr_en   = 1'b0;
+    vif.wr_data = '0;
     $display("ta_writeWord finished");
   endtask
 
@@ -58,7 +58,7 @@ class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils(ta_vif.flus
   task ta_writeBurst(
     input  int               n,
     input  int               seed,
-    ref logic               clk,
+    ref logic                clk,
     input  bit               full,
     output bit               wr_en,
     //output logic [WIDTH-1:0] data, //nothigi
@@ -68,8 +68,8 @@ class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils(ta_vif.flus
     for (int i = 0; i < n; i++) begin
       logic [WIDTH-1:0] data = (seed + i) & {WIDTH{1'b1}};
       //$display("ta_writeBurst: %t %t", wr_data, data);
-      $display("ta_writeBurst: n: %t seed: %t vif.clk: %t vif.full: %t wr_en: %t", n, seed, vif.clk, vif.full, wr_en);
-      ta_writeWord(vif.clk, vif.full, wr_en, wr_data, data);
+      $display("ta_writeBurst: n: %d seed: %d clk: %d vif.full: %d wr_en: %d", n, seed, vif.clk, vif.full, wr_en);
+      ta_writeWord(vif.clk, vif.full, vif.wr_en, vif.wr_data, data);
       $display("ta_writeBurst finished");
     end
   endtask
@@ -78,7 +78,7 @@ class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils(ta_vif.flus
   task ta_xmitOnePacket(
     ref    int               currentPacketTxNum,
     input  int               numWordsInPacket,
-    ref logic               clk,
+    ref logic                clk,
     input  bit               full,
     input  bit               flush,
     output bit               wr_en,
@@ -92,18 +92,18 @@ class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils(ta_vif.flus
         wait (!vif.full);
       end
       @(negedge vif.clk);
-      wr_en = 1'b1;
+      vif.wr_en = 1'b1;
       if (i == 0) begin
-        wr_data = currentPacketTxNum[WIDTH-1:0];
+        vif.wr_data = currentPacketTxNum[WIDTH-1:0];
         sb.ta_queuePush(currentPacketTxNum[WIDTH-1:0]);
       end else begin
-        wr_data = data;
+        vif.wr_data = data;
         sb.ta_queuePush(data);
       end
     end
     @(negedge vif.clk);
-    wr_en  = 1'b0;
-    wr_data = '0;
+    vif.wr_en  = 1'b0;
+    vif.wr_data = '0;
     $display ("%t : TX packet sent %0d", $realtime, currentPacketTxNum);
   endtask
 
@@ -126,15 +126,16 @@ class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils(ta_vif.flus
       // Two independent behaviors that used to be separate always blocks
       fork
         begin : tx_proc_A
-          // sendPacket + waitForvif.flushWhileTx
+          // sendPacket + waitForflushWhileTx
           fork
             begin : sendPacket
               ta_xmitOnePacket(currentPacketTxNum, numWordsInPacket, vif.clk, vif.full, vif.flush, wr_en, wr_data);
             end : sendPacket
             begin : waitForflushWhileTx
+              $display ("%t : TX packet sending", $realtime);
               wait (vif.flush);
-              $display ("**** %t : TX packet %0d vif.flushed waiting for TX to complete.", $realtime, currentPacketTxNum);
-              wr_en = 1'b0;
+              $display ("**** %t : TX packet %0d flushed waiting for TX to complete.", $realtime, currentPacketTxNum);
+              vif.wr_en = 1'b0;
             end : waitForflushWhileTx
           join_any
           disable fork;
@@ -144,14 +145,14 @@ class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils(ta_vif.flus
 
         begin : tx_proc_B
           automatic int thisPacketIndex = currentPacketTxNum;
-          // timeout / ack / vif.flush-wait trio
+          // timeout / ack / flush-wait trio
           fork
             begin : transmitPacketAndWaitForTimeout
               #(packetTimeoutVal);
               $display ("%t : TX timeout detected %0d", $realtime, thisPacketIndex);
               errorCnt++;
               $error;
-              utils.ta_flushFifo(errorCnt);
+              //ta_flushFifo(errorCnt);
             end : transmitPacketAndWaitForTimeout
 
             begin : waitForAckInTx

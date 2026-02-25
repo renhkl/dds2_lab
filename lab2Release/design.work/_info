@@ -12,13 +12,13 @@ Z0 d/home/courses/desdigsys2/2026s/dds226s27/lab2Release
 vNtnuTfe4171Lab1Fifo
 2./rtl/NtnuTfe4171Lab1Fifo.sv
 DXx6 sv_std 3 std 0 22 @5XbY]_OacJl=`ToSm<M^0
-!s110 1771511058
+!s110 1772031125
 !i10b 1
 !s100 :_KU>Fd4=T3K@aY=JD=9k3
 I?kVbGdfRzRaH8WYnSB;ne2
 S1
 R0
-w1770212913
+w1772023323
 8./rtl/NtnuTfe4171Lab1Fifo.sv
 F./rtl/NtnuTfe4171Lab1Fifo.sv
 !i122 0
@@ -28,7 +28,7 @@ OE;L;2025.2;82
 r1
 !s85 0
 31
-!s108 1771511057.000000
+!s108 1772031125.000000
 !s107 ./rtl/NtnuTfe4171Lab1Fifo.sv|
 !s90 +cover|-sv|-work|design|./rtl/NtnuTfe4171Lab1Fifo.sv|
 !i113 0

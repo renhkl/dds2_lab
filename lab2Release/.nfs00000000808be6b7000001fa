@@ -1,0 +1,451 @@
+# ** Note: (vsim-220) 'modelsim.ini' is used as the ini file.
+# vsim -coverage -voptargs="+fcover=bcfst" -c -L work -L design test_NtnuTfe4171Lab2Fifo -suppress 13219 -do "coverage save -onexit -codeAll -cvg coverage.ucdb; run -all;  exit" 
+# Start time: 15:49:41 on Feb 25,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Note: (vopt-220) 'modelsim.ini' is used as the ini file.
+# ** Warning: ./tb/cl_FifoWriter.sv(160): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Warning: ./tb/cl_FifoWriter.sv(160): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=2.
+# //  Questa Sim
+# //  Version 2025.2 linux May 31 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.cl_Scoreboard_sv_unit(fast)
+# Loading work.test_NtnuTfe4171Lab2Fifo(fast)
+# Loading design.NtnuTfe4171Lab1Fifo(fast)
+# Loading work.if_Fifo(fast)
+# coverage save -onexit -codeAll -cvg coverage.ucdb
+#  run -all
+# ta_writeburst_started
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                  289, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  16
+#                  341, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  16 data:  16
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                  403, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  17
+#                  465, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  17 data:  17
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                  527, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  18
+#                  589, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  18 data:  18
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                  651, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  19
+#                  713, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  19 data:  19
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                  775, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  20
+#                  837, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  20 data:  20
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                  899, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  21
+#                  961, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  21 data:  21
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                 1023, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  22
+#                 1085, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  22 data:  22
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                 1147, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  23
+#                 1209, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  23 data:  23
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                 1271, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  24
+#                 1333, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  24 data:  24
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                 1395, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  25
+#                 1457, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  25 data:  25
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                 1519, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  26
+#                 1581, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  26 data:  26
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                 1643, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  27
+#                 1705, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  27 data:  27
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                 1767, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  28
+#                 1829, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  28 data:  28
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                 1891, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  29
+#                 1953, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  29 data:  29
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                 2015, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  30
+#                 2077, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  30 data:  30
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
+# Time                 2139, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  31
+#                 2201, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  31 data:  31
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# YES3
+# [4248] SUCCESS: (1) FIFO data pushed and emptied after equal write/read
+# 
+# ta_writeburst_started
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 4248, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  32
+#                 4309, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  32 data:  32
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 4371, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  33
+#                 4433, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  33 data:  33
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 4495, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  34
+#                 4557, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  34 data:  34
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 4619, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  35
+#                 4681, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  35 data:  35
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 4743, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  36
+#                 4805, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  36 data:  36
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 4867, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  37
+#                 4929, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  37 data:  37
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 4991, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  38
+#                 5053, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  38 data:  38
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 5115, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  39
+#                 5177, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  39 data:  39
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 5239, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  40
+#                 5301, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  40 data:  40
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 5363, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  41
+#                 5425, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  41 data:  41
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 5487, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  42
+#                 5549, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  42 data:  42
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 5611, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  43
+#                 5673, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  43 data:  43
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 5735, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  44
+#                 5797, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  44 data:  44
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 5859, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  45
+#                 5921, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  45 data:  45
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 5983, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  46
+#                 6045, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  46 data:  46
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 6107, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  47
+#                 6169, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  47 data:  47
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 6231, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  48
+#                 6293, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  48 data:  48
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 6355, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  49
+#                 6417, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  49 data:  49
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 6479, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  50
+#                 6541, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  50 data:  50
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 6603, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  51
+#                 6665, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  51 data:  51
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 6727, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  52
+#                 6789, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  52 data:  52
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 6851, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  53
+#                 6913, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  53 data:  53
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 6975, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  54
+#                 7037, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  54 data:  54
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 7099, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  55
+#                 7161, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  55 data:  55
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 7223, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  56
+#                 7285, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  56 data:  56
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 7347, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  57
+#                 7409, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  57 data:  57
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 7471, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  58
+#                 7533, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  58 data:  58
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 7595, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  59
+#                 7657, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  59 data:  59
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 7719, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  60
+#                 7781, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  60 data:  60
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# ta_writeBurst: n:          30 seed:          32 clk: 1 vif.full: 0 wr_en: 0
+# Time                 7843, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
+# ta_writeWord: clk: 1 full: 0 wr_en: 0 wr_data:   x data:  61
+#                 7905, clock edge
+# ta_writeWord: clk: 1 full: 0 wr_en: 1 wr_data:  61 data:  61
+# YES3
+# ta_writeWord finished
+# ta_writeBurst finished
+# [7967] SUCCESS: (2) FIFO data pushed and empty de-asserted
+# 
+# YES3
+# YES2
+# YES1
+#                 8588 : transmitting packet number 0
+# 
+# 
+# ****                 8588 : TX starting new packet 0
+#                 8588 : TX packet sending
+#                 8650 : RX packet processing 0 with ID 0
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+# YES3
+#                10292 : TX packet sent 0
+# YES3
+#                13423 : RX packet processed 0 with ID 0
+#                13424 : TX ack received 0
+# [13699] (4) All transmitted packets (1) are received
+# [13699] SUCCESS: (4) FIFO emptied and empty asserted
+# 
+# [13699] TEST PASSED: All data matched and flags behaved correctly.
+# 
+# ** Note: $finish    : ./tb/test_NtnuTfe4171Lab2Fifo.sv(302)
+#    Time: 14699 ns  Iteration: 0  Instance: /test_NtnuTfe4171Lab2Fifo
+# Saving coverage database on exit...
+# End time: 15:49:46 on Feb 25,2026, Elapsed time: 0:00:05
+# Errors: 0, Warnings: 2, Suppressed Errors: 7
