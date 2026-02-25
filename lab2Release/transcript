@@ -1,6 +1,6 @@
 # ** Note: (vsim-220) 'modelsim.ini' is used as the ini file.
 # vsim -coverage -voptargs="+fcover=sbcfst" -c -L work -L design test_NtnuTfe4171Lab2Fifo -suppress 13219 -do "coverage save -onexit -codeAll -cvg coverage.ucdb; run -all;  exit" 
-# Start time: 20:03:35 on Feb 25,2026
+# Start time: 20:28:52 on Feb 25,2026
 # ** Note: (vsim-3812) Design is being optimized...
 # ** Note: (vopt-220) 'modelsim.ini' is used as the ini file.
 # ** Warning: ./tb/cl_FifoWriter.sv(160): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
@@ -27,14 +27,6 @@
 # Loading work.if_Fifo(fast)
 # coverage save -onexit -codeAll -cvg coverage.ucdb
 #  run -all
-# ** Warning: (vsim-3881) ./tb/test_NtnuTfe4171Lab2Fifo.sv(208): Width conversion applied in bin 'non_zeros' for Coverpoint 'c1'. Value '572662306' changed to '255 (maximum)' value.
-#    Time: 0 ns  Iteration: 0  Instance: /test_NtnuTfe4171Lab2Fifo
-# ** Warning: (vsim-3881) ./tb/test_NtnuTfe4171Lab2Fifo.sv(208): Width conversion applied in bin 'non_zeros' for Coverpoint 'c1'. Value '4294967295' changed to '255 (maximum)' value.
-#    Time: 0 ns  Iteration: 0  Instance: /test_NtnuTfe4171Lab2Fifo
-# ** Warning: (vsim-8475) The invalid value range [572662306 : 4294967295] is found in bin 'non_zeros' of Coverpoint 'c1'. It will be ignored.
-#    Time: 0 ns  Iteration: 0  Process: /test_NtnuTfe4171Lab2Fifo/#INITIAL#60 File: ./tb/test_NtnuTfe4171Lab2Fifo.sv Line: 208
-# ** Warning: (vsim-8549) After dropping the illegal, ignore or invalid values, the values list associated with scalar bin 'non_zeros' in Coverpoint 'c1' of Covergroup instance '\/test_NtnuTfe4171Lab2Fifo/cg_inst ' has converged to empty list. The bin will be taken out of coverage calculation.
-#    Time: 0 ns  Iteration: 0  Instance: /test_NtnuTfe4171Lab2Fifo
 # ta_writeburst_started
 # ta_writeBurst: n:          16 seed:          16 clk: 1 vif.full: 0 wr_en: 0
 # Time                  289, cl_Scoreboard_sv_unit.cl_FifoWriter__1.ta_writeWord
@@ -497,8 +489,8 @@
 # 
 # [13699] TEST PASSED: All data matched and flags behaved correctly.
 # 
-# ** Note: $finish    : ./tb/test_NtnuTfe4171Lab2Fifo.sv(348)
+# ** Note: $finish    : ./tb/test_NtnuTfe4171Lab2Fifo.sv(354)
 #    Time: 14699 ns  Iteration: 0  Instance: /test_NtnuTfe4171Lab2Fifo
 # Saving coverage database on exit...
-# End time: 20:03:41 on Feb 25,2026, Elapsed time: 0:00:06
-# Errors: 0, Warnings: 6, Suppressed Errors: 7
+# End time: 20:28:57 on Feb 25,2026, Elapsed time: 0:00:05
+# Errors: 0, Warnings: 2, Suppressed Errors: 7

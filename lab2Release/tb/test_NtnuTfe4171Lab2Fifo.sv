@@ -207,12 +207,12 @@ covergroup cg @(posedge tb_if.clk);
         c1: coverpoint tb_if.wr_data { 
           bins zeros = {'0};
           bins ones = {'1};
-          bins non_zeros = {['h2222_2222:'hffff_ffff]}; //??
-
+          bins non_zeros = {[8'h01:8'hfe]}; //??
         }
 
-        coverpoint tb_if.wr_en;
-        cp1_X_cp2: cross tb_if.wr_data, wr_en {}; //??
+        c2: coverpoint tb_if.wr_en;
+
+        wr_en_X_wr_data: cross c1, c2; //??
 
 endgroup: cg
 

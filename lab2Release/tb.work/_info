@@ -15,10 +15,10 @@ T_opt
 !i145 1
 !s11d cl_Scoreboard_sv_unit /home/courses/desdigsys2/2026s/dds226s27/lab2Release/tb.work 2 if_TbEvents 1 /home/courses/desdigsys2/2026s/dds226s27/lab2Release/tb.work if_Fifo 1 /home/courses/desdigsys2/2026s/dds226s27/lab2Release/tb.work 
 !i144 0
-!s110 1772046218
-VO@cFEi4NXhA9M@<D]Q<^=2
+!s110 1772047734
+Vz]7gA`BgJ^c=PmN7P77161
 04 24 4 work test_NtnuTfe4171Lab2Fifo fast 0
-=1-90b11c1d54d8-699f4788-43221-9bedd
+=1-90b11c1d54d8-699f4d74-46c22-9e85a
 R0
 !s12f OEM100
 !s12b OEM100
@@ -34,17 +34,17 @@ Z3 2./tb/cl_Scoreboard.sv|./tb/cl_TbUtils.sv|./tb/cl_FifoReader.sv|./tb/cl_FifoW
 !s115 if_TbEvents
 !s115 if_Fifo
 Z4 DXx6 sv_std 3 std 0 22 @5XbY]_OacJl=`ToSm<M^0
-Z5 !s110 1772046214
-VQYnbChfIamof=0@jbdJC_0
+Z5 !s110 1772047730
+VNX1VkX6^HCe1[8Cd69ZR63
 r1
 !s85 0
 !i10b 1
-!s100 THMoMiAS6<OgC70Mf3ZFb2
-IQYnbChfIamof=0@jbdJC_0
+!s100 Vfk33f?5MbjY<T<@2hGVZ1
+INX1VkX6^HCe1[8Cd69ZR63
 !i103 1
 S1
 R1
-Z6 w1772045893
+Z6 w1772047723
 8./tb/cl_Scoreboard.sv
 F./tb/cl_Scoreboard.sv
 8./tb/cl_TbUtils.sv
@@ -63,7 +63,7 @@ Z12 F./tb/test_NtnuTfe4171Lab2Fifo.sv
 Z13 L0 9 0
 Z14 OE;L;2025.2;82
 31
-Z15 !s108 1772046213.000000
+Z15 !s108 1772047729.000000
 Z16 !s107 ./tb/test_NtnuTfe4171Lab2Fifo.sv|./tb/if_TbEvents.sv|./tb/if_Fifo.sv|./tb/cl_FifoWriter.sv|./tb/cl_FifoReader.sv|./tb/cl_TbUtils.sv|./tb/cl_Scoreboard.sv|
 Z17 !s90 -sv|-L|design|-work|work|-mfcu|./tb/cl_Scoreboard.sv|./tb/cl_TbUtils.sv|./tb/cl_FifoReader.sv|./tb/cl_FifoWriter.sv|./tb/if_Fifo.sv|./tb/if_TbEvents.sv|./tb/test_NtnuTfe4171Lab2Fifo.sv|
 !i113 0
@@ -73,7 +73,7 @@ ncl_@scoreboard_sv_unit
 Yif_Fifo
 R3
 R4
-Z19 DXx4 work 21 cl_Scoreboard_sv_unit 0 22 QYnbChfIamof=0@jbdJC_0
+Z19 DXx4 work 21 cl_Scoreboard_sv_unit 0 22 NX1VkX6^HCe1[8Cd69ZR63
 R5
 Z20 VDg1SIo80bB@j0V0VzS_@n1
 r1
@@ -135,8 +135,8 @@ R20
 r1
 !s85 0
 !i10b 1
-!s100 BZ@Lh7nYhM?8EjTaCe=GI2
-Ibo5200lLiQa_JF75;N;^J0
+!s100 a>0O9H3LizY9ejDhoO^KL2
+I2Rg6Gk`>gBf0jP5YA@RXD0
 R21
 S1
 R1
@@ -144,7 +144,7 @@ R6
 R11
 R12
 !i122 0
-L0 22 330
+L0 22 336
 R14
 31
 R15
