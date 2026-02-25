@@ -66,16 +66,18 @@ vlog  -sv \
 
 ############################################
 
-#nytt problem: no design loaded
+
 
 vsim  -coverage \
-      -voptargs="+fcover=bcfst" \
+      -voptargs="+fcover=sbcfst" \
       -c \
       -L work -L design \
       test_NtnuTfe4171Lab2Fifo \
       -suppress 13219 \
       -do "coverage save -onexit -codeAll -cvg coverage.ucdb; run -all;  exit"
 
+
+#nytt problem: no design loaded
 
 ##problemer: vet ikke hva cover=bcfst er, eller hva do er. fikset på tabs, enter og \
 
@@ -104,6 +106,6 @@ vsim  -coverage \
 
 ##prøvd: lab2, lab1. endre navn  på filer, modules/duts etc. fjerne work foran slik at kun test_lab2. så -L work -L design
 
-#vcover report -html -output htmlReport -details coverage.ucdb
+vcover report -html -output htmlReport -details coverage.ucdb
 
 vcover report -details coverage.ucdb

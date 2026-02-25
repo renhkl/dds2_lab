@@ -1,2 +1,2 @@
-var g_data = {"data":[{"n":"design.NtnuTfe4171Lab1Fifo","id":5,"zf":1,"tc":78.85,"s":100.00,"b":100.00,"fc":50.00,"fe":50.00,"t":94.28}]};
+var g_data = {"data":[{"n":"design.NtnuTfe4171Lab1Fifo","id":5,"zf":1,"tc":78.85,"s":100.00,"b":100.00,"fc":50.00,"fe":50.00,"t":94.28},{"n":"work.test_NtnuTfe4171Lab2Fifo","id":2,"zf":1,"tc":50.00,"g":50.00}]};
 processDuData(g_data);

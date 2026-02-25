@@ -129,6 +129,20 @@ endproperty
           //$fatal(1);
         end
 
+//cannot read empty fifo empty -> !rd_en
+//full -> !wr_en
+
+property cannot_read_empty_fifo_property;
+  @(posedge tb_if.clk) (tb_if.full |-> !tb_if.wr_en);
+endproperty
+
+ cannot_read_empty_fifo_assert: assert property(cannot_read_empty_fifo_property) $display("YES4");
+        else begin
+          $display("[%0t] ERROR4: en empty FIFO cannot be read", $time);
+          errorCnt = errorCnt + 1;
+          //$fatal(1);
+        end
+
 /*
 property write_data_is_zero_if_write_enable_is_deasserted_property;
   @(posedge tb_if.clk) (!tb_if.wr_en |-> !tb_if.wr_data || tb_if.wr_data == 8'bx);
@@ -166,6 +180,44 @@ endproperty
         end
 */
 
+
+//COVER STATEMENTS
+
+property empty_after_flush_antecedent_property;
+  @(posedge tb_if.clk) (tb_if.flush);
+endproperty
+
+
+property not_full_after_flush_antecedent_property; 
+  @(posedge tb_if.clk) (tb_if.flush);
+endproperty
+
+property not_empty_after_write_antecedent_property;
+  @(posedge tb_if.clk) (tb_if.rd_en);
+endproperty
+
+cover property(empty_after_flush_antecedent_property) $display("empty_after_flush_property happens");
+cover property(not_full_after_flush_antecedent_property) $display("not_full_after_flush_property happens");
+cover property(not_empty_after_write_antecedent_property) $display("not_empty_after_write_property happens");
+
+
+//COVER GROUPS
+
+covergroup cg @(posedge tb_if.clk);
+        c1: coverpoint tb_if.wr_data { 
+          bins zeros = {'0};
+          bins ones = {'1};
+          bins non_zeros = {['h2222_2222:'hffff_ffff]}; //??
+
+        }
+
+        coverpoint tb_if.wr_en;
+        cp1_X_cp2: cross tb_if.wr_data, wr_en {}; //??
+
+endgroup: cg
+
+//instantiate and create covergroup
+cg cg_inst = new();
 
   // Clock 16 MHz
   realtime clock_period = (1s/16e6);

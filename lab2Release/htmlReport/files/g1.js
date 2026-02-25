@@ -1,0 +1,2 @@
+var g_data = {"6":{"pr":"/test_NtnuTfe4171Lab2Fifo","ty":2,"dui":2,"dun":"work.test_NtnuTfe4171Lab2Fifo","cvgs":[{"h":["\\/test_NtnuTfe4171Lab2Fifo/cg_inst ",2,1,9,7],"cov":[2,1,50.00],"opts":{"goal":"100"}},{"h":["/test_NtnuTfe4171Lab2Fifo/cg",1,1,7],"cov":[2,1,50.00],"opts":{"goal":"100"}}]}};
+processCovergroupsData(g_data);

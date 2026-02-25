@@ -1,0 +1,2 @@
+var g_data = {"7":{"cvpc":[{"h":["c1",4],"cov":[2,1,50.00],"opts":{"goal":"100"}}],"9":{"cvpc":[{"h":["c1",4,1,10],"cov":[2,1,50.00],"opts":{"goal":"100"}}],"cvg":["\\/test_NtnuTfe4171Lab2Fifo/cg_inst ",2],"cvgdata":[2,1,0,0]},"cvg":["/test_NtnuTfe4171Lab2Fifo/cg",1],"cvgdata":[2,1,0,0]}};
+processCoverpointsData(g_data);
