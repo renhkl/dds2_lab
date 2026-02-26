@@ -7,19 +7,17 @@
 // =========================================
 // cl_FifoReader : tasks take DUT/event signals as args
 // =========================================
-class cl_FifoReader #(parameter int WIDTH = 8); //extends cl_TbUtils; 
+class cl_FifoReader #(parameter int WIDTH = 8) extends cl_TbUtils; 
   local virtual if_TbEvents.reader  eif;
-  local virtual if_Fifo vif;
-  local cl_Scoreboard #(WIDTH) sb;
+
 
   function new(
     cl_Scoreboard #(WIDTH) sb,
     virtual if_TbEvents.reader  eif,
     virtual if_Fifo vif
   );
-    this.sb = sb;
+    super.new(vif, sb);
     this.eif = eif;
-    this.vif = vif;
   endfunction
 
   // Single word read

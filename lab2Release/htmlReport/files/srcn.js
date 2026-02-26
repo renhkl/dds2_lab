@@ -1,2 +1,2 @@
-var g_data = ["","./tb/cl_Scoreboard.sv","./tb/cl_FifoReader.sv","./tb/cl_FifoWriter.sv","./tb/cl_TbUtils.sv","./tb/test_NtnuTfe4171Lab2Fifo.sv","./tb/if_TbEvents.sv","./tb/if_Fifo.sv","./rtl/NtnuTfe4171Lab1Fifo.sv"];
+var g_data = ["","./tb/cl_Scoreboard.sv","./tb/cl_TbUtils.sv","./tb/cl_FifoReader.sv","./tb/cl_FifoWriter.sv","./tb/test_NtnuTfe4171Lab2Fifo.sv","./tb/if_Fifo.sv","./tb/if_TbEvents.sv","./rtl/NtnuTfe4171Lab1Fifo.sv"];
 processSrcNamesData(g_data);

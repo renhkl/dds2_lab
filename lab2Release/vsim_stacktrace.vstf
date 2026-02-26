@@ -1,0 +1,102 @@
+# Current time Wed Feb 25 21:17:09 2026
+# Program = vsim
+# Id = "2025.2"
+# Version = "2025.05"
+# Date = "May 31 2025"
+# Platform = "linux"
+# Signature = cf0291b60dd9e61b6ba21b4d0e541e12
+# 0    0xf69935bb: './tb/cl_FifoWriter.sv:69'
+# 1    0xf69a7ed3: './tb/test_NtnuTfe4171Lab2Fifo.sv:278'
+# 2    0x0b56d2cd: '<unknown (@0xb56d2cd)>'
+# 3    0x0811fd27: '<unknown (@0x811fd27)>'
+# 4    0x08449445: '<unknown (@0x8449445)>'
+# 5    0x089e5f00: '<unknown (@0x89e5f00)>'
+# 6    0x089eb9a5: '<unknown (@0x89eb9a5)>'
+# 7    0x089ed29f: '<unknown (@0x89ed29f)>'
+# 8    0x08d094b7: '<unknown (@0x8d094b7)>'
+# 9    0x0ba09f7b: '<unknown (@0xba09f7b)>'
+# 10   0x0ba0956a: '<unknown (@0xba0956a)>'
+# 11   0x0ba0eaf3: '<unknown (@0xba0eaf3)>'
+# 12   0x0ba0ec0a: '<unknown (@0xba0ec0a)>'
+# 13   0x0ba102b1: '<unknown (@0xba102b1)>'
+# 14   0x0ba10626: '<unknown (@0xba10626)>'
+# 15   0x08fa30db: '<unknown (@0x8fa30db)>'
+# 16   0x0bab8327: '<unknown (@0xbab8327)>'
+# 17   0x0bb125fc: '<unknown (@0xbb125fc)>'
+# 18   0x0bb15468: '<unknown (@0xbb15468)>'
+# 19   0x0bad1828: '<unknown (@0xbad1828)>'
+# 20   0x0bad1b35: '<unknown (@0xbad1b35)>'
+# 21   0x0b8c7625: '<unknown (@0xb8c7625)>'
+# 22   0x089aa867: '<unknown (@0x89aa867)>'
+# 23   0x0882018a: '<unknown (@0x882018a)>'
+# End of Stack Trace
+
+
+# Current time Wed Feb 25 21:18:23 2026
+# Program = vsim
+# Id = "2025.2"
+# Version = "2025.05"
+# Date = "May 31 2025"
+# Platform = "linux"
+# Signature = cf0291b60dd9e61b6ba21b4d0e541e12
+# 0    0xf699355f: './tb/cl_FifoWriter.sv:70'
+# 1    0xf69a7c23: './tb/test_NtnuTfe4171Lab2Fifo.sv:278'
+# 2    0x0b56d2cd: '<unknown (@0xb56d2cd)>'
+# 3    0x0811fd27: '<unknown (@0x811fd27)>'
+# 4    0x08449445: '<unknown (@0x8449445)>'
+# 5    0x089e5f00: '<unknown (@0x89e5f00)>'
+# 6    0x089eb9a5: '<unknown (@0x89eb9a5)>'
+# 7    0x089ed29f: '<unknown (@0x89ed29f)>'
+# 8    0x08d094b7: '<unknown (@0x8d094b7)>'
+# 9    0x0ba09f7b: '<unknown (@0xba09f7b)>'
+# 10   0x0ba0956a: '<unknown (@0xba0956a)>'
+# 11   0x0ba0eaf3: '<unknown (@0xba0eaf3)>'
+# 12   0x0ba0ec0a: '<unknown (@0xba0ec0a)>'
+# 13   0x0ba102b1: '<unknown (@0xba102b1)>'
+# 14   0x0ba10626: '<unknown (@0xba10626)>'
+# 15   0x08fa30db: '<unknown (@0x8fa30db)>'
+# 16   0x0bab8327: '<unknown (@0xbab8327)>'
+# 17   0x0bb125fc: '<unknown (@0xbb125fc)>'
+# 18   0x0bb15468: '<unknown (@0xbb15468)>'
+# 19   0x0bad1828: '<unknown (@0xbad1828)>'
+# 20   0x0bad1b35: '<unknown (@0xbad1b35)>'
+# 21   0x0b8c7625: '<unknown (@0xb8c7625)>'
+# 22   0x089aa867: '<unknown (@0x89aa867)>'
+# 23   0x0882018a: '<unknown (@0x882018a)>'
+# End of Stack Trace
+
+
+# Current time Wed Feb 25 21:22:29 2026
+# Program = vsim
+# Id = "2025.2"
+# Version = "2025.05"
+# Date = "May 31 2025"
+# Platform = "linux"
+# Signature = cf0291b60dd9e61b6ba21b4d0e541e12
+# 0    0xf699355f: './tb/cl_FifoWriter.sv:70'
+# 1    0xf69a7c83: './tb/test_NtnuTfe4171Lab2Fifo.sv:278'
+# 2    0x0b56d2cd: '<unknown (@0xb56d2cd)>'
+# 3    0x0811fd27: '<unknown (@0x811fd27)>'
+# 4    0x08449445: '<unknown (@0x8449445)>'
+# 5    0x089e5f00: '<unknown (@0x89e5f00)>'
+# 6    0x089eb9a5: '<unknown (@0x89eb9a5)>'
+# 7    0x089ed29f: '<unknown (@0x89ed29f)>'
+# 8    0x08d094b7: '<unknown (@0x8d094b7)>'
+# 9    0x0ba09f7b: '<unknown (@0xba09f7b)>'
+# 10   0x0ba0956a: '<unknown (@0xba0956a)>'
+# 11   0x0ba0eaf3: '<unknown (@0xba0eaf3)>'
+# 12   0x0ba0ec0a: '<unknown (@0xba0ec0a)>'
+# 13   0x0ba102b1: '<unknown (@0xba102b1)>'
+# 14   0x0ba10626: '<unknown (@0xba10626)>'
+# 15   0x08fa30db: '<unknown (@0x8fa30db)>'
+# 16   0x0bab8327: '<unknown (@0xbab8327)>'
+# 17   0x0bb125fc: '<unknown (@0xbb125fc)>'
+# 18   0x0bb15468: '<unknown (@0xbb15468)>'
+# 19   0x0bad1828: '<unknown (@0xbad1828)>'
+# 20   0x0bad1b35: '<unknown (@0xbad1b35)>'
+# 21   0x0b8c7625: '<unknown (@0xb8c7625)>'
+# 22   0x089aa867: '<unknown (@0x89aa867)>'
+# 23   0x0882018a: '<unknown (@0x882018a)>'
+# End of Stack Trace
+
+

@@ -1,2 +1,2 @@
-var g_data = {"5":["design.NtnuTfe4171Lab1Fifo",78.85,1],"2":["work.test_NtnuTfe4171Lab2Fifo",72.22,1]};
+var g_data = {"5":["design.NtnuTfe4171Lab1Fifo",90.00,1],"1":["work.cl_Scoreboard_sv_unit",66.06,1],"3":["work.if_Fifo",100.00,1],"4":["work.if_TbEvents",50.00,1],"2":["work.test_NtnuTfe4171Lab2Fifo",49.79,1]};
 processDuLinks(g_data);

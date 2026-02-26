@@ -7,8 +7,8 @@
 // Testbench utilities (flush, etc.)
 // =========================================
 class cl_TbUtils #(parameter int WIDTH = 8);
-  local virtual if_Fifo #(WIDTH) vif; // full interface handle (not a modport)
-  local cl_Scoreboard #(WIDTH) sb;
+  protected virtual if_Fifo #(WIDTH) vif; // full interface handle (not a modport)
+  protected cl_Scoreboard #(WIDTH) sb;
 
   function new(virtual if_Fifo #(WIDTH) vif, cl_Scoreboard #(WIDTH) sb);
     this.vif = vif;

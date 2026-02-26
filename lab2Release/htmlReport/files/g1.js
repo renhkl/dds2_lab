@@ -1,2 +1,2 @@
-var g_data = {"6":{"pr":"/test_NtnuTfe4171Lab2Fifo","ty":2,"dui":2,"dun":"work.test_NtnuTfe4171Lab2Fifo","cvgs":[{"h":["\\/test_NtnuTfe4171Lab2Fifo/cg_inst ",2,1,11,7],"cov":[11,7,72.22],"opts":{"goal":"100"}},{"h":["/test_NtnuTfe4171Lab2Fifo/cg",1,1,7],"cov":[11,7,72.22],"opts":{"goal":"100"}}]}};
+var g_data = {"6":{"pr":"/test_NtnuTfe4171Lab2Fifo","ty":2,"dui":2,"dun":"work.test_NtnuTfe4171Lab2Fifo","cvgs":[{"h":["\\/test_NtnuTfe4171Lab2Fifo/cg_inst ",2,1,11,7],"cov":[17,9,66.66],"opts":{"goal":"100"}},{"h":["/test_NtnuTfe4171Lab2Fifo/cg",1,1,7],"cov":[17,9,66.66],"opts":{"goal":"100"}}]}};
 processCovergroupsData(g_data);

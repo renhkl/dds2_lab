@@ -1,0 +1,2 @@
+var g_data = {"6":{"pr":"/test_NtnuTfe4171Lab2Fifo","ty":2,"dui":2,"dun":"work.test_NtnuTfe4171Lab2Fifo","asserts":[{"n":["empty_after_flush_assert"],"h":[0,1]},{"n":["not_full_after_flush_assert"],"h":[0,1]},{"n":["not_empty_after_write_assert"],"h":[0,1]},{"n":["cannot_read_empty_fifo_assert"],"h":[0,1]}],"ad":0}}
+processAssertionsData(g_data);

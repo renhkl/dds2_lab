@@ -20,7 +20,7 @@ this.q = q;
 endfunction
 */
 
-
+  
   task ta_queuePush(input logic [WIDTH-1:0] data);
     q.push_back(data);
   endtask
@@ -34,7 +34,6 @@ endfunction
     if (q.size() == 0) begin
       $display("[%0t] ERROR: Read with empty scoreboard!", $time);
       errorCount++;
-      $error;
       return;
     end
     expected = q.pop_front();

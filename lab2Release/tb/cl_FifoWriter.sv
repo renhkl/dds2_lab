@@ -6,23 +6,23 @@
 // =========================================
 // cl_FifoWriter : tasks take DUT signals as args
 // =========================================
-class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils; //extends cl_TbUtils(ta_flushFifo);
+class cl_FifoWriter #(parameter int WIDTH = 8) extends cl_TbUtils; //extends cl_TbUtils(ta_flushFifo);
   local virtual if_TbEvents.writer eif;
-  local virtual if_Fifo vif;
-  local cl_Scoreboard #(WIDTH) sb;
-  local cl_TbUtils    #(WIDTH) utils;
+  //local virtual if_Fifo #(WIDTH) vif;
+  //local cl_Scoreboard #(WIDTH) sb;
+  //local cl_TbUtils    #(WIDTH) utils;
 
   function new(
-
     cl_Scoreboard #(WIDTH)      sb,
     virtual if_TbEvents.writer  eif,
-    cl_TbUtils   #(WIDTH)       utils, 
+    //cl_TbUtils   #(WIDTH)       utils, 
     virtual if_Fifo vif
   );
-    this.sb    = sb;
-    this.eif   = eif;
-    this.utils = utils;
-    this.vif = vif;
+    super.new(vif, sb);
+    this.eif  = eif;
+    //this.vif  = vif;
+    //this.sb   = sb;
+    //this.utils = utils;
   endfunction
 
   // Single word write
@@ -68,7 +68,7 @@ class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils; //extends 
     for (int i = 0; i < n; i++) begin
       logic [WIDTH-1:0] data = (seed + i) & {WIDTH{1'b1}};
       //$display("ta_writeBurst: %t %t", wr_data, data);
-      $display("ta_writeBurst: n: %d seed: %d clk: %d vif.full: %d wr_en: %d", n, seed, vif.clk, vif.full, wr_en);
+      //$display("ta_writeBurst: n: %d seed: %d clk: %d vif.full: %d wr_en: %d", n, seed, vif.clk, vif.full, wr_en);
       ta_writeWord(vif.clk, vif.full, vif.wr_en, vif.wr_data, data);
       $display("ta_writeBurst finished");
     end
@@ -152,7 +152,7 @@ class cl_FifoWriter #(parameter int WIDTH = 8); //extends cl_TbUtils; //extends 
               $display ("%t : TX timeout detected %0d", $realtime, thisPacketIndex);
               errorCnt++;
               $error;
-              //ta_flushFifo(errorCnt);
+              ta_flushFifo(errorCnt);
             end : transmitPacketAndWaitForTimeout
 
             begin : waitForAckInTx

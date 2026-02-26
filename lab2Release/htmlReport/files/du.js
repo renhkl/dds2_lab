@@ -1,2 +1,2 @@
-var g_data = {"data":[{"n":"design.NtnuTfe4171Lab1Fifo","id":5,"zf":1,"tc":78.85,"s":100.00,"b":100.00,"fc":50.00,"fe":50.00,"t":94.28},{"n":"work.test_NtnuTfe4171Lab2Fifo","id":2,"zf":1,"tc":72.22,"g":72.22}]};
+var g_data = {"data":[{"n":"design.NtnuTfe4171Lab1Fifo","id":5,"zf":1,"tc":90.00,"s":100.00,"b":100.00,"fc":50.00,"fe":100.00,"t":100.00},{"n":"work.cl_Scoreboard_sv_unit","id":1,"zf":1,"tc":66.06,"s":80.00,"b":68.18,"fc":50.00},{"n":"work.if_Fifo","id":3,"zf":1,"tc":100.00,"t":100.00},{"n":"work.if_TbEvents","id":4,"zf":1,"tc":50.00,"t":50.00},{"n":"work.test_NtnuTfe4171Lab2Fifo","id":2,"zf":1,"tc":49.79,"s":76.92,"b":50.00,"fc":0.00,"t":5.18,"g":66.66,"a":100.00}]};
 processDuData(g_data);

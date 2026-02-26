@@ -1,22 +1,22 @@
-BEGIN 1:test_NtnuTfe4171Lab2Fifo:fast:work
-    utils :  1:test_NtnuTfe4171Lab2Fifo:fast:work
-    reader :  1:test_NtnuTfe4171Lab2Fifo:fast:work
-    writer :  1:test_NtnuTfe4171Lab2Fifo:fast:work
-    sb :  1:test_NtnuTfe4171Lab2Fifo:fast:work
-END 
 BEGIN 3:if_TbEvents:fast__2:work
     rxDone :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     tx :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     rxTrig :  1:test_NtnuTfe4171Lab2Fifo:fast:work
 END 
 BEGIN 3:if_Fifo:fast__3:work
+    rd_en :  1:test_NtnuTfe4171Lab2Fifo:fast:work
+    wr_data :  1:test_NtnuTfe4171Lab2Fifo:fast:work
+    wr_en :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     empty :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     arst :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     full :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     clk :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     rd_data :  1:test_NtnuTfe4171Lab2Fifo:fast:work
     flush :  1:test_NtnuTfe4171Lab2Fifo:fast:work
-    rd_en :  1:test_NtnuTfe4171Lab2Fifo:fast:work
-    wr_data :  1:test_NtnuTfe4171Lab2Fifo:fast:work
-    wr_en :  1:test_NtnuTfe4171Lab2Fifo:fast:work
+END 
+BEGIN 1:test_NtnuTfe4171Lab2Fifo:fast:work
+    reader :  1:test_NtnuTfe4171Lab2Fifo:fast:work
+    writer :  1:test_NtnuTfe4171Lab2Fifo:fast:work
+    sb :  1:test_NtnuTfe4171Lab2Fifo:fast:work
+    utils :  1:test_NtnuTfe4171Lab2Fifo:fast:work
 END 

@@ -58,6 +58,8 @@ vsim  -coverage \
       -L work -L design \
       -assertdebug \
       -suppress 13219 \
+      -suppress 13552 \
+      -suppress 3839 \
       -voptargs="+acc" \
       test_NtnuTfe4171Lab2Fifo \
      -l run_fifo.log \

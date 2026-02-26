@@ -69,12 +69,14 @@ vlog  -sv \
 
 
 vsim  -coverage \
-      -voptargs="+fcover=sbcfst" \
+      -voptargs="+cover=sbcfet. +fcover=sbcfet" \
       -c \
       -L work -L design \
       test_NtnuTfe4171Lab2Fifo \
       -suppress 13219 \
-      -do "coverage save -onexit -codeAll -cvg coverage.ucdb; run -all;  exit"
+      -suppress 13552 \
+      -suppress 3839 \
+      -do "coverage save -onexit -codeAll -assert -cvg coverage.ucdb; run -all;  exit"
 
 
 #nytt problem: no design loaded

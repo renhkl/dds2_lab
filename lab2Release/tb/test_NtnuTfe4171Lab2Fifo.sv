@@ -59,12 +59,14 @@ virtual if_Fifo vif;
 
   cl_Scoreboard #(WIDTH) sb     = new();
   cl_TbUtils    #(WIDTH) utils  = new(tb_if, sb);
-  cl_FifoWriter #(WIDTH) writer = new(sb, ev_if.writer, utils, tb_if.writer);
+  cl_FifoWriter #(WIDTH) writer = new(sb, ev_if.writer, //utils, 
+  tb_if.writer);
   cl_FifoReader #(WIDTH) reader = new(sb, ev_if.reader, tb_if.reader);
   
   
   int errorCnt = 0;
-
+  int randNum;
+  int randNum2;
 
   // Reset
   bit resetComplete;
@@ -119,7 +121,7 @@ not_full_after_flush_assert: assert property(not_full_after_flush_property) $dis
 
 
 property not_empty_after_write_property;
-  @(posedge tb_if.clk) disable iff (tb_if.arst) (tb_if.wr_en |=> !tb_if.empty);
+  @(posedge tb_if.clk) (tb_if.wr_en |=> !tb_if.empty);
 endproperty
 
  not_empty_after_write_assert: assert property(not_empty_after_write_property) $display("YES3");
@@ -129,11 +131,8 @@ endproperty
           //$fatal(1);
         end
 
-//cannot read empty fifo empty -> !rd_en
-//full -> !wr_en
-
 property cannot_read_empty_fifo_property;
-  @(posedge tb_if.clk) (tb_if.full |-> !tb_if.wr_en);
+  @(posedge tb_if.clk) (tb_if.empty |-> !tb_if.rd_en);
 endproperty
 
  cannot_read_empty_fifo_assert: assert property(cannot_read_empty_fifo_property) $display("YES4");
@@ -143,6 +142,25 @@ endproperty
           //$fatal(1);
         end
 
+
+//vacous passes
+/*
+property cannot_write_full_fifo_property;
+  @(posedge tb_if.clk) (tb_if.full |-> !tb_if.wr_en);
+endproperty
+
+ cannot_write_full_fifo_assert: assert property(cannot_write_full_fifo_property) $display("YES5");
+        else begin
+          $display("[%0t] ERROR5: a full FIFO cannot be written to", $time);
+          errorCnt = errorCnt + 1;
+          //$fatal(1);
+        end
+*/
+
+
+
+
+//returns errors
 /*
 property write_data_is_zero_if_write_enable_is_deasserted_property;
   @(posedge tb_if.clk) (!tb_if.wr_en |-> !tb_if.wr_data || tb_if.wr_data == 8'bx);
@@ -187,32 +205,38 @@ property empty_after_flush_antecedent_property;
   @(posedge tb_if.clk) (tb_if.flush);
 endproperty
 
-
 property not_full_after_flush_antecedent_property; 
   @(posedge tb_if.clk) (tb_if.flush);
 endproperty
 
 property not_empty_after_write_antecedent_property;
-  @(posedge tb_if.clk) (tb_if.rd_en);
+  @(posedge tb_if.clk) (tb_if.wr_en);
+endproperty
+
+property cannot_read_empty_fifo_antecedent_property;
+ @(posedge tb_if.clk) (tb_if.empty);
 endproperty
 
 cover property(empty_after_flush_antecedent_property) $display("empty_after_flush_property happens");
 cover property(not_full_after_flush_antecedent_property) $display("not_full_after_flush_property happens");
 cover property(not_empty_after_write_antecedent_property) $display("not_empty_after_write_property happens");
+cover property(cannot_read_empty_fifo_antecedent_property) $display("cannot_read_empty_fifo_property happens");
 
 
 //COVER GROUPS
 
 covergroup cg @(posedge tb_if.clk);
-        c1: coverpoint tb_if.wr_data { 
+        c1: coverpoint tb_if.wr_data  {  //iff(tb_if.wr_en)
           bins zeros = {'0};
           bins ones = {'1};
-          bins non_zeros = {[8'h01:8'hfe]}; //??
+          bins non_zeros = {[8'h01:8'hfe]}; 
+          bins xs = {'x};
+          bins zs = {'z};
         }
 
         c2: coverpoint tb_if.wr_en;
 
-        wr_en_X_wr_data: cross c1, c2; //??
+        wr_en_X_wr_data: cross c1, c2 ; //iff(tb_if.wr_en)
 
 endgroup: cg
 
@@ -241,6 +265,12 @@ cg cg_inst = new();
   const int      numWordsInPacket         = 27;
   const int      numCyclesToProcessPacket = 50;
   const realtime packetTimeoutVal         = 5.1us;
+
+
+initial begin
+    randNum = $random (100);
+    randNum2 = $random (50);
+  end
 
   initial begin
     tb_if.arst    = 0;
@@ -273,8 +303,10 @@ cg cg_inst = new();
     wait (resetComplete);
     #10;
 
+    reader.ta_readBurst(16, tb_if.empty, tb_if.rd_en, tb_if.rd_data, localErrCnt1);
+
     // 1) burst write partial packet (e.g. 16 bytes) then read back
-    writer.ta_writeBurst(16, 8'h10, tb_if.clk, tb_if.full, tb_if.wr_en, tb_if.wr_data);
+    writer.ta_writeBurst(16, randNum, tb_if.clk, tb_if.full, tb_if.wr_en, tb_if.wr_data);
     reader.ta_readBurst(16, tb_if.empty, tb_if.rd_en, tb_if.rd_data, localErrCnt1);
     errorCnt += localErrCnt1;
     #1; if (!tb_if.empty) begin $display("[%0t] ERROR: (1) FIFO should be empty after equal write/read", $time); errorCnt++; $error; end
@@ -282,8 +314,9 @@ cg cg_inst = new();
 
     // removing test-vector 2 to simplify Lab2 - can bring back for increased testing.
 
+
     // 2) Write near-full, then flush
-    writer.ta_writeBurst(DEPTH - 2, 8'h20, tb_if.clk, tb_if.full, tb_if.wr_en, tb_if.wr_data);
+    writer.ta_writeBurst(DEPTH - 2, randNum2, tb_if.clk, tb_if.full, tb_if.wr_en, tb_if.wr_data);
     if (tb_if.empty) begin $display("[%0t] ERROR: (2) FIFO should not be empty after writes", $time); errorCnt++; $error; end
     else $display("[%0t] SUCCESS: (2) FIFO data pushed and empty de-asserted\n", $time);
     utils.ta_flushFifo(errorCnt);
@@ -294,21 +327,22 @@ cg cg_inst = new();
     errorCnt += localErrCnt2;
 
     // removing test-vector 3 to simplify Lab2 - can bring back for increased testing.
-/*
+  
     // 3) Fill to full, then drain and compare
     writer.ta_writeBurst(DEPTH, 8'h40, tb_if.clk, tb_if.full, tb_if.wr_en, tb_if.wr_data);
     @(posedge tb_if.clk);
     if (!tb_if.full) begin
       $display("[%0t] WARNING: (3a) full is not asserted after DEPTH writes (check pointer/flag logic)", $time); end
     else        $display("[%0t] SUCCESS: (3a) FIFO filled and full asserted\n", $time);
-    reader.ta_readBurst(DEPTH, tb_if.clk, tb_if.empty, tb_if.rd_en, tb_if.rd_data, localErrCnt3);
+    reader.ta_readBurst(DEPTH, tb_if.empty, tb_if.rd_en, tb_if.rd_data, localErrCnt3);
     errorCnt += localErrCnt3;
     #1; 
     if (!tb_if.empty) begin 
       $display("[%0t] ERROR: (3b) FIFO should be empty after draining", $time); errorCnt++; $error; end
     else              $display("[%0t] SUCCESS: (3b) FIFO emptied after filling and empty asserted\n", $time);
     utils.ta_flushFifo(errorCnt);
-*/
+    
+
     // 4) Interleaved traffic: keep existing TX/RX orchestrators
     //    read/write (same-cycle ops) to exercise FIFO data integrity
     //    Write 27 bytes while reading in parallel after some delay
