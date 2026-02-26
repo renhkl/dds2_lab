@@ -37,6 +37,7 @@ parameter TXBUFF_ADDRESS = 8'h1;
 parameter RXSC_ADDRESS = 8'h2;
 parameter RXBUFF_ADDRESS = 8'h3;
 parameter RXLEN_ADDRESS = 8'h4;
+int successCounter = 0;
 
   // VerifyAbortReceive should verify correct value in the Rx status/control
   // register, and that the Rx data buffer is zero after abort.
@@ -44,7 +45,7 @@ parameter RXLEN_ADDRESS = 8'h4;
     logic [7:0] ReadData;
     logic [7:0] RxLen; //had to be defined here and not later
   
-    // INSERT CODE HERE
+
     $display("-------- ABORT RECEIVE --------");
      
     //checking rxsc values
@@ -61,8 +62,12 @@ parameter RXLEN_ADDRESS = 8'h4;
     for (int i = 0; i < Size; i++) begin
       //@(posedge uin_hdlc.Clk);
       ReadAddress(RXBUFF_ADDRESS, ReadData); //ReadData is zero, while data[i] is not
-      assert(!ReadData) $display("SUCCESS: Data is zero"); else $display("FAIL: Data is not zero (%d)", ReadData);
+      assert(!ReadData) successCounter++; //$display("SUCCESS: Data is zero"); 
+      else $display("FAIL: Data is not zero (%d)", ReadData);
     end
+
+    $display("SUCCESS: Data is zero, number of times: %d", successCounter);
+    successCounter = 0; 
 
   endtask
 
@@ -73,7 +78,7 @@ parameter RXLEN_ADDRESS = 8'h4;
     logic [7:0] RxLen;
     wait(uin_hdlc.Rx_Ready);
 
-    // INSERT CODE HERE
+
     $display("-------- NORMAL RECEIVE --------");
 
     //checking rxsc values
@@ -91,8 +96,12 @@ parameter RXLEN_ADDRESS = 8'h4;
       //@(posedge uin_hdlc.Clk);
       ReadAddress(RXBUFF_ADDRESS, ReadData);
       //comparing data in function argument and in rx buffer
-      assert(data[i] == ReadData) $display("SUCCESS: Data is matching"); else $display("FAIL: %d != %d", ReadData, data[i]);
+      assert(data[i] == ReadData) successCounter++; //$display("SUCCESS: Data is matching"); 
+      else $display("FAIL: %d != %d", ReadData, data[i]);
     end
+    
+    $display("SUCCESS: Data is matching, number of times:%d", successCounter);
+    successCounter = 0;
 
   endtask
 
@@ -103,7 +112,7 @@ parameter RXLEN_ADDRESS = 8'h4;
     logic [7:0] RxLen;
     wait(uin_hdlc.Rx_Ready);
 
-    // INSERT CODE HERE
+
     $display("-------- OVERFLOW RECEIVE --------");
     
     //checking rxsc values
@@ -121,8 +130,12 @@ parameter RXLEN_ADDRESS = 8'h4;
       //@(posedge uin_hdlc.Clk);
       ReadAddress(RXBUFF_ADDRESS, ReadData);
       //comparing data in function argument and in rx buffer
-      assert(data[i] == ReadData) $display("SUCCESS: Data is matching"); else $display("FAIL: %d != %d", ReadData, data[i]);
+      assert(data[i] == ReadData) successCounter++; //$display("SUCCESS: Data is matching");  
+      else $display("FAIL: %d != %d", ReadData, data[i]);
     end
+
+    $display("SUCCESS: Data is matching, number of times: %d", successCounter);
+    successCounter = 0;
   
   endtask
 
