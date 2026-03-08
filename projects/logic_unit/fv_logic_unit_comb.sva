@@ -1,0 +1,33 @@
+// @lang=sva, @ts=4
+
+// -------------------------------------------------
+// Copyright(c) LUBIS EDA GmbH, All rights reserved
+// Contact: contact@lubis-eda.com
+// -------------------------------------------------
+
+`default_nettype none
+
+module fv_logic_unit_comb #(
+    parameter WIDTH = 16
+)(
+    // Inputs
+    input [(WIDTH-1):0] req_vec,
+    // Outputs
+    input logic out,
+    // Valid signals
+    input logic valid,
+    // Ready signals
+    input logic done
+);
+
+
+endmodule
+
+bind logic_unit_comb fv_logic_unit_comb #(
+    .WIDTH(WIDTH)
+) fv_logic_unit_comb_i (
+    .req_vec(req_vec),
+    .out(out),
+    .valid(valid),
+    .done(done)
+);

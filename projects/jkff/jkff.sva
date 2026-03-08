@@ -1,0 +1,56 @@
+// @lang=sva @ts=2
+
+module jkff_property_suite(clk, j_i, k_i, q_o);
+
+input logic clk;
+input logic j_i, k_i;
+input logic q_o;
+
+// sequence definitions
+  sequence jkff_inputs_not_changed;
+    !j_i && !k_i;
+  endsequence
+
+  sequence jkff_inputs_cleared;
+    !j_i && k_i;
+  endsequence
+
+  sequence jkff_inputs_set;
+    j_i && !k_i;
+  endsequence
+
+  sequence jkff_inputs_toggled;
+    j_i && k_i;
+  endsequence
+
+// property definitions
+property jkff_output_not_changed;
+ jkff_inputs_not_changed |-> ##1 q_o == $past(q_o, 1);
+endproperty
+
+ property jkff_output_cleared;
+jkff_inputs_cleared |-> ##1 !q_o;
+ endproperty
+
+ property jkff_output_set;
+jkff_inputs_set |-> ##1 q_o;
+ endproperty
+
+ property jkff_output_toggled;
+ jkff_inputs_toggled |-> ##1 q_o != $past(q_o, 1);
+ endproperty
+
+// make assertion on properties to be checked
+jkff_behaviour_not_changed: assert property(@(posedge clk) jkff_output_not_changed);
+jkff_behaviour_cleared: assert property(@(posedge clk) jkff_output_cleared);
+jkff_behaviour_set: assert property(@(posedge clk) jkff_output_set);
+jkff_behaviour_toggled: assert property(@(posedge clk) jkff_output_toggled);
+
+
+
+
+endmodule
+
+// bind the verification IP to the design
+
+bind jkff jkff_property_suite inst_jkff_property_suite(.*);

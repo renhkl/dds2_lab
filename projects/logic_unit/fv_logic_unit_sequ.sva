@@ -1,0 +1,40 @@
+// @lang=sva, @ts=4
+
+// -------------------------------------------------
+// Copyright(c) LUBIS EDA GmbH, All rights reserved
+// Contact: contact@lubis-eda.com
+// -------------------------------------------------
+
+`default_nettype none
+
+module fv_logic_unit_sequ #(
+    parameter WIDTH = 16
+)(
+    input logic         rst,
+    input logic         clk,
+    // Inputs
+    input [(WIDTH-1):0] req_vec,
+    // Outputs
+    input logic         out,
+    // Valid signals
+    input logic         valid,
+    // Ready signals
+    input logic         done
+);
+
+    // Define for every property the clock
+    default clocking default_clk @(posedge clk); endclocking
+
+
+endmodule
+
+bind logic_unit_sequ fv_logic_unit_sequ #(
+    .WIDTH(WIDTH)
+) fv_logic_unit_seq_i (
+    .rst(rst),
+    .clk(clk),
+    .req_vec(req_vec),
+    .out(out),
+    .valid(valid),
+    .done(done)
+);
