@@ -5,7 +5,7 @@
 // Contact: contact@lubis-eda.com
 // -------------------------------------------------
 
-`default_nettype none
+//`default_nettype none //or wire, but wire is default
 
 module fv_logic_unit_comb #(
     parameter WIDTH = 16
@@ -20,6 +20,22 @@ module fv_logic_unit_comb #(
     input logic done
 );
 
+property comb_verify_computation;
+ valid && out == 
+//(req_vec[0] || req_vec[1] || req_vec[2] || req_vec[3] || req_vec[4] || req_vec[5] || req_vec[6] || req_vec[7] ||
+//req_vec[8] || req_vec[9] || req_vec[10] || req_vec[11] ||req_vec[12] || req_vec[13] || req_vec[WIDTH-2]) && req_vec[WIDTH-1] 
+|req_vec[14:1] && req_vec[WIDTH-1]
+|-> done; //if no valid, the answer gets wrong
+endproperty
+
+//|req_vec[14:1] && req_vec[WIDTH-1]
+
+property comb_done_low;
+!valid |-> !done; //they are always eqvivalent
+endproperty
+
+a_comb_verify_computation: assert property (comb_verify_computation);
+a_comb_done_low: assert property (comb_done_low);
 
 endmodule
 

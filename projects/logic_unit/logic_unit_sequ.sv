@@ -5,6 +5,7 @@
 
 `default_nettype none
 
+
 module logic_unit_sequ #(
     parameter    WIDTH = 16
 )(

@@ -5,7 +5,7 @@
 // Contact: contact@lubis-eda.com
 // -------------------------------------------------
 
-`default_nettype none
+`default_nettype wire
 
 module fv_logic_unit_sequ #(
     parameter WIDTH = 16
@@ -25,6 +25,31 @@ module fv_logic_unit_sequ #(
     // Define for every property the clock
     default clocking default_clk @(posedge clk); endclocking
 
+property sequ_verify_reset;
+rst |=> !out && done; //this holds true for 0, 1 and 2 cycles
+endproperty
+
+property sequ_verify_computation;
+//valid && done |=> ##(WIDTH-3) !done; //-1 -2 and -3 is all wrong
+//valid && done |=> ##(WIDTH) !done; //wrong
+valid && done |-> ##(WIDTH+1) done; //but this is right 17
+//valid && done |-> ##(WIDTH) !done; //this is wrong
+endproperty
+//out = out = ...
+
+property sequ_done_low;
+valid && done ##1 done |-> ##1 !done[*(WIDTH-2)] ##1 done; //17
+//valid && done ##1 done; //exists
+//valid && done ##1 done |->  ##1 !done[*15] ##1 done; //18 sykluser og kan ikke være done og !done samtidig. men 14 !done's finnes ikke
+//valid && done |-> ##1 done ##1 !done[*15] ##1 done;
+//valid && done |-> ##1 !done[*15] ##1 done; // |-> !done[*16];
+//!done[*15]; !done[*14] //both these can happen
+endproperty
+//becomes unreachable pga den rhs ikke skjer??
+
+a_sequ_verify_reset: assert property (@(posedge clk)  sequ_verify_reset);
+a_sequ_verify_computation: assert property (@(posedge clk) disable iff (rst) sequ_verify_computation);
+a_sequ_done_low: assert property (@(posedge clk) disable iff (rst) sequ_done_low);
 
 endmodule
 
