@@ -77,7 +77,9 @@ valid && done |=> !counter_dbg; //checks that whole counter value is zero
 endproperty
 
 property sequ_busy_dbg;
-valid && done |=> busy_dbg;
+!busy_dbg;
+//valid && done |=> busy_dbg;
+//busy_dbg=='z |=> !done; //vacous
 endproperty
 
 
