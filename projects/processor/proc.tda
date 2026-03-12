@@ -43,6 +43,179 @@ parameter c_OR      = 3'b010;
 
 `begin_tda(ops)
 
+property or_imm;
+logic [2:0] rs1;
+logic [2:0] rd;
+logic [5:0] imm;
+logic [7:0] content_rs1;
+
+t ##0 set_freeze(rs1, instrIn[11:9]) and
+t ##0 set_freeze(rd, instrIn[ 8:6]) and
+t ##0 set_freeze(imm, instrIn[ 5:0]) and
+t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
+
+t ##0 CONTROL_STATE == c_IF and
+t ##0 instrIn[15:12] == c_OR_IMM
+
+implies
+
+t ##1 CONTROL_STATE == c_ID and
+t ##0 rs1 != 3'b000 and
+t ##0 rd != 3'b000 and
+t ##5 REG_FILE[rd] == (REG_FILE[rs1] | {2'b00, imm}) and
+t ##2 CONTROL_STATE == c_EX;
+
+
+endproperty
+
+property add_imm;
+logic [2:0] rs1;
+logic [2:0] rd;
+logic [5:0] imm;
+logic [7:0] content_rs1;
+
+t ##0 set_freeze(rs1, instrIn[11:9]) and
+t ##0 set_freeze(rd, instrIn[ 8:6]) and
+t ##0 set_freeze(imm, instrIn[ 5:0]) and
+t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
+
+t ##0 CONTROL_STATE == c_IF and
+t ##0 instrIn[15:12] == c_ADD_IMM
+
+
+implies
+
+t ##1 CONTROL_STATE == c_ID and
+t ##0 rs1 != 3'b000 and
+t ##0 rd != 3'b000 and
+t ##5 REG_FILE[rd] == (REG_FILE[rs1] + {2'b00, imm}) and
+t ##2 CONTROL_STATE == c_EX;
+
+endproperty
+
+
+
+
+property or_reg;
+
+logic [2:0] rs1;
+logic [2:0] rs2;
+logic [2:0] rd;
+logic [7:0] content_rs1;
+logic [7:0] content_rs2;
+
+t ##0 set_freeze(rs1, instrIn[11:9]) and
+t ##0 set_freeze(rs2, instrIn[8:6]) and
+t ##0 set_freeze(rd, instrIn[ 5:3]) and
+t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
+t ##0 set_freeze(content_rs2, REG_FILE[rs2]) and
+
+t ##0 CONTROL_STATE == c_IF and
+t ##0 instrIn[2:0] == c_OR and
+t ##0 instrIn[15:12] == c_ALU_REG
+
+
+
+implies
+
+t ##1 CONTROL_STATE == c_ID and
+t ##0 rs1 != 3'b000 and
+t ##0 rs2 != 3'b000 and
+t ##0 rd != 3'b000 and
+t ##5 REG_FILE[rd] == (REG_FILE[rs1] | REG_FILE[rs2]) and
+t ##2 CONTROL_STATE == c_EX;
+
+endproperty
+
+property add_reg;
+logic [2:0] rs1;
+logic [2:0] rs2;
+logic [2:0] rd;
+logic [7:0] content_rs1;
+
+t ##0 set_freeze(rs1, instrIn[11:9]) and
+t ##0 set_freeze(rs2, instrIn[ 8:6]) and
+t ##0 set_freeze(rd, instrIn[ 5:3]) and
+t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
+
+t ##0 CONTROL_STATE == c_IF and
+t ##0 instrIn[2:0] == c_ADD and
+t ##0 rs1 != 3'b000 and
+t ##0 rs2 != 3'b000 and
+t ##0 rd != 3'b000 and
+t ##5 REG_FILE[rd] == (REG_FILE[rs1] + REG_FILE[rs2]) and
+t ##0 instrIn[15:12] == c_ALU_REG
+
+
+
+implies
+
+t ##1 CONTROL_STATE == c_ID and
+t ##2 CONTROL_STATE == c_EX;
+
+endproperty
+
+property load;
+logic [2:0] rs1;
+logic [2:0] rd;
+logic [5:0] imm;
+logic [7:0] content_rs1;
+
+t ##0 set_freeze(rs1, instrIn[11:9]) and
+t ##0 set_freeze(rd, instrIn[ 8:6]) and
+t ##0 set_freeze(imm, instrIn[ 5:0]) and
+t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
+
+t ##0 CONTROL_STATE == c_IF and
+t ##0 instrIn[15:12] == c_LOAD
+
+
+implies
+
+t ##1 CONTROL_STATE == c_ID and
+t ##0 rs1 != 3'b000 and
+t ##0 rd != 3'b000 and
+t ##5 REG_FILE[rd] == (REG_FILE[rs1] + {2'b00, imm}) and
+t ##2 CONTROL_STATE == c_EX;
+
+endproperty
+
+property store;
+logic [2:0] rs1;
+logic [2:0] rs2;
+logic [5:0] imm;
+logic [7:0] content_rs1;
+
+t ##0 set_freeze(rs1, instrIn[11:9]) and
+t ##0 set_freeze(rs2, instrIn[ 8:6]) and
+t ##0 set_freeze(rd, instrIn[ 5:3]) and
+t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
+
+t ##0 CONTROL_STATE == c_IF and
+t ##0 instrIn[2:0] == c_ADD and
+t ##0 rs1 != 3'b000 and
+t ##0 rs2 != 3'b000 and
+t ##0 rd != 3'b000 and
+t ##5 REG_FILE[rd] == (REG_FILE[rs1] + REG_FILE[rs2]) and
+t ##0 instrIn[15:12] == c_ALU_REG
+
+
+
+implies
+
+t ##1 CONTROL_STATE == c_ID and
+t ##2 CONTROL_STATE == c_EX;
+
+endproperty
+
+a_or_imm: assert property(@(posedge clk) disable iff (reset==1) or_imm);
+
+a_add_imm: assert property(@(posedge clk) disable iff (reset==1) add_imm);
+
+a_or_reg: assert property(@(posedge clk) disable iff (reset==1) or_reg);
+
+a_add_reg: assert property(@(posedge clk) disable iff (reset==1) add_reg);
+
 // sequence definition for TiDAL property
 
 // your operational properties
@@ -51,6 +224,9 @@ parameter c_OR      = 3'b010;
 
 `end_tda
 
+
 endmodule
 
 // your bind statement
+
+bind proc proc_property_suite inst_proc_property_suite(.*);

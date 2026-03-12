@@ -5,7 +5,7 @@
 // Contact: contact@lubis-eda.com
 // -------------------------------------------------
 
-`default_nettype wire
+`default_nettype none
 
 module fv_logic_unit_sequ #(
     parameter WIDTH = 16
@@ -14,11 +14,12 @@ module fv_logic_unit_sequ #(
     input logic         clk,
     // Inputs
     input [(WIDTH-1):0] req_vec,
-    // Outputs
-    input logic         out,
-    // Valid signals
+	// Valid signals
     input logic         valid,
+  
+	// Outputs
     // Ready signals
+	input logic         out,
     input logic         done
 );
 
@@ -30,20 +31,36 @@ rst |=> !out && done; //this holds true for 0, 1 and 2 cycles
 endproperty
 
 property sequ_verify_computation;
-//valid && done |=> ##(WIDTH-3) !done; //-1 -2 and -3 is all wrong
-//valid && done |=> ##(WIDTH) !done; //wrong
-valid && done |-> ##(WIDTH+1) done; //but this is right 17
+valid && done |=>  //##(WIDTH+1) done; //but this is right 17
+//out == req_vec[0];
+!out[*15] ##1 !out && (out == |req_vec[14:0] & req_vec[WIDTH-1]) ##1 done; //den får ingen middelverdi da
+/*out == out | req_vec[1] ##1
+out == out | req_vec[2] ##1
+out == out | req_vec[3] ##1
+out == out | req_vec[4] ##1
+out == out | req_vec[5] ##1
+out == out | req_vec[6] ##1
+out == out | req_vec[7] ##1
+out == out| req_vec[8] ##1
+out == out  | req_vec[9] ##1
+out == out | req_vec[10] ##1
+out == out | req_vec[11] ##1
+out == out | req_vec[12] ##1
+out == out| req_vec[13] ##1
+out == out | req_vec[14] ##1
+out == out & req_vec[15] && done;*/
 //valid && done |-> ##(WIDTH) !done; //this is wrong
 endproperty
 //out = out = ...
 
 property sequ_done_low;
-valid && done ##1 done |-> ##1 !done[*(WIDTH-2)] ##1 done; //17
-//valid && done ##1 done; //exists
-//valid && done ##1 done |->  ##1 !done[*15] ##1 done; //18 sykluser og kan ikke være done og !done samtidig. men 14 !done's finnes ikke
-//valid && done |-> ##1 done ##1 !done[*15] ##1 done;
-//valid && done |-> ##1 !done[*15] ##1 done; // |-> !done[*16];
-//!done[*15]; !done[*14] //both these can happen
+//valid && done |-> ##(WIDTH+1) done; //17
+valid && done |=> !done[*15];// den funker også ##1 done; //18 sykluser 
+//both of these are right at the same time???
+
+
+// !done[*(WIDTH-2)] ##1 done; ##1 !done[15] !done[14] //17
+//18 sykluser og kan ikke v?re done og !done samtidig. men 14 !done's finnes ikke
 endproperty
 //becomes unreachable pga den rhs ikke skjer??
 

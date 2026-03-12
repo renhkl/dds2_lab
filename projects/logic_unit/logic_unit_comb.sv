@@ -23,7 +23,7 @@ module logic_unit_comb #(
         end
     end
 
-    assign out = or_result | req_vec[WIDTH-1];
+    assign out = or_result & req_vec[WIDTH-1];
     assign done = valid;
 
 endmodule
