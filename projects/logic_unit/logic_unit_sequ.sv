@@ -14,7 +14,9 @@ module logic_unit_sequ #(
     input  logic [WIDTH-1:0] req_vec,
     input  logic             valid,
     output logic             out,
-    output logic             done
+    output logic             done,
+output logic  [WIDTH-1:0] counter_dbg,
+output logic busy_dbg
 );
 
     //////////////////////
@@ -34,34 +36,39 @@ module logic_unit_sequ #(
             busy          <= 1'b0;
             req_vec_reg   <= WIDTH'(0);
             counter       <= WIDTH'(0);
-            or_result_reg <= (WIDTH-1)'(0);
+            or_result_reg <= 1'b0; //(WIDTH-1)'(0);
         end else begin //if not reset
             if (valid && done_reg) begin
                 busy     <= 1'b1;
-                req_vec_reg   <= req_vec;
-                or_result_reg <= (WIDTH-1)'(0);
+                req_vec_reg   <= WIDTH'(req_vec); //legge til widht
+                or_result_reg <= 1'b0; //remove width-1'0
                 done_reg      <= 1'b0; //done should not be set high here
-		        //counter       <= WIDTH'(0); //reset counter on new computation
+		counter       <= WIDTH'(0); //reset counter on new computation
             end
 
             if (busy) begin
+		//for (int i = 0; i < WIDTH; i++) begin //for loop
                 if (counter < (WIDTH-1)) begin
                     or_result_reg <= or_result_reg || req_vec_reg[counter];
-		            out_reg <= or_result_reg || req_vec_reg[counter]; //make temp value available
+		    out_reg <= or_result_reg || req_vec_reg[counter]; //make temp value available
                     counter <= counter + WIDTH'(1);
+                    
                 end else if (counter == (WIDTH-1)) begin
                     out_reg <= req_vec_reg[(WIDTH-1)] && or_result_reg;
                     done_reg <= 1'b1;
+                    busy <= 1'b0; //moved
                 end
-                if (counter == (WIDTH-1)) begin
-                    busy <= 1'b0;
-                end else begin
-                    out_reg  <= 1'b0;
-                    done_reg <= 1'b0;
-                end
-            end else begin //not busy
-                out_reg <= 1'b0;
-		    end
+                //if (counter == (WIDTH-1)) begin
+                    //busy <= 1'b0; //deleted
+                //end else begin //nothing will come here
+                  //  out_reg  <= 1'b0;
+                   // done_reg <= 1'b0; 
+                end //end of busy
+		//end //for loop
+            //end else begin //not busy
+              //  out_reg <= 1'b0; //deleted
+	//	done_reg <= 1'b0; //moved
+	//	    end
         end //end of not rst
 
 
@@ -69,6 +76,10 @@ module logic_unit_sequ #(
     
     assign out = out_reg;
     assign done = done_reg;
-   
+
+	//getting access to internal signals
+	assign counter_dbg = counter;
+	assign busy_dbg = busy;
+
 
 endmodule

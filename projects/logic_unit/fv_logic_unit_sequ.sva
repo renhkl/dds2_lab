@@ -20,7 +20,9 @@ module fv_logic_unit_sequ #(
 	// Outputs
     // Ready signals
 	input logic         out,
-    input logic         done
+    input logic         done,
+input logic counter_dbg,
+input logic busy_dbg
 );
 
     // Define for every property the clock
@@ -31,31 +33,36 @@ rst |=> !out && done; //this holds true for 0, 1 and 2 cycles
 endproperty
 
 property sequ_verify_computation;
-valid && done |=>  //##(WIDTH+1) done; //but this is right 17
-//out == req_vec[0];
-!out[*15] ##1 !out && (out == |req_vec[14:0] & req_vec[WIDTH-1]) ##1 done; //den får ingen middelverdi da
-/*out == out | req_vec[1] ##1
-out == out | req_vec[2] ##1
-out == out | req_vec[3] ##1
-out == out | req_vec[4] ##1
-out == out | req_vec[5] ##1
-out == out | req_vec[6] ##1
-out == out | req_vec[7] ##1
-out == out| req_vec[8] ##1
-out == out  | req_vec[9] ##1
-out == out | req_vec[10] ##1
-out == out | req_vec[11] ##1
-out == out | req_vec[12] ##1
-out == out| req_vec[13] ##1
-out == out | req_vec[14] ##1
-out == out & req_vec[15] && done;*/
-//valid && done |-> ##(WIDTH) !done; //this is wrong
+valid && done |=> //##1 //##(WIDTH+1) done; //but this is right 17
+//!out[*WIDTH-2] ##1 (out == |req_vec[WIDTH:0] & req_vec[WIDTH-1]) && done; //den f?r ingen middelverdi da
+//out == 1;// ##1
+
+!out[*WIDTH-1] ##1 (out == |req_vec[WIDTH:0] & req_vec[WIDTH-1]) && done; //R
+/* //R
+out == req_vec[0] ##1
+out == (out | req_vec[1]) ##1
+out == (out | req_vec[2]) ##1
+out == (out | req_vec[3]) ##1
+out == (out | req_vec[4]) ##1
+out == (out | req_vec[5]) ##1
+out == (out | req_vec[6]) ##1
+out == (out | req_vec[7]) ##1
+out == (out | req_vec[8]) ##1
+out == (out | req_vec[9]) ##1
+out == (out | req_vec[10]) ##1
+out == (out | req_vec[11]) ##1
+out == (out | req_vec[12]) ##1
+out == (out | req_vec[13]) ##1
+out == (out | req_vec[14]) ##1
+out == (out & req_vec[15]) && done;*/
 endproperty
 //out = out = ...
 
 property sequ_done_low;
 //valid && done |-> ##(WIDTH+1) done; //17
-valid && done |=> !done[*15];// den funker også ##1 done; //18 sykluser 
+//valid && done |-> !counter_reg;
+valid && done |=> !done[*(WIDTH-1)] ##1 done; //R
+//valid && done |=> !done[*WIDTH] ##1 done;// den funker ogs? ##1 done; //18 sykluser 
 //both of these are right at the same time???
 
 
@@ -64,9 +71,21 @@ valid && done |=> !done[*15];// den funker også ##1 done; //18 sykluser
 endproperty
 //becomes unreachable pga den rhs ikke skjer??
 
+
+property sequ_counter_dbg;
+valid && done |=> !counter_dbg; //checks that whole counter value is zero
+endproperty
+
+property sequ_busy_dbg;
+valid && done |=> busy_dbg;
+endproperty
+
+
 a_sequ_verify_reset: assert property (@(posedge clk)  sequ_verify_reset);
 a_sequ_verify_computation: assert property (@(posedge clk) disable iff (rst) sequ_verify_computation);
 a_sequ_done_low: assert property (@(posedge clk) disable iff (rst) sequ_done_low);
+a_sequ_counter_dbg: assert property (@(posedge clk) disable iff (rst) sequ_counter_dbg);
+a_sequ_busy_dbg: assert property (@(posedge clk) disable iff (rst) sequ_busy_dbg);
 
 endmodule
 
