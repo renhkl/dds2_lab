@@ -21,9 +21,11 @@ module fv_logic_unit_sequ #(
     // Ready signals
 	input logic         out,
     input logic         done,
-input logic [(WIDTH-1):0] counter_dbg,
-input logic busy_dbg,
-input logic or_result_dbg
+
+	//debug signals
+	input logic [(WIDTH-1):0] counter_dbg,
+	input logic busy_dbg,
+	input logic or_result_dbg
 );
 
     // Define for every property the clock
@@ -34,18 +36,12 @@ rst |=> !out && done; //this holds true for 0, 1 and 2 cycles
 endproperty
 
 
-//out is always zero
+
+
+
 property sequ_verify_computation;
-valid && done |=> //##16 !done ##1 (out == |req_vec[(WIDTH-2):0] & req_vec[(WIDTH-1)]);
-//done && (out == |req_vec[WIDTH-2:0] & req_vec[WIDTH-1]) ;
-//valid && done |=> !done[*(WIDTH-1)] ##1 done && (out == |req_vec[WIDTH:0] & req_vec[WIDTH-1]);
-//valid && done |=>  req_vec[0]  //#;#(WIDTH+1) done; //but this is right 17
-!out[*WIDTH-1] ##1 done; //(out == |req_vec[WIDTH:0] & req_vec[WIDTH-1]) && done; //den f?r ingen middelverdi da
-//(out == (req_vec[0] || req_vec[1]));// ##1
-//out == (req_vec[0]);
-//!out[*WIDTH-1]; //##1 (out == |req_vec[WIDTH:0] & req_vec[WIDTH-1]) && done; //R
- //R
-/*out == req_vec[0] ##1
+valid && done ##1
+out == req_vec[0] ##1 
 out == ($past(out) | req_vec[1]) ##1
 out == ($past(out) | req_vec[2]) ##1
 out == ($past(out) | req_vec[3]) ##1
@@ -60,11 +56,49 @@ out == ($past(out) | req_vec[11]) ##1
 out == ($past(out) | req_vec[12]) ##1
 out == ($past(out) | req_vec[13]) ##1
 out == ($past(out) | req_vec[14]) |=>
-out == ($past(out) & req_vec[15]);*/
+out == ($past(out) & req_vec[15]) && done;
+endproperty
+
+
+//valid && done |=> !done[*(WIDTH-1)] ##1 done && (out == $past(|req_vec[WIDTH-2:0] & req_vec[WIDTH-1], WIDTH+2));
+//valid && done |-> //##16 !done ##1 (out == |req_vec[(WIDTH-2):0] & req_vec[(WIDTH-1)]);
+//done && (out == |req_vec[WIDTH-2:0] & req_vec[WIDTH-1]) ;
+//valid && done |=> !done[*(WIDTH-1)] ##1 done && (out == |req_vec[WIDTH:0] & req_vec[WIDTH-1]);
+//valid && done |-> (out == req_vec[0]);  //#;#(WIDTH+1) done; //but this is right 17
+//!out[*WIDTH-1] ##1 done; //(out == |req_vec[WIDTH:0] & req_vec[WIDTH-1]) && done; //den f?r ingen middelverdi da
+
+//!out[*WIDTH-1]; //##1 (out == |req_vec[WIDTH:0] & req_vec[WIDTH-1]) && done; //R for no partial/out value
 //out == |req_vec[14:0] & req_vec[15]; //this is wrong
 //out == ($past(out) & req_vec[15]) // done doesnt work;
+
+//answers from studass
+//##(WIDTH+1) (out == ((|$past(req_vec[WIDTH-2:0], WIDTH+1)) & $past(req_vec[WIDTH-1], WIDTH+1)) && done);
+//tidligere req_vec p? beginning [14:0] & tidligere req_vec[15] i beginning samtidig som done. 
+
+//req_vec's values in the past, because it changes continously
+//done && valid |=> ##(WIDTH) done ##0 out == $past(|req_vec[(WIDTH-2):0] && req_vec[WIDTH-1], WIDTH+1);
+
+
+property sequ_verify_computation_past;
+valid && done ##1
+out == $past(req_vec[0]) ##1
+out == ($past(out) | $past((req_vec[1]), 2)) ##1
+out == ($past(out) | $past((req_vec[2]), 3)) ##1
+out == ($past(out) | $past((req_vec[3]), 4)) ##1
+out == ($past(out) | $past((req_vec[4]), 5)) ##1
+out == ($past(out) | $past((req_vec[5]), 6)) ##1
+out == ($past(out) | $past((req_vec[6]), 7)) ##1
+out == ($past(out) | $past((req_vec[7]), 8)) ##1
+out == ($past(out) | $past((req_vec[8]), 9)) ##1
+out == ($past(out) | $past((req_vec[9]), 10)) ##1
+out == ($past(out) | $past((req_vec[10]), 11)) ##1
+out == ($past(out) | $past((req_vec[11]), 12)) ##1
+out == ($past(out) | $past((req_vec[12]), 13)) ##1
+out == ($past(out) | $past((req_vec[13]), 14)) ##1
+out == ($past(out) | $past((req_vec[14]), 15)) |=>
+done && out == ($past(out) & $past((req_vec[15]), 16));
 endproperty
-//out = out = ...
+
 
 property sequ_done_low;
 //valid && done |-> ##(WIDTH+1) done; //17
@@ -79,7 +113,9 @@ valid && done |=> !done[*(WIDTH-1)] ##1 done; //R, 17
 endproperty
 //becomes unreachable pga den rhs ikke skjer??
 
-//bytte slik at counter starter på 1 og gjør om or_result til req_vec[0]
+//bytte slik at counter starter p? 1 og gj?r om or_result til req_vec[0]
+
+
 property sequ_counter_dbg;
 valid && done |=> counter_dbg ##1 counter_dbg==2  ##1 counter_dbg==3 ##(WIDTH-2) counter_dbg; //checks that whole counter value is zero, 17
 //valid && done |=> !counter_dbg ##1 counter_dbg==1 ##1 counter_dbg==2 ##15 !counter_dbg; //checks that whole counter value is zero, 18
@@ -97,12 +133,14 @@ property sequ_or_result_dbg;
 valid && done |=> or_result_dbg == 0;
 endproperty
 
+
 a_sequ_verify_reset: assert property (@(posedge clk)  sequ_verify_reset);
 a_sequ_verify_computation: assert property (@(posedge clk) disable iff (rst) sequ_verify_computation);
+a_sequ_verify_computation_past: assert property (@(posedge clk) disable iff (rst) sequ_verify_computation_past);
 a_sequ_done_low: assert property (@(posedge clk) disable iff (rst) sequ_done_low);
 a_sequ_counter_dbg: assert property (@(posedge clk) disable iff (rst) sequ_counter_dbg);
 a_sequ_busy_dbg: assert property (@(posedge clk) disable iff (rst) sequ_busy_dbg);
-a_sequ_or_result_dbg: assert property (@(posedge clk) disable iff (rst) or_result_dbg);
+//a_sequ_or_result_dbg: assert property (@(posedge clk) disable iff (rst) or_result_dbg);
 
 endmodule
 
@@ -115,6 +153,7 @@ bind logic_unit_sequ fv_logic_unit_sequ #(
     .out(out),
     .valid(valid),
     .done(done),
+	//debug signals
     .counter_dbg(counter_dbg),
     .busy_dbg(busy_dbg),
     .or_result_dbg(or_result_dbg)

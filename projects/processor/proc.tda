@@ -49,20 +49,24 @@ logic [2:0] rd;
 logic [5:0] imm;
 logic [7:0] content_rs1;
 
+
 t ##0 set_freeze(rs1, instrIn[11:9]) and
 t ##0 set_freeze(rd, instrIn[ 8:6]) and
 t ##0 set_freeze(imm, instrIn[ 5:0]) and
 t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
 
 t ##0 CONTROL_STATE == c_IF and
+t ##0 rs1 != 0 and
+t ##0 rd != 0 and
+t ##0 imm != 0 and
 t ##0 instrIn[15:12] == c_OR_IMM
+
+
 
 implies
 
 t ##1 CONTROL_STATE == c_ID and
-t ##0 rs1 != 3'b000 and
-t ##0 rd != 3'b000 and
-t ##5 REG_FILE[rd] == (REG_FILE[rs1] | {2'b00, imm}) and
+t ##5 REG_FILE[rd] == (REG_FILE[rs1] | {{2{imm[5]}}, imm}) and
 t ##2 CONTROL_STATE == c_EX;
 
 
@@ -77,19 +81,32 @@ logic [7:0] content_rs1;
 t ##0 set_freeze(rs1, instrIn[11:9]) and
 t ##0 set_freeze(rd, instrIn[ 8:6]) and
 t ##0 set_freeze(imm, instrIn[ 5:0]) and
-t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
+
 
 t ##0 CONTROL_STATE == c_IF and
-t ##0 instrIn[15:12] == c_ADD_IMM
+t ##0 instrIn[15:12] == c_ADD_IMM and
 
+
+t ##3 set_freeze(content_rs1, REG_FILE[rs1]) and
+
+
+t ##0 rs1 != 0 and
+t ##0 rd != 0 and
+t ##0 imm != 0
 
 implies
 
 t ##1 CONTROL_STATE == c_ID and
-t ##0 rs1 != 3'b000 and
-t ##0 rd != 3'b000 and
-t ##5 REG_FILE[rd] == (REG_FILE[rs1] + {2'b00, imm}) and
-t ##2 CONTROL_STATE == c_EX;
+t ##2 CONTROL_STATE == c_EX and
+t ##5 REG_FILE[rd] == (content_rs1 + {{2{imm[5]}}, imm});
+//t ##0 ((rd != 3'b000) or (rs1 == 3'b000))? :
+//	t ##5 REG_FILE[rd] == (content_rs1 + {2'b0, imm});
+
+//t##5  ((rs1 == 3'b000)? 1: REG_FILE[rd] == (content_rs1 + {2'b0, imm})) and
+//t##5  ((rd == 3'b000)? 1: REG_FILE[rd] == (content_rs1 + {2'b0, imm}));
+
+//t##5  (rd == 3'b000)? 1: REG_FILE[rd] == (content_rs1 + {2'b0, imm});
+
 
 endproperty
 
@@ -112,6 +129,10 @@ t ##0 set_freeze(content_rs2, REG_FILE[rs2]) and
 
 t ##0 CONTROL_STATE == c_IF and
 t ##0 instrIn[2:0] == c_OR and
+
+t ##0 rs1 != 0 and
+t ##0 rs2 != 0 and
+t ##0 rd != 0 and
 t ##0 instrIn[15:12] == c_ALU_REG
 
 
@@ -160,13 +181,19 @@ logic [2:0] rs1;
 logic [2:0] rd;
 logic [5:0] imm;
 logic [7:0] content_rs1;
+logic [7:0] mem_cont;
+
 
 t ##0 set_freeze(rs1, instrIn[11:9]) and
 t ##0 set_freeze(rd, instrIn[ 8:6]) and
 t ##0 set_freeze(imm, instrIn[ 5:0]) and
 t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
+t ##3 set_freeze(mem_cont, dataIn) and
 
 t ##0 CONTROL_STATE == c_IF and
+t ##0 rs1 != 0 and
+t ##0 rd != 0 and
+t ##0 imm != 0 and
 t ##0 instrIn[15:12] == c_LOAD
 
 
@@ -175,7 +202,7 @@ implies
 t ##1 CONTROL_STATE == c_ID and
 t ##0 rs1 != 3'b000 and
 t ##0 rd != 3'b000 and
-t ##5 REG_FILE[rd] == (REG_FILE[rs1] + {2'b00, imm}) and
+t ##5 REG_FILE[rd] == mem_cont and
 t ##2 CONTROL_STATE == c_EX;
 
 endproperty
@@ -184,27 +211,106 @@ property store;
 logic [2:0] rs1;
 logic [2:0] rs2;
 logic [5:0] imm;
-logic [7:0] content_rs1;
+logic [7:0] content_rs2;
+logic data_write;
 
 t ##0 set_freeze(rs1, instrIn[11:9]) and
 t ##0 set_freeze(rs2, instrIn[ 8:6]) and
-t ##0 set_freeze(rd, instrIn[ 5:3]) and
-t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
+t ##0 set_freeze(imm, instrIn[ 5:0]) and
+t ##0 set_freeze(content_rs2, REG_FILE[rs2]) and
+t ##3 set_freeze(data_write, writeEnable) and
 
 t ##0 CONTROL_STATE == c_IF and
-t ##0 instrIn[2:0] == c_ADD and
-t ##0 rs1 != 3'b000 and
-t ##0 rs2 != 3'b000 and
-t ##0 rd != 3'b000 and
-t ##5 REG_FILE[rd] == (REG_FILE[rs1] + REG_FILE[rs2]) and
-t ##0 instrIn[15:12] == c_ALU_REG
+t ##0 rs1 != 0 and
+t ##0 rs2 != 0 and
+t ##0 imm != 0 and
+t ##0 instrIn[15:12] == c_STORE
 
 
 
 implies
 
 t ##1 CONTROL_STATE == c_ID and
-t ##2 CONTROL_STATE == c_EX;
+t ##2 CONTROL_STATE == c_EX and
+t ##3 data_write == 1 and
+t ##5 REG_FILE[rs2] == dataOut;
+
+endproperty
+
+property jump;
+
+logic [11:0] offset;
+logic [15:0] instraddr;
+
+
+
+t ##0 set_freeze(offset, instrIn[11:0]) and
+t ##0 set_freeze(instraddr, instrAddr[15:0]) and
+
+t ##0 CONTROL_STATE == c_IF and
+t ##0 instrIn[15:12] == c_JUMP
+
+
+implies
+
+
+
+t ##1 CONTROL_STATE == c_ID and
+t ##2 instrAddr == (instraddr + {14'b0 + 2'b10} + {{4{offset[11]}}, offset});
+
+
+endproperty
+
+property branch;
+logic [2:0] rs1;
+logic [7:0] content_rs1;
+logic [8:0] offset;
+logic [15:0] instraddr;
+
+
+t ##0 set_freeze(rs1, instrIn[11:9]) and
+t ##0 set_freeze(content_rs1, REG_FILE[rs1]) and
+t ##0 set_freeze(offset, instrIn[8:0]) and
+t ##0 set_freeze(instraddr, instrAddr[15:0]) and
+
+t ##0 CONTROL_STATE == c_IF and
+t ##0 rs1 != 0 and
+t ##0 instrIn[15:12] == c_BRANCH
+
+
+implies
+
+(t ##1 (content_rs1 == 8'b0) and 
+t ##2 (instrAddr == (instraddr + {14'b0 + 2'b10} + {{7{offset[8]}}, offset}))) or
+
+(t ##1 (content_rs1 != 8'b0) and 
+t ##2 (instrAddr == (instraddr + {14'b0 + 2'b10}))) and
+
+t ##1 CONTROL_STATE == c_ID and
+
+t ##2 CONTROL_STATE == c_IF;
+
+//(t ##1 if (content_rs1 == 8'b0) begin 
+//	(instrAddr == (instraddr + {14'b0 + 2'b10} + {{7{offset[8]}}, offset}));
+//end 
+//else 
+//	instrAddr == (instraddr + {14'b0 + 2'b10});
+//end) and
+
+
+
+
+//(t ##1 (content_rs1 == 8'b0) |=> 
+//	(instrAddr == (instraddr + {14'b0 + 2'b10} + {{7{offset[8]}}, offset}))
+//) and 
+
+//t ##1 CONTROL_STATE == c_ID;
+
+//t ##1 ((content_rs1 != 8'b0) |=> (
+//	instrAddr == (instraddr + {14'b0 + 2'b10})
+//)) and 
+
+
 
 endproperty
 
@@ -215,6 +321,14 @@ a_add_imm: assert property(@(posedge clk) disable iff (reset==1) add_imm);
 a_or_reg: assert property(@(posedge clk) disable iff (reset==1) or_reg);
 
 a_add_reg: assert property(@(posedge clk) disable iff (reset==1) add_reg);
+
+a_store: assert property(@(posedge clk) disable iff (reset==1) store);
+
+a_load: assert property(@(posedge clk) disable iff (reset==1) load);
+
+a_jump: assert property(@(posedge clk) disable iff (reset==1) jump);
+
+a_branch: assert property(@(posedge clk) disable iff (reset==1) branch);
 
 // sequence definition for TiDAL property
 
