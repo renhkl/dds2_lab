@@ -1,6 +1,6 @@
 # ** Note: (vsim-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
 # vsim -c -assertdebug test_NtnuTfe4171Lab1Fifo -l run_fifo.log -do "run -all; quit" 
-# Start time: 13:32:03 on Feb 05,2026
+# Start time: 12:02:49 on Feb 25,2026
 # ** Note: (vsim-3812) Design is being optimized...
 # ** Note: (vopt-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
 # ** Warning: ./tb/test_NtnuTfe4171Lab1Fifo.sv.architecturalTest.sv(326): (vopt-2240) Treating stand-alone use of function 'pop_front' as an implicit VOID cast.
@@ -179,5 +179,5 @@
 # 
 # ** Note: $finish    : ./tb/test_NtnuTfe4171Lab1Fifo.sv.architecturalTest.sv(507)
 #    Time: 153780 ns  Iteration: 0  Instance: /test_NtnuTfe4171Lab1Fifo
-# End time: 13:32:08 on Feb 05,2026, Elapsed time: 0:00:05
+# End time: 12:02:54 on Feb 25,2026, Elapsed time: 0:00:05
 # Errors: 6, Warnings: 1
