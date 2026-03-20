@@ -17,3 +17,6 @@
 /.zshrc
 /.dotnet
 /.gitconfig
+/.dbus/session-bus 
+/default.onespin
+.Xauthority
