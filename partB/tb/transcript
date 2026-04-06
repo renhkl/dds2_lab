@@ -1,6 +1,6 @@
 # ** Note: (vsim-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
 # vsim -assertdebug -c -voptargs="+acc" test_hdlc bind_hdlc -do "log -r *; run -all; exit" 
-# Start time: 17:18:46 on Feb 26,2026
+# Start time: 13:20:48 on Apr 06,2026
 # ** Note: (vsim-3812) Design is being optimized...
 # ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
 # ** Note: (vopt-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
@@ -159,17 +159,53 @@
 # Size:          47  47
 # SUCCESS: Data is matching, number of times:         47
 # *************************************************************
-#              3654250 - Finishing Test Program
+#              3654250 - Starting task Receive - FCS error
 # *************************************************************
-# ** Note: $stop    : ./testPr_hdlc.sv(169)
-#    Time: 3654250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
-# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 169
-# Stopped at ./testPr_hdlc.sv line 169
+# PASS: Flag detect
+# PASS: Flag detect
+# -------- NORMAL RECEIVE --------
+# SUCCESS: Rx_Ready asserted (1)
+# SUCCESS: No Rx_FrameError (0)
+# SUCCESS: No Rx_AbortSignal (0)
+# SUCCESS: No Rx_Overflow (0)
+# Size:          40  40
+# SUCCESS: Data is matching, number of times:         40
+# *************************************************************
+#              3885250 - Starting task Receive - Non-byte aligned
+# *************************************************************
+# PASS: Flag detect
+# PASS: Flag detect
+# -------- NORMAL RECEIVE --------
+# SUCCESS: Rx_Ready asserted (1)
+# SUCCESS: No Rx_FrameError (0)
+# SUCCESS: No Rx_AbortSignal (0)
+# SUCCESS: No Rx_Overflow (0)
+# Size:          40  40
+# SUCCESS: Data is matching, number of times:         40
+# *************************************************************
+#              4116250 - Starting task Receive - Drop
+# *************************************************************
+# PASS: Flag detect
+# PASS: Flag detect
+# -------- NORMAL RECEIVE --------
+# SUCCESS: Rx_Ready asserted (1)
+# SUCCESS: No Rx_FrameError (0)
+# SUCCESS: No Rx_AbortSignal (0)
+# SUCCESS: No Rx_Overflow (0)
+# Size:          40  40
+# SUCCESS: Data is matching, number of times:         40
+# *************************************************************
+#              4347250 - Finishing Test Program
+# *************************************************************
+# ** Note: $stop    : ./testPr_hdlc.sv(284)
+#    Time: 4347250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
+# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 284
+# Stopped at ./testPr_hdlc.sv line 284
 #  exit
 # *********************************
 # *                               *
 # * 	Assertion Errors: 0	  *
 # *                               *
 # *********************************
-# End time: 17:18:52 on Feb 26,2026, Elapsed time: 0:00:06
+# End time: 13:20:53 on Apr 06,2026, Elapsed time: 0:00:05
 # Errors: 0, Warnings: 6

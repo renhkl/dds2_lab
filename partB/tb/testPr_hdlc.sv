@@ -39,6 +39,13 @@ parameter RXBUFF_ADDRESS = 8'h3;
 parameter RXLEN_ADDRESS = 8'h4;
 int successCounter = 0;
 
+
+  /****************************************************************************
+   *                                                                          *
+   *                               Abort receive                               *
+   *                                                                          *
+   ****************************************************************************/
+
   // VerifyAbortReceive should verify correct value in the Rx status/control
   // register, and that the Rx data buffer is zero after abort.
   task VerifyAbortReceive(logic [127:0][7:0] data, int Size);
@@ -50,10 +57,10 @@ int successCounter = 0;
      
     //checking rxsc values
     ReadAddress(RXSC_ADDRESS, ReadData);
-    assert(!ReadData[0]) $display("SUCCESS: No Rx_Ready (%d)", ReadData[0]); else $display("FAIL: Rx_Ready = %d", ReadData[0]);
-    assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else $display("FAIL: Rx_FrameError = %d", ReadData[2]);
-    assert(ReadData[3]) $display("SUCCESS: Rx_AbortSignal asserted (%d)", ReadData[3]); else $display("FAIL: Rx_AbortSignal = %d", ReadData[3]);
-    assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else $display("FAIL: Rx_Overflow = %d", ReadData[4]);
+    assert(!ReadData[0]) $display("SUCCESS: No Rx_Ready (%d)", ReadData[0]); else begin $display("FAIL: Rx_Ready = %d", ReadData[0]); TbErrorCnt++; end
+    assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else begin $display("FAIL: Rx_FrameError = %d", ReadData[2]); TbErrorCnt++; end
+    assert(ReadData[3]) $display("SUCCESS: Rx_AbortSignal asserted (%d)", ReadData[3]); else begin $display("FAIL: Rx_AbortSignal = %d", ReadData[3]); TbErrorCnt++; end
+    assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else begin $display("FAIL: Rx_Overflow = %d", ReadData[4]); TbErrorCnt++; end
 
     //checking data buffer
     ReadAddress(RXLEN_ADDRESS, RxLen); //RxLen is not zero
@@ -63,13 +70,20 @@ int successCounter = 0;
       //@(posedge uin_hdlc.Clk);
       ReadAddress(RXBUFF_ADDRESS, ReadData); //ReadData is zero, while data[i] is not
       assert(!ReadData) successCounter++; //$display("SUCCESS: Data is zero"); 
-      else $display("FAIL: Data is not zero (%d)", ReadData);
+      else begin $display("FAIL: Data is not zero (%d)", ReadData); TbErrorCnt++; 
+      end
     end
 
     $display("SUCCESS: Data is zero, number of times: %d", successCounter);
     successCounter = 0; 
 
   endtask
+
+  /****************************************************************************
+   *                                                                          *
+   *                               Normal receive                               *
+   *                                                                          *
+   ****************************************************************************/
 
   // VerifyNormalReceive should verify correct value in the Rx status/control
   // register, and that the Rx data buffer contains correct data.
@@ -83,10 +97,10 @@ int successCounter = 0;
 
     //checking rxsc values
     ReadAddress(RXSC_ADDRESS, ReadData);
-    assert(ReadData[0]) $display("SUCCESS: Rx_Ready asserted (%d)", ReadData[0]); else $display("FAIL: Rx_Ready = %d", ReadData[0]);
-    assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else $display("FAIL: Rx_FrameError = %d", ReadData[2]);
-    assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else $display("FAIL: Rx_AbortSignal = %d", ReadData[3]);
-    assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else $display("FAIL: Rx_Overflow = %d", ReadData[4]);
+    assert(ReadData[0]) $display("SUCCESS: Rx_Ready asserted (%d)", ReadData[0]); else begin $display("FAIL: Rx_Ready = %d", ReadData[0]); TbErrorCnt++; end
+    assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else begin $display("FAIL: Rx_FrameError = %d", ReadData[2]); TbErrorCnt++; end
+    assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else begin $display("FAIL: Rx_AbortSignal = %d", ReadData[3]); TbErrorCnt++; end
+    assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else begin $display("FAIL: Rx_Overflow = %d", ReadData[4]); TbErrorCnt++; end
 
     //checking data buffer
     ReadAddress(RXLEN_ADDRESS, RxLen);
@@ -97,13 +111,23 @@ int successCounter = 0;
       ReadAddress(RXBUFF_ADDRESS, ReadData);
       //comparing data in function argument and in rx buffer
       assert(data[i] == ReadData) successCounter++; //$display("SUCCESS: Data is matching"); 
-      else $display("FAIL: %d != %d", ReadData, data[i]);
+      else begin $display("FAIL: %d != %d", ReadData, data[i]); TbErrorCnt++; 
+      end
     end
     
     $display("SUCCESS: Data is matching, number of times:%d", successCounter);
     successCounter = 0;
 
   endtask
+
+
+  
+
+  /****************************************************************************
+   *                                                                          *
+   *                               Overflow receive                               *
+   *                                                                          *
+   ****************************************************************************/
 
   // VerifyNormalReceive should verify correct value in the Rx status/control
   // register, and that the Rx data buffer contains correct data.
@@ -117,10 +141,10 @@ int successCounter = 0;
     
     //checking rxsc values
     ReadAddress(RXSC_ADDRESS, ReadData);
-    assert(ReadData[0]) $display("SUCCESS: Rx_Ready asserted (%d)", ReadData[0]); else $display("FAIL: Rx_Ready = %d", ReadData[0]);
-    assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else $display("FAIL: Rx_FrameError = %d", ReadData[2]);
-    assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else $display("FAIL: Rx_AbortSignal = %d", ReadData[3]);
-    assert(ReadData[4]) $display("SUCCESS: Rx_Overflow asserted (%d)", ReadData[4]); else $display("FAIL: Rx_Overflow = %d", ReadData[4]);
+    assert(ReadData[0]) $display("SUCCESS: Rx_Ready asserted (%d)", ReadData[0]); else begin $display("FAIL: Rx_Ready = %d", ReadData[0]) ; TbErrorCnt++; end
+    assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else begin $display("FAIL: Rx_FrameError = %d", ReadData[2]); TbErrorCnt++; end
+    assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else begin $display("FAIL: Rx_AbortSignal = %d", ReadData[3]); TbErrorCnt++; end
+    assert(ReadData[4]) $display("SUCCESS: Rx_Overflow asserted (%d)", ReadData[4]); else begin $display("FAIL: Rx_Overflow = %d", ReadData[4]); TbErrorCnt++; end
 
     //checking data buffer
     ReadAddress(RXLEN_ADDRESS, RxLen);
@@ -131,13 +155,100 @@ int successCounter = 0;
       ReadAddress(RXBUFF_ADDRESS, ReadData);
       //comparing data in function argument and in rx buffer
       assert(data[i] == ReadData) successCounter++; //$display("SUCCESS: Data is matching");  
-      else $display("FAIL: %d != %d", ReadData, data[i]);
+      else begin $display("FAIL: %d != %d", ReadData, data[i]); TbErrorCnt++; 
+      end
     end
 
     $display("SUCCESS: Data is matching, number of times: %d", successCounter);
     successCounter = 0;
   
   endtask
+
+
+  
+
+  /****************************************************************************
+   *                                                                          *
+   *                               Frame error receive                               *
+   *                                                                          *
+   ****************************************************************************/
+
+
+
+  task VerifyFrameErrorReceive(logic [127:0][7:0] data, int Size);
+    logic [7:0] ReadData;
+    logic [7:0] RxLen; //had to be defined here and not later
+  
+
+    $display("-------- FRAME ERROR RECEIVE --------");
+     
+    //checking rxsc values
+    ReadAddress(RXSC_ADDRESS, ReadData);
+    assert(!ReadData[0]) $display("SUCCESS: No Rx_Ready (%d)", ReadData[0]); else begin $display("FAIL: Rx_Ready = %d", ReadData[0]); TbErrorCnt++; end
+    assert(ReadData[2]) $display("SUCCESS: Rx_FrameError asserted (%d)", ReadData[2]); else begin $display("FAIL: Rx_FrameError = %d", ReadData[2]); TbErrorCnt++; end
+    assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else begin $display("FAIL: Rx_AbortSignal = %d", ReadData[3]); TbErrorCnt++; end
+    assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else begin $display("FAIL: Rx_Overflow = %d", ReadData[4]); TbErrorCnt++; end
+
+    //checking data buffer
+    ReadAddress(RXLEN_ADDRESS, RxLen); //RxLen is not zero
+    $display("Size: %d %d", Size, RxLen);
+
+    for (int i = 0; i < Size; i++) begin
+      //@(posedge uin_hdlc.Clk);
+      ReadAddress(RXBUFF_ADDRESS, ReadData); //ReadData is zero, while data[i] is not
+      assert(!ReadData) successCounter++; //$display("SUCCESS: Data is zero"); 
+      else begin $display("FAIL: Data is not zero (%d)", ReadData); TbErrorCnt++;
+      end
+    end
+
+    $display("SUCCESS: Data is zero, number of times: %d", successCounter);
+    successCounter = 0; 
+
+  endtask
+  
+
+
+  /****************************************************************************
+   *                                                                          *
+   *                               Dropped frame receive                               *
+   *                                                                          *
+   ****************************************************************************/
+/*
+    task VerifyDroppedFrameReceive(logic [127:0][7:0] data, int Size);
+    logic [7:0] ReadData;
+    logic [7:0] WriteData;
+    logic [7:0] RxLen; //had to be defined here and not later
+   
+
+    $display("-------- DROPPED FRAME RECEIVE --------");
+     
+      WriteData[1] = 1'b1; //set drop frame
+      WriteAddress(RXSC_ADDRESS, WriteData);
+    //checking rxsc values
+    //ReadAddress(RXSC_ADDRESS, ReadData);
+    //assert(!ReadData[0]) $display("SUCCESS: No Rx_Ready (%d)", ReadData[0]); else begin $display("FAIL: Rx_Ready = %d", ReadData[0]); TbErrorCnt++; end
+    //assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else begin $display("FAIL: Rx_FrameError = %d", ReadData[2]); TbErrorCnt++; end
+    //assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else begin $display("FAIL: Rx_AbortSignal = %d", ReadData[3]); TbErrorCnt++; end
+    //assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else begin $display("FAIL: Rx_Overflow = %d", ReadData[4]); TbErrorCnt++; end
+    
+
+    //checking data buffer
+    ReadAddress(RXLEN_ADDRESS, RxLen); //RxLen is not zero
+    $display("Size: %d %d", Size, RxLen);
+
+    for (int i = 0; i < Size; i++) begin
+      //@(posedge uin_hdlc.Clk);
+      ReadAddress(RXBUFF_ADDRESS, ReadData); //ReadData is zero, while data[i] is not
+      assert(!ReadData) successCounter++; //$display("SUCCESS: Data is zero"); 
+      else begin $display("FAIL: Data is not zero (%d)", ReadData); TbErrorCnt++; 
+      end
+    end
+
+    $display("SUCCESS: Data is zero, number of times: %d", successCounter);
+    successCounter = 0; 
+
+  endtask
+  */
 
   /****************************************************************************
    *                                                                          *
@@ -162,6 +273,10 @@ int successCounter = 0;
     Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
     Receive( 25, 0, 0, 0, 0, 0, 0); //Normal
     Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
+
+    Receive( 40, 0, 1, 0, 0, 0, 0); //FCSerr
+    Receive( 40, 0, 0, 1, 0, 0, 0); //NonByteAligned
+    Receive( 40, 0, 0, 0, 0, 1, 0); //Drop
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
@@ -322,12 +437,24 @@ int successCounter = 0;
     repeat(8)
       @(posedge uin_hdlc.Clk);
 
+      // Abort, int FCSerr, int NonByteAligned, int Overflow, int Drop, int SkipRead
+
     if(Abort)
       VerifyAbortReceive(ReceiveData, Size);
     else if(Overflow)
       VerifyOverflowReceive(ReceiveData, Size);
+    //else if(FCSerr)
+      //VerifyFrameErrorReceive(ReceiveData, Size); //FCS isn't frame error but causes it?
+
+    //else if(NonByteAligned)
+    //  VerifyFrameErrorReceive(ReceiveData, Size);
+    //else if (Drop)
+    //VerifyDroppedFrameReceive(ReceiveData, Size);
+
     else if(!SkipRead)
       VerifyNormalReceive(ReceiveData, Size);
+   
+
 
     #5000ns;
   endtask

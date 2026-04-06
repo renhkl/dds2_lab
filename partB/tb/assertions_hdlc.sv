@@ -77,4 +77,48 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end
 
+ /********************************************
+   *  Verify correct Rx_Abort_Pattern behavior  *
+   ********************************************/
+
+    /********************************************
+   *  Verify correct Tx_Abort_Pattern behavior  *
+   ********************************************/
+
+/*
+  sequence RX_Abort_Flag;
+    Rx[*7] ##1 !Rx; //1111 1110
+  endsequence
+
+  sequence TX_Abort_Flag;
+    !Rx |=> Rx[*7]; //0111 1111
+  endsequence
+
+
+  property TX_Abort_Pattern;
+    // INSERT CODE HERE
+    @(posedge Clk) Rx_ValidFrame && Rx_AbortDetect |=> Rx_AbortSignal; 
+  endproperty
+
+  RX_AbortSignal_Assert : assert property (TX_Abort_Pattern) begin
+    $display("PASS: TX Abort pattern");
+  end else begin 
+    $error("AbortSignal did not go high after AbortDetect during validframe"); 
+    ErrCntAssertions++; 
+  end
+
+  
+  property RX_Abort_Pattern;
+    @(posedge Clk) Rx_ValidFrame && Rx_AbortDetect |=> Rx_AbortSignal; 
+  endproperty
+
+  RX_AbortSignal_Assert : assert property (RX_Abort_Pattern) begin
+    $display("PASS: RX Abort signal");
+  end else begin 
+    $error("AbortSignal did not go high after AbortDetect during validframe"); 
+    ErrCntAssertions++; 
+  end
+*/
+
+
 endmodule
