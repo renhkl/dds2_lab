@@ -1,0 +1,356 @@
+//////////////////////////////////////////////////
+// Title:   testPr_hdlc
+// Author: 
+// Date:  
+//////////////////////////////////////////////////
+
+/* testPr_hdlc contains the simulation and immediate assertion code of the
+   testbench. 
+
+   For this exercise you will write immediate assertions for the Rx module which
+   should verify correct values in some of the Rx registers for:
+   - Normal behavior
+   - Buffer overflow 
+   - Aborts
+
+   HINT:
+   - A ReadAddress() task is provided, and addresses are documentet in the 
+     HDLC Module Design Description
+*/
+
+program testPr_hdlc(
+  in_hdlc uin_hdlc
+);
+  
+  int TbErrorCnt;
+
+  /****************************************************************************
+   *                                                                          *
+   *                               Student code                               *
+   *                                                                          *
+   ****************************************************************************/
+
+//addresses
+parameter RXSC = 8'h2;
+parameter TXSC_ADDRESS = 8'h0;
+parameter TXBUFF_ADDRESS = 8'h1;
+parameter RXSC_ADDRESS = 8'h2;
+parameter RXBUFF_ADDRESS = 8'h3;
+parameter RXLEN_ADDRESS = 8'h4;
+int successCounter = 0;
+
+  // VerifyAbortReceive should verify correct value in the Rx status/control
+  // register, and that the Rx data buffer is zero after abort.
+  task VerifyAbortReceive(logic [127:0][7:0] data, int Size);
+    logic [7:0] ReadData;
+    logic [7:0] RxLen; //had to be defined here and not later
+  
+
+    $display("-------- ABORT RECEIVE --------");
+     
+    //checking rxsc values
+    ReadAddress(RXSC_ADDRESS, ReadData);
+    assert(!ReadData[0]) $display("SUCCESS: No Rx_Ready (%d)", ReadData[0]); else $display("FAIL: Rx_Ready = %d", ReadData[0]);
+    assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else $display("FAIL: Rx_FrameError = %d", ReadData[2]);
+    assert(ReadData[3]) $display("SUCCESS: Rx_AbortSignal asserted (%d)", ReadData[3]); else $display("FAIL: Rx_AbortSignal = %d", ReadData[3]);
+    assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else $display("FAIL: Rx_Overflow = %d", ReadData[4]);
+
+    //checking data buffer
+    ReadAddress(RXLEN_ADDRESS, RxLen); //RxLen is not zero
+    $display("Size: %d %d", Size, RxLen);
+
+    for (int i = 0; i < Size; i++) begin
+      //@(posedge uin_hdlc.Clk);
+      ReadAddress(RXBUFF_ADDRESS, ReadData); //ReadData is zero, while data[i] is not
+      assert(!ReadData) successCounter++; //$display("SUCCESS: Data is zero"); 
+      else $display("FAIL: Data is not zero (%d)", ReadData);
+    end
+
+    $display("SUCCESS: Data is zero, number of times: %d", successCounter);
+    successCounter = 0; 
+
+  endtask
+
+  // VerifyNormalReceive should verify correct value in the Rx status/control
+  // register, and that the Rx data buffer contains correct data.
+  task VerifyNormalReceive(logic [127:0][7:0] data, int Size);
+    logic [7:0] ReadData;
+    logic [7:0] RxLen;
+    wait(uin_hdlc.Rx_Ready);
+
+
+    $display("-------- NORMAL RECEIVE --------");
+
+    //checking rxsc values
+    ReadAddress(RXSC_ADDRESS, ReadData);
+    assert(ReadData[0]) $display("SUCCESS: Rx_Ready asserted (%d)", ReadData[0]); else $display("FAIL: Rx_Ready = %d", ReadData[0]);
+    assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else $display("FAIL: Rx_FrameError = %d", ReadData[2]);
+    assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else $display("FAIL: Rx_AbortSignal = %d", ReadData[3]);
+    assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else $display("FAIL: Rx_Overflow = %d", ReadData[4]);
+
+    //checking data buffer
+    ReadAddress(RXLEN_ADDRESS, RxLen);
+    $display("Size: %d %d", Size, RxLen);
+
+    for (int i = 0; i < Size; i++) begin
+      //@(posedge uin_hdlc.Clk);
+      ReadAddress(RXBUFF_ADDRESS, ReadData);
+      //comparing data in function argument and in rx buffer
+      assert(data[i] == ReadData) successCounter++; //$display("SUCCESS: Data is matching"); 
+      else $display("FAIL: %d != %d", ReadData, data[i]);
+    end
+    
+    $display("SUCCESS: Data is matching, number of times:%d", successCounter);
+    successCounter = 0;
+
+  endtask
+
+  // VerifyNormalReceive should verify correct value in the Rx status/control
+  // register, and that the Rx data buffer contains correct data.
+  task VerifyOverflowReceive(logic [127:0][7:0] data, int Size);
+    logic [7:0] ReadData;
+    logic [7:0] RxLen;
+    wait(uin_hdlc.Rx_Ready);
+
+
+    $display("-------- OVERFLOW RECEIVE --------");
+    
+    //checking rxsc values
+    ReadAddress(RXSC_ADDRESS, ReadData);
+    assert(ReadData[0]) $display("SUCCESS: Rx_Ready asserted (%d)", ReadData[0]); else $display("FAIL: Rx_Ready = %d", ReadData[0]);
+    assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else $display("FAIL: Rx_FrameError = %d", ReadData[2]);
+    assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else $display("FAIL: Rx_AbortSignal = %d", ReadData[3]);
+    assert(ReadData[4]) $display("SUCCESS: Rx_Overflow asserted (%d)", ReadData[4]); else $display("FAIL: Rx_Overflow = %d", ReadData[4]);
+
+    //checking data buffer
+    ReadAddress(RXLEN_ADDRESS, RxLen);
+    $display("Size: %d %d", Size, RxLen);
+
+    for (int i = 0; i < Size; i++) begin
+      //@(posedge uin_hdlc.Clk);
+      ReadAddress(RXBUFF_ADDRESS, ReadData);
+      //comparing data in function argument and in rx buffer
+      assert(data[i] == ReadData) successCounter++; //$display("SUCCESS: Data is matching");  
+      else $display("FAIL: %d != %d", ReadData, data[i]);
+    end
+
+    $display("SUCCESS: Data is matching, number of times: %d", successCounter);
+    successCounter = 0;
+  
+  endtask
+
+  /****************************************************************************
+   *                                                                          *
+   *                             Simulation code                              *
+   *                                                                          *
+   ****************************************************************************/
+
+  initial begin
+    $display("*************************************************************");
+    $display("%t - Starting Test Program", $time);
+    $display("*************************************************************");
+
+    Init();
+
+    //Receive: Size, Abort, FCSerr, NonByteAligned, Overflow, Drop, SkipRead
+    Receive( 10, 0, 0, 0, 0, 0, 0); //Normal
+    Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
+    Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
+    Receive( 45, 0, 0, 0, 0, 0, 0); //Normal
+    Receive(126, 0, 0, 0, 0, 0, 0); //Normal
+    Receive(122, 1, 0, 0, 0, 0, 0); //Abort
+    Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
+    Receive( 25, 0, 0, 0, 0, 0, 0); //Normal
+    Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
+
+    $display("*************************************************************");
+    $display("%t - Finishing Test Program", $time);
+    $display("*************************************************************");
+    $stop;
+  end
+
+  final begin
+
+    $display("*********************************");
+    $display("*                               *");
+    $display("* \tAssertion Errors: %0d\t  *", TbErrorCnt + uin_hdlc.ErrCntAssertions);
+    $display("*                               *");
+    $display("*********************************");
+
+  end
+
+  task Init();
+    uin_hdlc.Clk         =   1'b0;
+    uin_hdlc.Rst         =   1'b0;
+    uin_hdlc.Address     = 3'b000;
+    uin_hdlc.WriteEnable =   1'b0;
+    uin_hdlc.ReadEnable  =   1'b0;
+    uin_hdlc.DataIn      =     '0;
+    uin_hdlc.TxEN        =   1'b1;
+    uin_hdlc.Rx          =   1'b1;
+    uin_hdlc.RxEN        =   1'b1;
+
+    TbErrorCnt = 0;
+
+    #1000ns;
+    uin_hdlc.Rst         =   1'b1;
+  endtask
+
+  task WriteAddress(input logic [2:0] Address ,input logic [7:0] Data);
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.Address     = Address;
+    uin_hdlc.WriteEnable = 1'b1;
+    uin_hdlc.DataIn      = Data;
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.WriteEnable = 1'b0;
+  endtask
+
+  task ReadAddress(input logic [2:0] Address ,output logic [7:0] Data);
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.Address    = Address;
+    uin_hdlc.ReadEnable = 1'b1;
+    #100ns;
+    Data                = uin_hdlc.DataOut;
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.ReadEnable = 1'b0;
+  endtask
+
+  task InsertFlagOrAbort(int flag);
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.Rx = 1'b0;
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.Rx = 1'b1;
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.Rx = 1'b1;
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.Rx = 1'b1;
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.Rx = 1'b1;
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.Rx = 1'b1;
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.Rx = 1'b1;
+    @(posedge uin_hdlc.Clk);
+    if(flag)
+      uin_hdlc.Rx = 1'b0;
+    else
+      uin_hdlc.Rx = 1'b1;
+  endtask
+
+  task MakeRxStimulus(logic [127:0][7:0] Data, int Size);
+    logic [4:0] PrevData;
+    PrevData = '0;
+    for (int i = 0; i < Size; i++) begin
+      for (int j = 0; j < 8; j++) begin
+        if(&PrevData) begin
+          @(posedge uin_hdlc.Clk);
+          uin_hdlc.Rx = 1'b0;
+          PrevData = PrevData >> 1;
+          PrevData[4] = 1'b0;
+        end
+
+        @(posedge uin_hdlc.Clk);
+        uin_hdlc.Rx = Data[i][j];
+
+        PrevData = PrevData >> 1;
+        PrevData[4] = Data[i][j];
+      end
+    end
+  endtask
+
+  task Receive(int Size, int Abort, int FCSerr, int NonByteAligned, int Overflow, int Drop, int SkipRead);
+    logic [127:0][7:0] ReceiveData;
+    logic       [15:0] FCSBytes;
+    logic   [2:0][7:0] OverflowData;
+    string msg;
+    if(Abort)
+      msg = "- Abort";
+    else if(FCSerr)
+      msg = "- FCS error";
+    else if(NonByteAligned)
+      msg = "- Non-byte aligned";
+    else if(Overflow)
+      msg = "- Overflow";
+    else if(Drop)
+      msg = "- Drop";
+    else if(SkipRead)
+      msg = "- Skip read";
+    else
+      msg = "- Normal";
+    $display("*************************************************************");
+    $display("%t - Starting task Receive %s", $time, msg);
+    $display("*************************************************************");
+
+    for (int i = 0; i < Size; i++) begin
+      ReceiveData[i] = $urandom;
+    end
+    ReceiveData[Size]   = '0;
+    ReceiveData[Size+1] = '0;
+
+    //Calculate FCS bits;
+    GenerateFCSBytes(ReceiveData, Size, FCSBytes);
+    ReceiveData[Size]   = FCSBytes[7:0];
+    ReceiveData[Size+1] = FCSBytes[15:8];
+
+    //Enable FCS
+    if(!Overflow && !NonByteAligned)
+      WriteAddress(RXSC, 8'h20);
+    else
+      WriteAddress(RXSC, 8'h00);
+
+    //Generate stimulus
+    InsertFlagOrAbort(1);
+    
+    MakeRxStimulus(ReceiveData, Size + 2);
+    
+    if(Overflow) begin
+      OverflowData[0] = 8'h44;
+      OverflowData[1] = 8'hBB;
+      OverflowData[2] = 8'hCC;
+      MakeRxStimulus(OverflowData, 3);
+    end
+
+    if(Abort) begin
+      InsertFlagOrAbort(0);
+    end else begin
+      InsertFlagOrAbort(1);
+    end
+
+    @(posedge uin_hdlc.Clk);
+    uin_hdlc.Rx = 1'b1;
+
+    repeat(8)
+      @(posedge uin_hdlc.Clk);
+
+    if(Abort)
+      VerifyAbortReceive(ReceiveData, Size);
+    else if(Overflow)
+      VerifyOverflowReceive(ReceiveData, Size);
+    else if(!SkipRead)
+      VerifyNormalReceive(ReceiveData, Size);
+
+    #5000ns;
+  endtask
+
+  task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
+    logic [23:0] CheckReg;
+    CheckReg[15:8]  = data[1];
+    CheckReg[7:0]   = data[0];
+    for(int i = 2; i < size+2; i++) begin
+      CheckReg[23:16] = data[i];
+      for(int j = 0; j < 8; j++) begin
+        if(CheckReg[0]) begin
+          CheckReg[0]    = CheckReg[0] ^ 1;
+          CheckReg[1]    = CheckReg[1] ^ 1;
+          CheckReg[13:2] = CheckReg[13:2];
+          CheckReg[14]   = CheckReg[14] ^ 1;
+          CheckReg[15]   = CheckReg[15];
+          CheckReg[16]   = CheckReg[16] ^1;
+        end
+        CheckReg = CheckReg >> 1;
+      end
+    end
+    FCSBytes = CheckReg;
+  endtask
+
+endprogram
