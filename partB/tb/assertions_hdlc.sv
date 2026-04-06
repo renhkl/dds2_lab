@@ -77,7 +77,7 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end
 
- /********************************************
+/********************************************
    *  Verify correct Rx_Abort_Pattern behavior  *
    ********************************************/
 
@@ -85,18 +85,19 @@ module assertions_hdlc (
    *  Verify correct Tx_Abort_Pattern behavior  *
    ********************************************/
 
-/*
-  sequence RX_Abort_Flag;
+//need to change the error messsage and property
+
+  sequence Rx_Abort_Flag;
     Rx[*7] ##1 !Rx; //1111 1110
   endsequence
 
-  sequence TX_Abort_Flag;
-    !Rx |=> Rx[*7]; //0111 1111
-  endsequence
+//  sequence TX_Abort_Flag
+//    !Tx |=> Tx[*7]; //0111 1111
+//  endsequence
 
+/*
 
   property TX_Abort_Pattern;
-    // INSERT CODE HERE
     @(posedge Clk) Rx_ValidFrame && Rx_AbortDetect |=> Rx_AbortSignal; 
   endproperty
 
@@ -113,12 +114,52 @@ module assertions_hdlc (
   endproperty
 
   RX_AbortSignal_Assert : assert property (RX_Abort_Pattern) begin
-    $display("PASS: RX Abort signal");
+    $display("PASS: RX Abort pattern");
   end else begin 
     $error("AbortSignal did not go high after AbortDetect during validframe"); 
     ErrCntAssertions++; 
   end
 */
 
+ /********************************************
+   *  Verify correct Rx_Abort_Pattern behavior  *
+   ********************************************/
+
+  property RX_Abort_Pattern_AbortSignal; //valid frame for the duration
+    @(posedge Clk) Rx_Abort_Flag |=> Rx_AbortSignal; 
+  endproperty
+
+  RX_Abort_Pattern_AbortSignal_Assert : assert property (RX_Abort_Pattern_AbortSignal) begin
+    $display("PASS: RX_AbortSignal asserted after abort pattern");
+  end else begin 
+    $error("AbortSignal did not go high after abort pattern during validframe"); 
+    ErrCntAssertions++; 
+  end
+
+    /********************************************
+   *  Verify correct Tx_Abort_Pattern behavior  *
+   ********************************************/
+
+
+/*
+  property TX_Aborted_Trans;
+    @(posedge Clk) Tx_AbortFrame |=> Tx_AbortedTrans; 
+  endproperty
+
+  TX_AbortedTrans_Assert : assert property (TX_Aborted_Trans) begin
+    $display("PASS: TX AbortedTrans asserted");
+  end else begin 
+    $error("AbortedTrans did not go high after AbortFrame"); 
+    ErrCntAssertions++; 
+  end*/
+
+
+  /*  sequence Rx_Idle_Pattern;
+    Rx[*8]; //1111 1110
+  endsequence
+
+     sequence Tx_Idle_Pattern;
+    Tx[*8]; //1111 1110
+  endsequence*/
 
 endmodule
