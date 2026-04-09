@@ -13,7 +13,8 @@
 -- There is no parity bit and no stop bit.
 */
 
-module readserial(input clk, reset_n, rxd, output [7:0] data, output logic valid);
+module readserial(input clk, reset_n, rxd, output [7:0] data, output logic valid, 
+cnt_s, cnt_en, state_s);
     //clock signal, reset signal, serial in, data out, data valid
     enum {IDLE, READ_DATA} state_s;
     reg [7:0] data_i;
