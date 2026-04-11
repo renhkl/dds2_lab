@@ -29,10 +29,13 @@ interface in_hdlc ();
 
   // Rx
   logic       Rx_ValidFrame;
-  logic [7:0] Rx_Data;
-  logic       Rx_AbortSignal;
-  logic       Rx_Ready;
   logic       Rx_WrBuff;
+  logic       Rx_EoF;
+    logic       Rx_AbortSignal;
+  logic [7:0] Rx_Data;
+
+  logic       Rx_Ready;
+
   logic       Rx_EoF;
   logic [7:0] Rx_FrameSize;
   logic       Rx_Overflow;

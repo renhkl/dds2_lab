@@ -1,4 +1,4 @@
-module readserial_property_suite(reset_n, clk, rxd, data, valid, cnt_s, cnt_en, state_s);
+module readserial_property_suite(reset_n, clk, rxd, data, valid, cnt_en, count, state_s);
 
 input reset_n;
 input clk;
@@ -6,8 +6,9 @@ input rxd;
 input [7:0] data;
 input valid;
 
-input cnt_s;
+//input shortint unsigned cnt_s;
 input cnt_en;
+input [4:0] count;
 input state_s;
 //i dont need data_i as that is assigned to data in the design
 
@@ -18,36 +19,81 @@ parameter READ_DATA = 1;
 
 `begin_tda(ops)
 
-
-
 property reset;
 t ##0 !reset_n 
 implies
 t ##1 (state_s == IDLE) and
-t ##1 !cnt_s;
+t ##1 !count and
+t ##1 !valid;
 endproperty
 
 property stay_in_idle;
 t ##0 (state_s == IDLE) and 
 t ##0 rxd
 implies
-t ##1 (state_s == IDLE);
-
+t ##1 (state_s == IDLE) and
+t ##1 !valid;
 endproperty
+
+
+
+property read_byte_debug;
+t ##0 (state_s == IDLE) and
+t ##0 (!rxd)
+and in_idle_counter_is_0
+and in_idle_counter_not_enabled 
+implies
+t ##1 (state_s == READ_DATA) and
+t ##1 (count == 0) and
+t ##2 (state_s == READ_DATA) and
+t ##2 (count == 1) and
+t ##3 (state_s == READ_DATA) and
+t ##3 (count == 2) and
+t ##4 (state_s == READ_DATA) and
+t ##4 (count == 3) and
+t ##5 (state_s == READ_DATA) and
+t ##5 (count == 4) and
+t ##6 (state_s == READ_DATA) and
+t ##6 (count == 5) and
+t ##7 (state_s == READ_DATA) and
+t ##7 (count == 6) and
+t ##8 (state_s == READ_DATA) and
+t ##8 (count == 7) and
+t ##9 (state_s == IDLE) and
+t ##9 valid and
+t ##9 !cnt_en;
+endproperty
+
 
 property read_byte;
 t ##0 (state_s == IDLE) and
-t ##0 (!rxd)
- implies
+t ##0 (!rxd) 
+and in_idle_counter_is_0 
+and in_idle_counter_not_enabled 
+//and t ##9 (rxd) //whether it starts on another byte or not
+implies
 t ##9 valid and
 t ##9 (state_s == IDLE); //9 because first 1 start bit, then 8 bits
 endproperty
 
 
+
+sequence in_idle_counter_is_0;
+t ##0 (state_s == IDLE) and
+t ##0 !count;
+endsequence
+
+sequence in_idle_counter_not_enabled;
+t ##0 (state_s == IDLE) and
+t ##0 !cnt_en;
+endsequence
+
 //assertions
 a_reset: assert property(@(posedge clk) reset); //this should check for reset. reset_n is active low
 a_stay_in_idle: assert property(@(posedge clk) disable iff (!reset_n) stay_in_idle);
 a_read_byte: assert property(@(posedge clk) disable iff (!reset_n) read_byte);
+a_read_byte_debug: assert property(@(posedge clk) disable iff (!reset_n) read_byte_debug);
+
 
 `end_tda
 
