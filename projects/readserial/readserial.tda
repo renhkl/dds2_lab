@@ -19,8 +19,24 @@ parameter READ_DATA = 1;
 
 `begin_tda(ops)
 
+
+//a reset_sequence has to be defined explicitly 
+//implies is not allowed, use |=>
+//drop the t ##0 before reset_sequence
+ 
+sequence reset_sequence;
+reset_n == 1'b0;
+endsequence;
+
 property reset;
-t ##0 !reset_n 
+reset_sequence |=>
+t ##0 (state_s == IDLE) and
+t ##0 !count and
+t ##0 !valid;
+endproperty;
+
+property reset_old;
+t ##0 !reset_n
 implies
 t ##1 (state_s == IDLE) and
 t ##1 !count and
@@ -65,7 +81,7 @@ t ##9 !cnt_en;
 endproperty
 
 
-property read_byte;
+property read_byte_old;
 t ##0 (state_s == IDLE) and
 t ##0 (!rxd) 
 and t ##0 in_idle_counter_is_0 
@@ -76,17 +92,37 @@ t ##9 valid and
 t ##9 (state_s == IDLE); //9 because first 1 start bit, then 8 bits
 endproperty
 
+property read_byte;
+t ##0 (state_s == IDLE) and
+t ##0 !rxd
+//and t ##0 in_idle_counter_is_0
+//and t ##0 in_idle_counter_not_enabled 
+implies
+//also check that valid is zero 8 times in a row
+t ##1 !valid [*8] and
+t ##9 valid and
+t ##9 (state_s == IDLE) and
+//this is how to check that data values to match with rxd line
+t ##9 data == {
+$past(rxd, 8),
+$past(rxd, 7),
+$past(rxd, 6),
+$past(rxd, 5),
+$past(rxd, 4),
+$past(rxd, 3),
+$past(rxd, 2),
+$past(rxd, 1)};
+endproperty
+
 
 //reachability constriants
 //don't use t ##n in sequences, as double t ##n t##n from both sequence and property gives error
 sequence in_idle_counter_is_0;
-(state_s == IDLE) and
-!count;
+(state_s == IDLE) and !count;
 endsequence
 
 sequence in_idle_counter_not_enabled;
-(state_s == IDLE) and 
-!cnt_en;
+(state_s == IDLE) and !cnt_en;
 endsequence
 
 //
@@ -97,7 +133,8 @@ t ##1 in_idle_counter_not_enabled;
 endproperty
 
 property in_idle_counter_not_enabled_step;
-t ##0 in_idle_counter_not_enabled
+t ##0 in_idle_counter_not_enabled and
+t ##1 state_s == IDLE
 implies
 t ##1 in_idle_counter_not_enabled;
 endproperty
@@ -112,7 +149,8 @@ endproperty
 
 
 property in_idle_counter_is_0_step;
-t ##0 in_idle_counter_is_0 
+t ##0 in_idle_counter_is_0 and
+t ##1 state_s == IDLE
 implies
 t ##1 in_idle_counter_is_0;
 endproperty

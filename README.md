@@ -8,3 +8,7 @@ Lab 4 -
 Project part A - Done\
 Project part B - 
 
+# Tools used
+- OneSpin
+- QuestaSim
+- MobaXTerm

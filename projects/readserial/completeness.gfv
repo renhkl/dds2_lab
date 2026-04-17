@@ -2,15 +2,28 @@
 
 completeness readserial;
 disable iff: (!reset_n); 
-inputs: reset_n, rxd;
+inputs: reset_n, rxd; //cnt_en, state_s, count;
 
 determination_requirements:
   determined(valid);
   if (valid) determined(data); endif;
 
 reset_property:
-  sva/inst_readserial_properties/ops/a_reset;
+  sva/inst_readserial_property_suite/ops/a_reset;
+//reset_sequence:
+  //sva/inst_readserial_property_suite/ops/reset_seq;
+//read_byte_property:
+//  sva/inst_readserial_properties/ops/a_read_byte;
+//stay_in_idle_property:
+//  sva/inst_readserial_properties/ops/a_stay_in_idle;
 property_graph:
-  sva/inst_readserial_properties/ops/a_reset -> sva/inst_readserial_properties/ops/a_read_byte;
-  sva/inst_readserial_properties/ops/a_read_byte -> sva/inst_readserial_properties/ops/a_read_byte;
+  sva/inst_readserial_property_suite/ops/a_reset -> sva/inst_readserial_property_suite/ops/a_read_byte;
+  sva/inst_readserial_property_suite/ops/a_read_byte -> sva/inst_readserial_property_suite/ops/a_read_byte;
+  sva/inst_readserial_property_suite/ops/a_reset -> sva/inst_readserial_property_suite/ops/a_stay_in_idle;
+  sva/inst_readserial_property_suite/ops/a_stay_in_idle -> sva/inst_readserial_property_suite/ops/a_stay_in_idle;
+	sva/inst_readserial_property_suite/ops/a_read_byte -> sva/inst_readserial_property_suite/ops/a_stay_in_idle;
+	sva/inst_readserial_property_suite/ops/a_stay_in_idle -> sva/inst_readserial_property_suite/ops/a_read_byte;
 end completeness;
+
+//bind readserial readserial_properties inst_readserial_properties (.*); //bind statement in tda is enough
+
