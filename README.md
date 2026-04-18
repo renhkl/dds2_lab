@@ -12,3 +12,4 @@ Project part B -
 - OneSpin
 - QuestaSim
 - MobaXTerm
+- Git

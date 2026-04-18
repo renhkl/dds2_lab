@@ -29,4 +29,17 @@
       </metadata>
     </info>
   </bookmark>
+  <bookmark href="file:///home/courses/desdigsys2/2026s/dds226s27/.gitignore" added="2026-04-18T14:42:39Z" modified="2026-04-18T14:43:36Z" visited="2026-04-18T14:42:40Z">
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <mime:mime-type type="text/plain"/>
+        <bookmark:groups>
+          <bookmark:group>gedit</bookmark:group>
+        </bookmark:groups>
+        <bookmark:applications>
+          <bookmark:application name="gedit" exec="&apos;gedit %u&apos;" modified="2026-04-18T14:43:36Z" count="3"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
 </xbel>

@@ -19,4 +19,10 @@
 /.gitconfig
 /.dbus/session-bus 
 /default.onespin
-.Xauthority
+/.Xauthority
+/.dbus/session-bus
+/.local/share
+/default.onespin
+/.modelsim
+/.modelsim.bak
+/transcript
