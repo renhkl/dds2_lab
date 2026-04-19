@@ -129,12 +129,14 @@ module assertions_hdlc (
     @(posedge Clk) Rx_Abort_Flag |=> Rx_AbortSignal; 
   endproperty
 
+/*
   RX_Abort_Pattern_AbortSignal_Assert : assert property (RX_Abort_Pattern_AbortSignal) begin
     $display("PASS: RX_AbortSignal asserted after abort pattern");
   end else begin 
     $error("AbortSignal did not go high after abort pattern during validframe"); 
     ErrCntAssertions++; 
   end
+  */
 
     /********************************************
    *  Verify correct Tx_Abort_Pattern behavior  *

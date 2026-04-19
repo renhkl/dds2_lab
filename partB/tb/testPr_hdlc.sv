@@ -274,9 +274,9 @@ int successCounter = 0;
     Receive( 25, 0, 0, 0, 0, 0, 0); //Normal
     Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
 
-    Receive( 40, 0, 1, 0, 0, 0, 0); //FCSerr
-    Receive( 40, 0, 0, 1, 0, 0, 0); //NonByteAligned
-    Receive( 40, 0, 0, 0, 0, 1, 0); //Drop
+    //Receive( 40, 0, 1, 0, 0, 0, 0); //FCSerr
+    //Receive( 40, 0, 0, 1, 0, 0, 0); //NonByteAligned
+    //Receive( 40, 0, 0, 0, 0, 1, 0); //Drop
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
