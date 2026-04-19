@@ -304,12 +304,22 @@ int successCounter = 0;
     uin_hdlc.TxEN        =   1'b1;
     uin_hdlc.Rx          =   1'b1;
     uin_hdlc.RxEN        =   1'b1;
+    //uin_hdlc.Tx          = 1'b1;
 
     TbErrorCnt = 0;
 
     #1000ns;
     uin_hdlc.Rst         =   1'b1;
   endtask
+
+
+
+
+  /****************************************************************************
+   *                                                                          *
+   *                             Address interface                            *
+   *                                                                          *
+   ****************************************************************************/
 
   task WriteAddress(input logic [2:0] Address ,input logic [7:0] Data);
     @(posedge uin_hdlc.Clk);
@@ -330,7 +340,17 @@ int successCounter = 0;
     uin_hdlc.ReadEnable = 1'b0;
   endtask
 
-  task InsertFlagOrAbort(int flag);
+    /****************************************************************************
+   *                                                                          *
+   *                            Flag and abort generation                     *
+   *                                                                          *
+   ****************************************************************************/
+
+
+  //Rx
+  //Flag:  0111_1110
+  //Abort: 0111_1111
+  task InsertFlagOrAbort(int flag); 
     @(posedge uin_hdlc.Clk);
     uin_hdlc.Rx = 1'b0;
     @(posedge uin_hdlc.Clk);
@@ -352,6 +372,26 @@ int successCounter = 0;
       uin_hdlc.Rx = 1'b1;
   endtask
 
+
+
+  //Tx
+  //Flag:  0111_1110
+  //Abort: 0111_1111??
+   task InsertFlagOrAbortTx(int abort);
+       if (abort) 
+    WriteAddress(TXSC_ADDRESS, 8'b0000_0110); //abort tx
+    else
+    WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable tx 
+  endtask
+
+
+  /****************************************************************************
+   *                                                                          *
+   *                             Rx/Tx stimulus                               *
+   *                                                                          *
+   ****************************************************************************/
+
+
   task MakeRxStimulus(logic [127:0][7:0] Data, int Size);
     logic [4:0] PrevData;
     PrevData = '0;
@@ -372,6 +412,26 @@ int successCounter = 0;
       end
     end
   endtask
+
+
+  task MakeTxStimulus(logic [127:0][7:0] Data, int Size);
+
+    for (int i = 0; i < Size; i++) begin
+      //for (int j = 0; i < 8; j++) begin
+      //writeaddress takes in one byte at a time
+        WriteAddress(TXBUFF_ADDRESS, Data[i]); //Data[i][j]
+      //end
+    end
+
+  endtask
+
+
+  /****************************************************************************
+   *                                                                          *
+   *                             Receive task                                 *
+   *                                                                          *
+   ****************************************************************************/
+  
 
   task Receive(int Size, int Abort, int FCSerr, int NonByteAligned, int Overflow, int Drop, int SkipRead);
     logic [127:0][7:0] ReceiveData;
@@ -409,9 +469,9 @@ int successCounter = 0;
 
     //Enable FCS
     if(!Overflow && !NonByteAligned)
-      WriteAddress(RXSC, 8'h20);
+      WriteAddress(RXSC, 8'h20); //0010_0000, enable fcs
     else
-      WriteAddress(RXSC, 8'h00);
+      WriteAddress(RXSC, 8'h00); //0000_0000 
 
     //Generate stimulus
     InsertFlagOrAbort(1);
@@ -434,7 +494,7 @@ int successCounter = 0;
     @(posedge uin_hdlc.Clk);
     uin_hdlc.Rx = 1'b1;
 
-    repeat(8)
+    repeat(8) //idle
       @(posedge uin_hdlc.Clk);
 
       // Abort, int FCSerr, int NonByteAligned, int Overflow, int Drop, int SkipRead
@@ -458,6 +518,103 @@ int successCounter = 0;
 
     #5000ns;
   endtask
+
+  
+  /****************************************************************************
+   *                                                                          *
+   *                             Transmit task                                *
+   *                                                                          *
+   ****************************************************************************/
+
+  task Transmit(int Size, int Abort, int Overflow);
+    logic [127:0][7:0] TransmitData;
+    logic       [15:0] FCSBytes;
+    logic   [2:0][7:0] OverflowData;
+
+    //heavnly inspired/copied from receive task, with few modifications
+    //i think maybe transmit does things automatically for us, if we just set the registers right
+    //fcs, abort and overflow should be done by the dut
+    //will it automatically see that the size is too long?
+
+
+    //TODO: overflow
+
+    //begin with these three
+    string msg;
+    if(Abort)
+      msg = "- Abort";
+    else if(Overflow)
+      msg = "- Overflow";
+    else
+      msg = "- Normal";
+
+
+
+    $display("*************************************************************");
+    $display("%t - Starting task Transmit %s", $time, msg);
+    $display("*************************************************************");
+
+    //generate random data to transmit
+    for (int i = 0; i < Size; i++) begin
+      TransmitData[i] = $urandom;
+    end
+    TransmitData[Size]   = '0;
+    TransmitData[Size+1] = '0;
+
+    //calculate FCS bits;
+    //GenerateFCSBytes(TransmitData, Size, FCSBytes);
+    //TransmitData[Size]   = FCSBytes[7:0];
+    //TransmitData[Size+1] = FCSBytes[15:8];
+
+    //Enable FCS
+    //if(!Overflow && !NonByteAligned)
+    //  WriteAddress(RXSC, 8'h20); //0010_0000, enable fcs
+    //else
+    //  WriteAddress(RXSC, 8'h00); //0000_0000 
+
+    //Generate stimulus
+    InsertFlagOrAbortTx(Abort);
+    
+    MakeTxStimulus(TransmitData, Size);
+    
+    //if(Overflow) begin
+    //  OverflowData[0] = 8'h44;
+    //  OverflowData[1] = 8'hBB;
+    //  OverflowData[2] = 8'hCC;
+    //  MakeTxStimulus(OverflowData, 3);
+    //end
+
+    //if(Abort) begin
+    //  InsertFlagOrAbortTx(0);
+    //end else begin
+    //  InsertFlagOrAbortTx(1);
+    //end
+
+    //@(posedge uin_hdlc.Clk);
+    //uin_hdlc.Tx = 1'b1;
+
+    //repeat(8) //idle
+    //  @(posedge uin_hdlc.Clk);
+
+
+    /*if(Abort)
+      VerifyAbortTransmit(ReceiveData, Size);
+    else if(Overflow)
+      VerifyOverflowTransmit(ReceiveData, Size);
+    else
+      VerifyNormalTransmit(ReceiveData, Size);
+  */
+
+#5000ns;
+  endtask
+
+
+
+  /****************************************************************************
+   *                                                                          *
+   *                             FCS bytes                                    *
+   *                                                                          *
+   ****************************************************************************/
 
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
     logic [23:0] CheckReg;
