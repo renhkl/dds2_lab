@@ -7,64 +7,55 @@
 module bind_hdlc ();
 
   bind test_hdlc assertions_hdlc u_assertion_bind(
-    .ErrCntAssertions (uin_hdlc.ErrCntAssertions),
-    .Clk              (uin_hdlc.Clk),
-    .Rst              (uin_hdlc.Rst),
-    .Rx               (uin_hdlc.Rx),
-
-
-.Rx_ValidFrame    (uin_hdlc.Rx_ValidFrame),
-.Rx_WrBuff (uni)
-    .Rx_FlagDetect    (uin_hdlc.Rx_FlagDetect),
-    
-    .Rx_AbortDetect   (uin_hdlc.Rx_AbortDetect),
-    .Rx_AbortSignal   (uin_hdlc.Rx_AbortSignal),
-    .Rx_Overflow      (uin_hdlc.Rx_Overflow),
-    .Rx_WrBuff        (uin_hdlc.Rx_WrBuff)
-      (uin_hdlc.Rx_ValidFrame)      = u_dut.Rx_ValidFrame;
-   uin_hdlc.Rx_WrBuff          = u_dut.Rx_WrBuff;
-   uin_hdlc.Rx_EoF             = u_dut.Rx_EoF;
-  assign uin_hdlc.Rx_AbortSignal     = u_dut.Rx_AbortSignal;
-  assign uin_hdlc.Rx_StartZeroDetect = u_dut.Rx_StartZeroDetect;
-  assign uin_hdlc.Rx_FrameError      = u_dut.Rx_FrameError;
-  assign uin_hdlc.Rx_StartFCS        = u_dut.Rx_StartFCS;
-  assign uin_hdlc.Rx_StopFCS         = u_dut.Rx_StopFCS;
-  assign uin_hdlc.Rx_Data            = u_dut.Rx_Data;
-  assign uin_hdlc.Rx_NewByte         = u_dut.Rx_NewByte;
-  assign uin_hdlc.Rx_FlagDetect      = u_dut.Rx_FlagDetect;
-  assign uin_hdlc.Rx_AbortDetect     = u_dut.Rx_AbortDetect;
-  assign uin_hdlc.RxD                = u_dut.RxD;
-  assign uin_hdlc.Rx_FCSerr          = u_dut.Rx_FCSerr;
-  //assign uin_hdlc.Rx_Ready           = u_dut.Rx_Ready; //missing
-  assign uin_hdlc.Rx_FrameSize       = u_dut.Rx_FrameSize;
-  assign uin_hdlc.Rx_Overflow        = u_dut.Rx_Overflow;
-  assign uin_hdlc.Rx_DataBuffOut     = u_dut.Rx_DataBuffOut;
-  assign uin_hdlc.Rx_FCSen           = u_dut.Rx_FCSen;
-  assign uin_hdlc.Rx_RdBuff          = u_dut.Rx_RdBuff;
-  assign uin_hdlc.Rx_Drop            = u_dut.Rx_Drop;
-  assign uin_hdlc.ZeroDetect         = u_dut.u_RxChannel.ZeroDetect;
-
+    .ErrCntAssertions   (uin_hdlc.ErrCntAssertions),
+    .Clk                (uin_hdlc.Clk),
+    .Rst                (uin_hdlc.Rst),
+    .Rx                 (uin_hdlc.Rx),
+    .Tx                 (uin_hdlc.Tx),
+      
+    .Rx_ValidFrame      (uin_hdlc.Rx_ValidFrame),     
+    .Rx_WrBuff          (uin_hdlc.Rx_WrBuff),         
+    .Rx_EoF             (uin_hdlc.Rx_EoF),       
+    .Rx_AbortSignal     (uin_hdlc.Rx_AbortSignal),     
+    .Rx_StartZeroDetect (uin_hdlc.Rx_StartZeroDetect), 
+    .Rx_FrameError      (uin_hdlc.Rx_FrameError),      
+    .Rx_StartFCS        (uin_hdlc.Rx_StartFCS),      
+    .Rx_StopFCS         (uin_hdlc.Rx_StopFCS),        
+    .Rx_Data            (uin_hdlc.Rx_Data),          
+    .Rx_NewByte         (uin_hdlc.Rx_NewByte),       
+    .Rx_FlagDetect      (uin_hdlc.Rx_FlagDetect),      
+    .Rx_AbortDetect     (uin_hdlc.Rx_AbortDetect),     
+    .RxD                (uin_hdlc.RxD),             
+    .Rx_FCSerr          (uin_hdlc.Rx_FCSerr),         
+    //(uin_hdlc.Rx_Ready),           = u_dut.Rx_Ready; //missing
+    .Rx_FrameSize       (uin_hdlc.Rx_FrameSize),       
+    .Rx_Overflow        (uin_hdlc.Rx_Overflow),      
+    .Rx_DataBuffOut     (uin_hdlc.Rx_DataBuffOut),   
+    .Rx_FCSen           (uin_hdlc.Rx_FCSen),       
+    .Rx_RdBuff          (uin_hdlc.Rx_RdBuff),        
+    .Rx_Drop            (uin_hdlc.Rx_Drop),         
+    .ZeroDetect         (uin_hdlc.ZeroDetect),         
+ 
   //Tx
-  assign uin_hdlc.Tx_ValidFrame      = u_dut.Tx_ValidFrame;
-  assign uin_hdlc.Tx_AbortedTrans    = u_dut.Tx_AbortedTrans;
-  assign uin_hdlc.Tx_WriteFCS        = u_dut.Tx_WriteFCS;
-  assign uin_hdlc.Tx_InitZero        = u_dut.Tx_InitZero;
-  assign uin_hdlc.Tx_StartFCS        = u_dut.Tx_StartFCS;
-  assign uin_hdlc.Tx_RdBuff          = u_dut.Tx_RdBuff;
-  assign uin_hdlc.Tx_NewByte         = u_dut.Tx_NewByte;
-  assign uin_hdlc.Tx_FCSDone         = u_dut.Tx_FCSDone;
-  assign uin_hdlc.Tx_Data            = u_dut.Tx_Data;
-  assign uin_hdlc.Tx_Done            = u_dut.Tx_Done;
-  assign uin_hdlc.Tx_Full            = u_dut.Tx_Full;
-  assign uin_hdlc.Tx_DataAvail       = u_dut.Tx_DataAvail;
-  assign uin_hdlc.Tx_FrameSize       = u_dut.Tx_FrameSize;
-  assign uin_hdlc.Tx_DataArray       = u_dut.Tx_DataArray;
-  assign uin_hdlc.Tx_DataOutBuff     = u_dut.Tx_DataOutBuff;
-  assign uin_hdlc.Tx_WrBuff          = u_dut.Tx_WrBuff;
-  assign uin_hdlc.Tx_Enable          = u_dut.Tx_Enable;
-  assign uin_hdlc.Tx_DataInBuff      = u_dut.Tx_DataInBuff;
-  assign uin_hdlc.Tx_AbortFrame      = u_dut.Tx_AbortFrame;
-
+    .Tx_ValidFrame      (uin_hdlc.Tx_ValidFrame),      
+    .Tx_AbortedTrans    (uin_hdlc.Tx_AbortedTrans),    
+    .Tx_WriteFCS        (uin_hdlc.Tx_WriteFCS),        
+    .Tx_InitZero        (uin_hdlc.Tx_InitZero),      
+    .Tx_StartFCS        (uin_hdlc.Tx_StartFCS),       
+    .Tx_RdBuff          (uin_hdlc.Tx_RdBuff),      
+    .Tx_NewByte         (uin_hdlc.Tx_NewByte),        
+    .Tx_FCSDone         (uin_hdlc.Tx_FCSDone),         
+    .Tx_Data            (uin_hdlc.Tx_Data),          
+    .Tx_Done            (uin_hdlc.Tx_Done),           
+    .Tx_Full            (uin_hdlc.Tx_Full),            
+    .Tx_DataAvail       (uin_hdlc.Tx_DataAvail),      
+    .Tx_FrameSize       (uin_hdlc.Tx_FrameSize),       
+    .Tx_DataArray       (uin_hdlc.Tx_DataArray),       
+    .Tx_DataOutBuff     (uin_hdlc.Tx_DataOutBuff),     
+    .Tx_WrBuff          (uin_hdlc.Tx_WrBuff),          
+    .Tx_Enable          (uin_hdlc.Tx_Enable),          
+    .Tx_DataInBuff      (uin_hdlc.Tx_DataInBuff),      
+    .Tx_AbortFrame      (uin_hdlc.Tx_AbortFrame)     
   );
 
 endmodule

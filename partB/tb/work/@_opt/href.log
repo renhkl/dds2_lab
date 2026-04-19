@@ -1,4 +1,13 @@
+BEGIN 1:RxChannel:fast:work
+    ZeroDetect :  1:test_hdlc:fast:work
+END 
 BEGIN 1:Hdlc:fast:work
+    Rx_FrameSize :  1:test_hdlc:fast:work
+    Tx_Done :  1:test_hdlc:fast:work
+    Rx_AbortSignal :  1:test_hdlc:fast:work
+    Rx_Drop :  1:test_hdlc:fast:work
+    Tx_DataOutBuff :  1:test_hdlc:fast:work
+    Rx_Data :  1:test_hdlc:fast:work
     Tx_InitZero :  1:test_hdlc:fast:work
     Rx_FCSerr :  1:test_hdlc:fast:work
     Tx_Data :  1:test_hdlc:fast:work
@@ -32,42 +41,45 @@ BEGIN 1:Hdlc:fast:work
     Tx_WrBuff :  1:test_hdlc:fast:work
     Rx_NewByte :  1:test_hdlc:fast:work
     Tx_StartFCS :  1:test_hdlc:fast:work
+END 
+BEGIN 3:in_hdlc:fast__1:work
+    Address :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
+    ZeroDetect :  1:test_hdlc:fast:work
+    Tx_WrBuff :  1:test_hdlc:fast:work
+    Rx_NewByte :  1:test_hdlc:fast:work
+    ErrCntAssertions :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
+    Clk :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
     Rx_FrameSize :  1:test_hdlc:fast:work
     Tx_Done :  1:test_hdlc:fast:work
     Rx_AbortSignal :  1:test_hdlc:fast:work
-    Rx_Drop :  1:test_hdlc:fast:work
-    Tx_DataOutBuff :  1:test_hdlc:fast:work
-    Rx_Data :  1:test_hdlc:fast:work
-END 
-BEGIN 3:in_hdlc:fast__1:work
-    Rx_Ready :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
-    RxEN :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
+    Rx_Ready :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
+    RxEN :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
     Rx_Drop :  1:test_hdlc:fast:work
     Tx_DataOutBuff :  1:test_hdlc:fast:work
     Rx_Data :  1:test_hdlc:fast:work
     Tx_StartFCS :  1:test_hdlc:fast:work
     Tx_InitZero :  1:test_hdlc:fast:work
-    Rx :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
+    Rx :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
     Tx :  1:test_hdlc:fast:work
     Rx_FCSerr :  1:test_hdlc:fast:work
     Tx_Data :  1:test_hdlc:fast:work
     Rx_EoF :  1:test_hdlc:fast:work
-    TxEN :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
+    TxEN :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
     Rx_RdBuff :  1:test_hdlc:fast:work
     Tx_DataArray :  1:test_hdlc:fast:work
     Rx_StopFCS :  1:test_hdlc:fast:work
     Tx_WriteFCS :  1:test_hdlc:fast:work
-    DataIn :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
+    DataIn :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
     Tx_AbortFrame :  1:test_hdlc:fast:work
     RxD :  1:test_hdlc:fast:work
     Tx_FCSDone :  1:test_hdlc:fast:work
     Rx_WrBuff :  1:test_hdlc:fast:work
-    WriteEnable :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
+    WriteEnable :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
     Rx_FCSen :  1:test_hdlc:fast:work
     Tx_FrameSize :  1:test_hdlc:fast:work
     Rx_StartFCS :  1:test_hdlc:fast:work
     Tx_AbortedTrans :  1:test_hdlc:fast:work
-    Rst :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
+    Rst :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
     Tx_DataInBuff :  1:test_hdlc:fast:work
     Rx_AbortDetect :  1:test_hdlc:fast:work
     Tx_NewByte :  1:test_hdlc:fast:work
@@ -75,25 +87,13 @@ BEGIN 3:in_hdlc:fast__1:work
     Rx_DataBuffOut :  1:test_hdlc:fast:work
     Tx_DataAvail :  1:test_hdlc:fast:work
     Rx_FrameError :  1:test_hdlc:fast:work
-    DataOut :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
+    DataOut :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
     Tx_ValidFrame :  1:test_hdlc:fast:work
     Tx_Enable :  1:test_hdlc:fast:work
     Rx_FlagDetect :  1:test_hdlc:fast:work
     Tx_RdBuff :  1:test_hdlc:fast:work
-    ReadEnable :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
+    ReadEnable :  1:test_hdlc:fast:work 1:testPr_hdlc:fast:work
     Rx_Overflow :  1:test_hdlc:fast:work
     Tx_Full :  1:test_hdlc:fast:work
     Rx_StartZeroDetect :  1:test_hdlc:fast:work
-    Address :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
-    ZeroDetect :  1:test_hdlc:fast:work
-    Tx_WrBuff :  1:test_hdlc:fast:work
-    Rx_NewByte :  1:test_hdlc:fast:work
-    ErrCntAssertions :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
-    Clk :  1:testPr_hdlc:fast:work 1:test_hdlc:fast:work
-    Rx_FrameSize :  1:test_hdlc:fast:work
-    Tx_Done :  1:test_hdlc:fast:work
-    Rx_AbortSignal :  1:test_hdlc:fast:work
-END 
-BEGIN 1:RxChannel:fast:work
-    ZeroDetect :  1:test_hdlc:fast:work
 END 
