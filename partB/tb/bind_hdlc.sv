@@ -27,7 +27,7 @@ module bind_hdlc ();
     .Rx_AbortDetect     (uin_hdlc.Rx_AbortDetect),     
     .RxD                (uin_hdlc.RxD),             
     .Rx_FCSerr          (uin_hdlc.Rx_FCSerr),         
-    //(uin_hdlc.Rx_Ready),           = u_dut.Rx_Ready; //missing
+    .Rx_Ready           (uin_hdlc.Rx_Ready),          //missing
     .Rx_FrameSize       (uin_hdlc.Rx_FrameSize),       
     .Rx_Overflow        (uin_hdlc.Rx_Overflow),      
     .Rx_DataBuffOut     (uin_hdlc.Rx_DataBuffOut),   

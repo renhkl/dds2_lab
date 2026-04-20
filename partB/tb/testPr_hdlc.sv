@@ -74,7 +74,8 @@ int successCounter = 0;
       end
     end
 
-    $display("SUCCESS: Data is zero, number of times: %d", successCounter);
+    if (successCounter > 0)
+      $display("SUCCESS: Data is zero, number of times: %d", successCounter);
     successCounter = 0; 
 
   endtask
@@ -104,7 +105,9 @@ int successCounter = 0;
 
     //checking data buffer
     ReadAddress(RXLEN_ADDRESS, RxLen);
-    $display("Size: %d %d", Size, RxLen);
+    assert(RxLen == Size) $display("SUCCESS: RxLen is the same as input size"); else $display("FAIL: RxLen isn't the same length as input size");
+    assert(RxLen < 127) $display("SUCCESS: RxLen is less than 127 bytes"); else $display("FAIL: RxLen is too long");
+    $display("Size: %d %d", Size, RxLen); 
 
     for (int i = 0; i < Size; i++) begin
       //@(posedge uin_hdlc.Clk);
@@ -115,7 +118,8 @@ int successCounter = 0;
       end
     end
     
-    $display("SUCCESS: Data is matching, number of times:%d", successCounter);
+    if (successCounter > 0)
+      $display("SUCCESS: Data is matching, number of times:%d", successCounter);
     successCounter = 0;
 
   endtask
@@ -148,6 +152,8 @@ int successCounter = 0;
 
     //checking data buffer
     ReadAddress(RXLEN_ADDRESS, RxLen);
+    assert(RxLen == Size) $display("SUCCESS: RxLen is the same as input size"); else $display("FAIL: RxLen isn't the same length as input size");
+    assert(RxLen < 127) $display("SUCCESS: RxLen is less than 127 bytes"); else $display("FAIL: RxLen is too long");
     $display("Size: %d %d", Size, RxLen);
 
     for (int i = 0; i < Size; i++) begin
@@ -159,7 +165,8 @@ int successCounter = 0;
       end
     end
 
-    $display("SUCCESS: Data is matching, number of times: %d", successCounter);
+    if (successCounter > 0)
+      $display("SUCCESS: Data is matching, number of times: %d", successCounter);
     successCounter = 0;
   
   endtask
@@ -201,7 +208,8 @@ int successCounter = 0;
       end
     end
 
-    $display("SUCCESS: Data is zero, number of times: %d", successCounter);
+    if (successCounter > 0)
+      $display("SUCCESS: Data is zero, number of times: %d", successCounter);
     successCounter = 0; 
 
   endtask
@@ -225,6 +233,7 @@ int successCounter = 0;
       //WriteData[1] = 1'b1; //set drop frame
       //WriteAddress(RXSC_ADDRESS, WriteData);
     //checking rxsc values
+   // wait(!uin_hdlc.Rx_Ready);
     ReadAddress(RXSC_ADDRESS, ReadData);
     assert(!ReadData[0]) $display("SUCCESS: No Rx_Ready (%d)", ReadData[0]); else begin $display("FAIL: Rx_Ready = %d", ReadData[0]); TbErrorCnt++; end
     assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else begin $display("FAIL: Rx_FrameError = %d", ReadData[2]); TbErrorCnt++; end
@@ -244,7 +253,8 @@ int successCounter = 0;
       end
     end
 
-    $display("SUCCESS: Data is zero, number of times: %d", successCounter);
+    if (successCounter > 0)
+      $display("SUCCESS: Data is zero, number of times: %d", successCounter);
     successCounter = 0; 
 
   endtask
@@ -269,8 +279,8 @@ int successCounter = 0;
     //checking rxsc values
     ReadAddress(RXSC_ADDRESS, ReadData);
     assert(ReadData[0]) $display("SUCCESS: Tx_Done asserted (%d)", ReadData[0]); else begin $display("FAIL: Tx_Done = %d", ReadData[0]); TbErrorCnt++; end
-    assert(!ReadData[3]) $display("SUCCESS: No Tx_AbortedTrans (%d)", ReadData[3]); else begin $display("FAIL: Tx_AbortedTrans = %d", ReadData[2]); TbErrorCnt++; end
-    assert(!ReadData[4]) $display("SUCCESS: No Tx_Full (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[3]); TbErrorCnt++; end
+    assert(!ReadData[3]) $display("SUCCESS: No Tx_AbortedTrans (%d)", ReadData[3]); else begin $display("FAIL: Tx_AbortedTrans = %d", ReadData[3]); TbErrorCnt++; end
+    assert(!ReadData[4]) $display("SUCCESS: No Tx_Full (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[4]); TbErrorCnt++; end
    
    
     //checking data buffer
@@ -284,7 +294,8 @@ int successCounter = 0;
       end
     end
     
-    $display("SUCCESS: Data is matching, number of times:%d", successCounter);
+    if (successCounter > 0)
+      $display("SUCCESS: Data is matching, number of times:%d", successCounter);
     successCounter = 0;
 
   endtask
@@ -314,8 +325,9 @@ int successCounter = 0;
     Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
 
     Receive( 40, 0, 1, 0, 0, 0, 0); //FCSerr
-    Receive( 40, 0, 0, 1, 0, 0, 0); //NonByteAligned not functional
-    Receive( 40, 0, 0, 0, 0, 1, 0); //Drop not functional
+    Receive( 40, 0, 0, 1, 0, 0, 0); //NonByteAligned
+    Receive( 40, 0, 0, 0, 0, 1, 0); //Drop
+    Receive( 25, 1, 0, 0, 1, 0, 0); //overflow and abort
 
     //Transmit(40, 0, 0); //normal not functional
 
@@ -419,10 +431,10 @@ int successCounter = 0;
   //Flag:  0111_1110
   //Abort: 0111_1111??
    task InsertFlagOrAbortTx(int abort);
-       if (abort) 
-    WriteAddress(TXSC_ADDRESS, 8'b0000_0110); //abort tx
+    if (abort) 
+      WriteAddress(TXSC_ADDRESS, 8'b0000_0110); //abort tx
     else
-    WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable tx 
+      WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable tx 
   endtask
 
 
@@ -559,7 +571,7 @@ int successCounter = 0;
       MakeRxStimulus(OverflowData, 3);
     end
 
-    if(Abort || Drop) begin
+    if(Abort) begin // || Drop
       InsertFlagOrAbort(0);
     end else begin
       InsertFlagOrAbort(1);
@@ -646,9 +658,10 @@ int successCounter = 0;
     //  WriteAddress(RXSC, 8'h00); //0000_0000 
 
     //Generate stimulus
-       MakeTxStimulus(TransmitData, Size);
-    InsertFlagOrAbortTx(Abort);
     
+    wait(uin_hdlc.Tx_Done);
+    MakeTxStimulus(TransmitData, Size);
+    //InsertFlagOrAbortTx(1); //enable or abort and enable
  
     
     //if(Overflow) begin
@@ -671,6 +684,7 @@ int successCounter = 0;
     //  @(posedge uin_hdlc.Clk);
 
 
+
     if(Abort)
       $display("tx abort"); //VerifyAbortTransmit(ReceiveData, Size);
     else if(Overflow)
@@ -678,6 +692,9 @@ int successCounter = 0;
     else
       VerifyNormalTransmit(TransmitData, Size);
 
+
+    WriteAddress(TXSC_ADDRESS, 8'b0000_0000); //disable tx 
+//make it go to idle
 
 #5000ns;
   endtask

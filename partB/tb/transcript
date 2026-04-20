@@ -1,6 +1,6 @@
 # ** Note: (vsim-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
 # vsim -assertdebug -c -voptargs="+acc" test_hdlc bind_hdlc -do "log -r *; run -all; exit" 
-# Start time: 09:33:48 on Apr 20,2026
+# Start time: 13:35:37 on Apr 20,2026
 # ** Note: (vsim-3812) Design is being optimized...
 # ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
 # ** Note: (vopt-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
@@ -12,10 +12,8 @@
 # ** Note: (vopt-143) Recognized 1 FSM in module "RxController(fast)".
 # ** Warning: ./test_hdlc.sv(69): (vopt-2685) [TFMPC] - Too few port connections for 'u_dut'.  Expected 13, found 12.
 # ** Warning: ./test_hdlc.sv(69): (vopt-2718) [TFMPC] - Missing connection for port 'Tx_Done'.
-# ** Warning: ./bind_hdlc.sv(9): (vopt-2685) [TFMPC] - Too few port connections for 'u_assertion_bind'.  Expected 46, found 45.
-# ** Warning: ./bind_hdlc.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'Rx_Ready'.
 # ** Note: (vopt-143) Recognized 1 FSM in module "TxBuff(fast)".
-# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=7.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=5.
 # //  Questa Sim
 # //  Version 2025.2 linux May 31 2025
 # //
@@ -47,6 +45,16 @@
 # Loading work.assertions_hdlc(fast)
 # Loading work.bind_hdlc(fast)
 # log -r *
+# Unable to lock WLF file "vsim.wlf". Retrying 1 times, errno 11
+# Unable to lock WLF file "vsim.wlf". Retrying 2 times, errno 11
+# Unable to lock WLF file "vsim.wlf". Retrying 3 times, errno 11
+# Cannot lock WLF file: "vsim.wlf"
+#           errno 11: Resource temporarily unavailable.
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: dds226s27  Hostname: venus.tele.ntnu.no  ProcessID: 3903532
+#           Attempting to use alternate WLF file "./wlftf9tHTr".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftf9tHTr
 #  run -all
 # *************************************************************
 #                    0 - Starting Test Program
@@ -61,6 +69,8 @@
 # SUCCESS: No Rx_FrameError (0)
 # SUCCESS: No Rx_AbortSignal (0)
 # SUCCESS: No Rx_Overflow (0)
+# SUCCESS: RxLen is the same as input size
+# SUCCESS: RxLen is less than 127 bytes
 # Size:          10  10
 # SUCCESS: Data is matching, number of times:         10
 # *************************************************************
@@ -85,6 +95,8 @@
 # SUCCESS: No Rx_FrameError (0)
 # SUCCESS: No Rx_AbortSignal (0)
 # SUCCESS: Rx_Overflow asserted (1)
+# SUCCESS: RxLen is the same as input size
+# SUCCESS: RxLen is less than 127 bytes
 # Size:         126 126
 # SUCCESS: Data is matching, number of times:         126
 # *************************************************************
@@ -97,6 +109,8 @@
 # SUCCESS: No Rx_FrameError (0)
 # SUCCESS: No Rx_AbortSignal (0)
 # SUCCESS: No Rx_Overflow (0)
+# SUCCESS: RxLen is the same as input size
+# SUCCESS: RxLen is less than 127 bytes
 # Size:          45  45
 # SUCCESS: Data is matching, number of times:         45
 # *************************************************************
@@ -109,6 +123,8 @@
 # SUCCESS: No Rx_FrameError (0)
 # SUCCESS: No Rx_AbortSignal (0)
 # SUCCESS: No Rx_Overflow (0)
+# SUCCESS: RxLen is the same as input size
+# SUCCESS: RxLen is less than 127 bytes
 # Size:         126 126
 # SUCCESS: Data is matching, number of times:        126
 # *************************************************************
@@ -133,6 +149,8 @@
 # SUCCESS: No Rx_FrameError (0)
 # SUCCESS: No Rx_AbortSignal (0)
 # SUCCESS: Rx_Overflow asserted (1)
+# SUCCESS: RxLen is the same as input size
+# SUCCESS: RxLen is less than 127 bytes
 # Size:         126 126
 # SUCCESS: Data is matching, number of times:         126
 # *************************************************************
@@ -145,6 +163,8 @@
 # SUCCESS: No Rx_FrameError (0)
 # SUCCESS: No Rx_AbortSignal (0)
 # SUCCESS: No Rx_Overflow (0)
+# SUCCESS: RxLen is the same as input size
+# SUCCESS: RxLen is less than 127 bytes
 # Size:          25  25
 # SUCCESS: Data is matching, number of times:         25
 # *************************************************************
@@ -157,6 +177,8 @@
 # SUCCESS: No Rx_FrameError (0)
 # SUCCESS: No Rx_AbortSignal (0)
 # SUCCESS: No Rx_Overflow (0)
+# SUCCESS: RxLen is the same as input size
+# SUCCESS: RxLen is less than 127 bytes
 # Size:          47  47
 # SUCCESS: Data is matching, number of times:         47
 # *************************************************************
@@ -188,26 +210,77 @@
 # *************************************************************
 # dropped frame
 # PASS: Flag detect
-# PASS: Abort signal
+# PASS: Flag detect
 # -------- DROPPED FRAME RECEIVE --------
+# FAIL: Rx_Ready = 1
+# SUCCESS: No Rx_FrameError (0)
+# FAIL: Rx_AbortSignal = 0
+# SUCCESS: No Rx_Overflow (0)
+# Size:          40  40
+# FAIL: Data is not zero (208)
+# FAIL: Data is not zero ( 23)
+# FAIL: Data is not zero ( 68)
+# FAIL: Data is not zero (251)
+# FAIL: Data is not zero ( 10)
+# FAIL: Data is not zero ( 51)
+# FAIL: Data is not zero (  7)
+# FAIL: Data is not zero (227)
+# FAIL: Data is not zero (107)
+# FAIL: Data is not zero ( 35)
+# FAIL: Data is not zero ( 56)
+# FAIL: Data is not zero (132)
+# FAIL: Data is not zero ( 72)
+# FAIL: Data is not zero ( 98)
+# FAIL: Data is not zero (  9)
+# FAIL: Data is not zero (174)
+# FAIL: Data is not zero (212)
+# FAIL: Data is not zero ( 91)
+# FAIL: Data is not zero (167)
+# FAIL: Data is not zero (126)
+# FAIL: Data is not zero (250)
+# FAIL: Data is not zero (139)
+# FAIL: Data is not zero (213)
+# FAIL: Data is not zero (166)
+# FAIL: Data is not zero (141)
+# FAIL: Data is not zero (183)
+# FAIL: Data is not zero (231)
+# FAIL: Data is not zero (101)
+# FAIL: Data is not zero ( 71)
+# FAIL: Data is not zero ( 80)
+# FAIL: Data is not zero ( 35)
+# FAIL: Data is not zero (121)
+# FAIL: Data is not zero ( 57)
+# FAIL: Data is not zero (245)
+# FAIL: Data is not zero (106)
+# FAIL: Data is not zero (  1)
+# FAIL: Data is not zero ( 83)
+# FAIL: Data is not zero (214)
+# FAIL: Data is not zero (217)
+# SUCCESS: Data is zero, number of times:           1
+# *************************************************************
+#              4346250 - Starting task Receive - Abort
+# *************************************************************
+# PASS: Flag detect
+# PASS: Abort signal
+# -------- ABORT RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: No Rx_FrameError (0)
 # SUCCESS: Rx_AbortSignal asserted (1)
 # SUCCESS: No Rx_Overflow (0)
-# Size:          40  40
-# SUCCESS: Data is zero, number of times:          40
+# Size:          25  28
+# SUCCESS: Data is zero, number of times:          25
 # *************************************************************
-#              4346250 - Finishing Test Program
+#              4513750 - Finishing Test Program
 # *************************************************************
-# ** Note: $stop    : ./testPr_hdlc.sv(325)
-#    Time: 4346250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
-# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 325
-# Stopped at ./testPr_hdlc.sv line 325
+# ** Note: $stop    : ./testPr_hdlc.sv(337)
+#    Time: 4513750 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
+# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 337
+# Stopped at ./testPr_hdlc.sv line 337
 #  exit
 # *********************************
 # *                               *
-# * 	Assertion Errors: 0	  *
+# * 	Assertion Errors: 41	  *
 # *                               *
 # *********************************
-# End time: 09:33:53 on Apr 20,2026, Elapsed time: 0:00:05
+# End time: 13:35:50 on Apr 20,2026, Elapsed time: 0:00:13
 # Errors: 0, Warnings: 7
