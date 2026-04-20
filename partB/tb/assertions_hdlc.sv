@@ -119,22 +119,51 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end
 
+
 /********************************************
-   *  Verify correct Rx_Abort_Pattern behavior  *
+   *5   Verify correct Rx_Abort_Pattern behavior  *
+   ********************************************/
+
+  sequence Tx_Flag;
+    !Tx ##1 Tx[*6] ##1 !Tx; //1111 1110
+  endsequence
+
+  property TX_Flag_Pattern;
+    @(posedge Clk) Tx_Done ##1 !Tx_Done |=> Tx_Flag; 
+  endproperty
+
+  TX_Flag_Patter_Assert : assert property (TX_Flag_Pattern) begin
+    $display("PASS: TX Flag pattern");
+  end else begin 
+    $error("Tx flag not detected"); 
+    ErrCntAssertions++; 
+  end
+
+
+/********************************************
+   *8   Verify correct Rx_Abort_Pattern behavior  *
    ********************************************/
 
     /********************************************
-   *  Verify correct Tx_Abort_Pattern behavior  *
+   *8  Verify correct Tx_Abort_Pattern behavior  *
    ********************************************/
 
 //need to change the error messsage and property
 
-  sequence Rx_Abort_Flag;
+  /*sequence Rx_Abort_Flag;
     Rx[*7] ##1 !Rx; //1111 1110
+  endsequence*/
+
+  sequence Rx_Abort_Flag;
+   !Rx  ##1 Rx[*7] ; //0111 1111, this is abort on the receive side
   endsequence
 
   sequence TX_Abort_Flag;
     !Tx ##1 Tx[*7]; //0111 1111
+  endsequence
+
+  sequence ValidFrame_Sequence;
+  Rx_ValidFrame[*8];
   endsequence
 
 /*
@@ -164,24 +193,24 @@ module assertions_hdlc (
 */
 
  /********************************************
-   *  Verify correct Rx_Abort_Pattern behavior  *
+   *  10 Verify correct Rx_Abort_Pattern behavior  *
    ********************************************/
 
   property RX_Abort_Pattern_AbortSignal; //valid frame for the duration
-    @(posedge Clk) Rx_Abort_Flag |=> Rx_AbortSignal; 
+    @(posedge Clk) Rx_ValidFrame throughout Rx_Abort_Flag |=> Rx_AbortSignal; 
   endproperty
 
-/*
+
   RX_Abort_Pattern_AbortSignal_Assert : assert property (RX_Abort_Pattern_AbortSignal) begin
     $display("PASS: RX_AbortSignal asserted after abort pattern");
   end else begin 
     $error("AbortSignal did not go high after abort pattern during validframe"); 
     ErrCntAssertions++; 
   end
-  */
+  
 
     /********************************************
-   *  Verify correct Tx_Abort_Pattern behavior  *
+   *  9 Verify correct Tx_Abort_Pattern behavior  *
    ********************************************/
 
 
@@ -197,13 +226,15 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end*/
 
-
-  /*  sequence Rx_Idle_Pattern;
-    Rx[*8]; //1111 1110
+    /********************************************
+   *  7 Verify correct Tx_Abort_Pattern behavior  *
+   ********************************************/
+  sequence Rx_Idle_Pattern;
+    Rx[*8]; //1111 1111
   endsequence
 
-     sequence Tx_Idle_Pattern;
-    Tx[*8]; //1111 1110
-  endsequence*/
+  sequence Tx_Idle_Pattern;
+    Tx[*8]; //1111 1111
+  endsequence
 
 endmodule
