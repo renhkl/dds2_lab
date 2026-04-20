@@ -3,7 +3,7 @@
 Lab 1 -  Done \
 Lab 2 -  Done \
 Lab 3 -  Done \
-Lab 4 - 
+Lab 4 -  Done
 
 Project part A - Done\
 Project part B - 
@@ -13,3 +13,4 @@ Project part B -
 - QuestaSim
 - MobaXTerm
 - Git
+- VSCode

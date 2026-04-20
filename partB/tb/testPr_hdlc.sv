@@ -213,7 +213,7 @@ int successCounter = 0;
    *                               Dropped frame receive                               *
    *                                                                          *
    ****************************************************************************/
-/*
+
     task VerifyDroppedFrameReceive(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
     logic [7:0] WriteData;
@@ -222,14 +222,14 @@ int successCounter = 0;
 
     $display("-------- DROPPED FRAME RECEIVE --------");
      
-      WriteData[1] = 1'b1; //set drop frame
-      WriteAddress(RXSC_ADDRESS, WriteData);
+      //WriteData[1] = 1'b1; //set drop frame
+      //WriteAddress(RXSC_ADDRESS, WriteData);
     //checking rxsc values
-    //ReadAddress(RXSC_ADDRESS, ReadData);
-    //assert(!ReadData[0]) $display("SUCCESS: No Rx_Ready (%d)", ReadData[0]); else begin $display("FAIL: Rx_Ready = %d", ReadData[0]); TbErrorCnt++; end
-    //assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else begin $display("FAIL: Rx_FrameError = %d", ReadData[2]); TbErrorCnt++; end
-    //assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else begin $display("FAIL: Rx_AbortSignal = %d", ReadData[3]); TbErrorCnt++; end
-    //assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else begin $display("FAIL: Rx_Overflow = %d", ReadData[4]); TbErrorCnt++; end
+    ReadAddress(RXSC_ADDRESS, ReadData);
+    assert(!ReadData[0]) $display("SUCCESS: No Rx_Ready (%d)", ReadData[0]); else begin $display("FAIL: Rx_Ready = %d", ReadData[0]); TbErrorCnt++; end
+    assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else begin $display("FAIL: Rx_FrameError = %d", ReadData[2]); TbErrorCnt++; end
+    assert(ReadData[3]) $display("SUCCESS: Rx_AbortSignal asserted (%d)", ReadData[3]); else begin $display("FAIL: Rx_AbortSignal = %d", ReadData[3]); TbErrorCnt++; end
+    assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else begin $display("FAIL: Rx_Overflow = %d", ReadData[4]); TbErrorCnt++; end
     
 
     //checking data buffer
@@ -248,7 +248,46 @@ int successCounter = 0;
     successCounter = 0; 
 
   endtask
-  */
+  
+
+
+    /****************************************************************************
+   *                                                                          *
+   *                               Normal transmit                               *
+   *                                                                          *
+   ****************************************************************************/
+
+  // VerifyNormalReceive should verify correct value in the Rx status/control
+  // register, and that the Rx data buffer contains correct data.
+  task VerifyNormalTransmit(logic [127:0][7:0] data, int Size);
+    logic [7:0] ReadData;
+    //wait(uin_hdlc.Tx_Done);
+
+
+    $display("-------- NORMAL TRANSMIT --------");
+
+    //checking rxsc values
+    ReadAddress(RXSC_ADDRESS, ReadData);
+    assert(ReadData[0]) $display("SUCCESS: Tx_Done asserted (%d)", ReadData[0]); else begin $display("FAIL: Tx_Done = %d", ReadData[0]); TbErrorCnt++; end
+    assert(!ReadData[3]) $display("SUCCESS: No Tx_AbortedTrans (%d)", ReadData[3]); else begin $display("FAIL: Tx_AbortedTrans = %d", ReadData[2]); TbErrorCnt++; end
+    assert(!ReadData[4]) $display("SUCCESS: No Tx_Full (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[3]); TbErrorCnt++; end
+   
+   
+    //checking data buffer
+
+    for (int i = 0; i < Size; i++) begin
+      //@(posedge uin_hdlc.Clk);
+      ReadAddress(TXBUFF_ADDRESS, ReadData);
+      //comparing data in function argument and in rx buffer
+      assert(data[i] == ReadData) successCounter++; //$display("SUCCESS: Data is matching"); 
+      else begin $display("FAIL: %d != %d", ReadData, data[i]); TbErrorCnt++; 
+      end
+    end
+    
+    $display("SUCCESS: Data is matching, number of times:%d", successCounter);
+    successCounter = 0;
+
+  endtask
 
   /****************************************************************************
    *                                                                          *
@@ -274,9 +313,11 @@ int successCounter = 0;
     Receive( 25, 0, 0, 0, 0, 0, 0); //Normal
     Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
 
-    //Receive( 40, 0, 1, 0, 0, 0, 0); //FCSerr
-    //Receive( 40, 0, 0, 1, 0, 0, 0); //NonByteAligned
-    //Receive( 40, 0, 0, 0, 0, 1, 0); //Drop
+    Receive( 40, 0, 1, 0, 0, 0, 0); //FCSerr
+    Receive( 40, 0, 0, 1, 0, 0, 0); //NonByteAligned not functional
+    Receive( 40, 0, 0, 0, 0, 1, 0); //Drop not functional
+
+    //Transmit(40, 0, 0); //normal not functional
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
@@ -437,6 +478,8 @@ int successCounter = 0;
     logic [127:0][7:0] ReceiveData;
     logic       [15:0] FCSBytes;
     logic   [2:0][7:0] OverflowData;
+    logic [127:0][8:0] NonByteAlignedData; //it only seems to give frame error if the array is bigger than 8 bits and not less even if that's still non byte aligned
+
     string msg;
     if(Abort)
       msg = "- Abort";
@@ -456,6 +499,20 @@ int successCounter = 0;
     $display("%t - Starting task Receive %s", $time, msg);
     $display("*************************************************************");
 
+    if (NonByteAligned) begin
+    //generate random data
+    for (int i = 0; i < Size; i++) begin
+      NonByteAlignedData[i] = $urandom;
+    end
+    NonByteAlignedData[Size]   = '0;
+    NonByteAlignedData[Size+1] = '0;
+
+    //Calculate FCS bits;
+    GenerateFCSBytes(NonByteAligned, Size, FCSBytes);
+    NonByteAlignedData[Size]   = FCSBytes[7:0];
+    NonByteAlignedData[Size+1] = FCSBytes[15:8];
+    end else begin
+       //generate random data
     for (int i = 0; i < Size; i++) begin
       ReceiveData[i] = $urandom;
     end
@@ -466,18 +523,35 @@ int successCounter = 0;
     GenerateFCSBytes(ReceiveData, Size, FCSBytes);
     ReceiveData[Size]   = FCSBytes[7:0];
     ReceiveData[Size+1] = FCSBytes[15:8];
+    end
+    
+    if (FCSerr) begin
+      //Calculate FCS bits;
+    GenerateFCSBytes(ReceiveData, Size, FCSBytes);
+    ReceiveData[Size]   = FCSBytes[15:8];
+    ReceiveData[Size+1] = FCSBytes[7:0];
+    end
 
     //Enable FCS
-    if(!Overflow && !NonByteAligned)
+    if(!Overflow && !Drop) //abort, fcserr, skipread, normal will still go here, nonbytealigned
       WriteAddress(RXSC, 8'h20); //0010_0000, enable fcs
+      //guess its not worth going for fcs if there's an overflow
+    else if (Drop) begin
+      WriteAddress(RXSC, 8'b0010_0010); //discard frame
+      $display("dropped frame"); end
     else
       WriteAddress(RXSC, 8'h00); //0000_0000 
 
+    //here the actual "sending" happens
     //Generate stimulus
-    InsertFlagOrAbort(1);
+    InsertFlagOrAbort(1); //flag
     
+    if (NonByteAligned) 
+    MakeRxStimulus(NonByteAlignedData, Size + 2);
+    else
     MakeRxStimulus(ReceiveData, Size + 2);
     
+    //need own overflow data array, because receiveData is only up to max valid size
     if(Overflow) begin
       OverflowData[0] = 8'h44;
       OverflowData[1] = 8'hBB;
@@ -485,7 +559,7 @@ int successCounter = 0;
       MakeRxStimulus(OverflowData, 3);
     end
 
-    if(Abort) begin
+    if(Abort || Drop) begin
       InsertFlagOrAbort(0);
     end else begin
       InsertFlagOrAbort(1);
@@ -503,13 +577,12 @@ int successCounter = 0;
       VerifyAbortReceive(ReceiveData, Size);
     else if(Overflow)
       VerifyOverflowReceive(ReceiveData, Size);
-    //else if(FCSerr)
-      //VerifyFrameErrorReceive(ReceiveData, Size); //FCS isn't frame error but causes it?
-
-    //else if(NonByteAligned)
-    //  VerifyFrameErrorReceive(ReceiveData, Size);
-    //else if (Drop)
-    //VerifyDroppedFrameReceive(ReceiveData, Size);
+    else if(FCSerr)
+      VerifyFrameErrorReceive(ReceiveData, Size); //FCS isn't frame error but causes it?
+    else if(NonByteAligned)
+      VerifyFrameErrorReceive(ReceiveData, Size);
+    else if (Drop)
+    VerifyDroppedFrameReceive(ReceiveData, Size);
 
     else if(!SkipRead)
       VerifyNormalReceive(ReceiveData, Size);
@@ -554,7 +627,7 @@ int successCounter = 0;
     $display("%t - Starting task Transmit %s", $time, msg);
     $display("*************************************************************");
 
-    //generate random data to transmit
+    //generate random data to transmit. the tx module doesn't generate the data
     for (int i = 0; i < Size; i++) begin
       TransmitData[i] = $urandom;
     end
@@ -573,9 +646,10 @@ int successCounter = 0;
     //  WriteAddress(RXSC, 8'h00); //0000_0000 
 
     //Generate stimulus
+       MakeTxStimulus(TransmitData, Size);
     InsertFlagOrAbortTx(Abort);
     
-    MakeTxStimulus(TransmitData, Size);
+ 
     
     //if(Overflow) begin
     //  OverflowData[0] = 8'h44;
@@ -597,13 +671,13 @@ int successCounter = 0;
     //  @(posedge uin_hdlc.Clk);
 
 
-    /*if(Abort)
-      VerifyAbortTransmit(ReceiveData, Size);
+    if(Abort)
+      $display("tx abort"); //VerifyAbortTransmit(ReceiveData, Size);
     else if(Overflow)
-      VerifyOverflowTransmit(ReceiveData, Size);
+      $display("tx overflow"); //VerifyOverflowTransmit(ReceiveData, Size);
     else
-      VerifyNormalTransmit(ReceiveData, Size);
-  */
+      VerifyNormalTransmit(TransmitData, Size);
+
 
 #5000ns;
   endtask
