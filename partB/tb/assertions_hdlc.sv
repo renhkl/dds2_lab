@@ -133,9 +133,9 @@ module assertions_hdlc (
     Rx[*7] ##1 !Rx; //1111 1110
   endsequence
 
-//  sequence TX_Abort_Flag
-//    !Tx |=> Tx[*7]; //0111 1111
-//  endsequence
+  sequence TX_Abort_Flag;
+    !Tx ##1 Tx[*7]; //0111 1111
+  endsequence
 
 /*
 

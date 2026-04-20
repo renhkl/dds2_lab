@@ -324,10 +324,12 @@ int successCounter = 0;
     Receive( 25, 0, 0, 0, 0, 0, 0); //Normal
     Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
 
+
     Receive( 40, 0, 1, 0, 0, 0, 0); //FCSerr
     Receive( 40, 0, 0, 1, 0, 0, 0); //NonByteAligned
     Receive( 40, 0, 0, 0, 0, 1, 0); //Drop
     Receive( 25, 1, 0, 0, 1, 0, 0); //overflow and abort
+    Receive( 127, 0, 0, 0, 0, 0, 0); //normal but with overflow
 
     //Transmit(40, 0, 0); //normal not functional
 
@@ -492,6 +494,7 @@ int successCounter = 0;
     logic   [2:0][7:0] OverflowData;
     logic [127:0][8:0] NonByteAlignedData; //it only seems to give frame error if the array is bigger than 8 bits and not less even if that's still non byte aligned
 
+
     string msg;
     if(Abort)
       msg = "- Abort";
@@ -510,6 +513,9 @@ int successCounter = 0;
     $display("*************************************************************");
     $display("%t - Starting task Receive %s", $time, msg);
     $display("*************************************************************");
+    
+    if (Size > 126)
+      Overflow = 1;
 
     if (NonByteAligned) begin
     //generate random data
@@ -571,7 +577,7 @@ int successCounter = 0;
       MakeRxStimulus(OverflowData, 3);
     end
 
-    if(Abort) begin // || Drop
+    if(Abort || Drop) begin // || Drop
       InsertFlagOrAbort(0);
     end else begin
       InsertFlagOrAbort(1);
