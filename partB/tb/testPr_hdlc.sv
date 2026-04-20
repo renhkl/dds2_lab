@@ -105,8 +105,8 @@ int successCounter = 0;
 
     //checking data buffer
     ReadAddress(RXLEN_ADDRESS, RxLen);
-    assert(RxLen == Size) $display("SUCCESS: RxLen is the same as input size"); else $display("FAIL: RxLen isn't the same length as input size");
-    assert(RxLen < 127) $display("SUCCESS: RxLen is less than 127 bytes"); else $display("FAIL: RxLen is too long");
+    assert(RxLen == Size) $display("SUCCESS: RxLen is the same as input size"); else begin $display("FAIL: RxLen isn't the same length as input size"); TbErrorCnt++; end
+    assert(RxLen < 127) $display("SUCCESS: RxLen is less than 127 bytes"); else begin $display("FAIL: RxLen is too long"); TbErrorCnt++; end
     $display("Size: %d %d", Size, RxLen); 
 
     for (int i = 0; i < Size; i++) begin
@@ -150,13 +150,16 @@ int successCounter = 0;
     assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else begin $display("FAIL: Rx_AbortSignal = %d", ReadData[3]); TbErrorCnt++; end
     assert(ReadData[4]) $display("SUCCESS: Rx_Overflow asserted (%d)", ReadData[4]); else begin $display("FAIL: Rx_Overflow = %d", ReadData[4]); TbErrorCnt++; end
 
-    //checking data buffer
+  
+    //RxLen can only be 126 bytes long, while the size can be bigger. The difference will be the overflown bytes
+    //overflow is borderline triggered on 126 bytes. Both normal and overflow receive works
     ReadAddress(RXLEN_ADDRESS, RxLen);
-    assert(RxLen == Size) $display("SUCCESS: RxLen is the same as input size"); else $display("FAIL: RxLen isn't the same length as input size");
-    assert(RxLen < 127) $display("SUCCESS: RxLen is less than 127 bytes"); else $display("FAIL: RxLen is too long");
+    assert(RxLen <= Size) $display("SUCCESS: RxLen is the same or less than input size"); else begin $display("FAIL: RxLen more than input size"); TbErrorCnt++; end
+    assert(RxLen == 126) $display("SUCCESS: RxLen is 126 bytes"); else begin $display("FAIL: RxLen is %d bytes", RxLen); TbErrorCnt++; end
     $display("Size: %d %d", Size, RxLen);
 
-    for (int i = 0; i < Size; i++) begin
+      //checking data buffer
+    for (int i = 0; i < Size - (Size - RxLen); i++) begin
       //@(posedge uin_hdlc.Clk);
       ReadAddress(RXBUFF_ADDRESS, ReadData);
       //comparing data in function argument and in rx buffer
@@ -167,6 +170,18 @@ int successCounter = 0;
 
     if (successCounter > 0)
       $display("SUCCESS: Data is matching, number of times: %d", successCounter);
+    successCounter = 0; //reset before checking the overflown bytes
+
+    //the overflown bytes should be zero
+    for (int j = 0; j < (Size - RxLen); j++) begin
+      ReadAddress(RXBUFF_ADDRESS, ReadData);
+      assert(!ReadData) successCounter++; 
+      else begin $display("FAIL: Data is not zero (%d)", ReadData); TbErrorCnt++; 
+      end
+    end
+
+    if (successCounter > 0)
+      $display("SUCCESS: Data is zero , number of times : %d", successCounter);
     successCounter = 0;
   
   endtask
@@ -328,8 +343,8 @@ int successCounter = 0;
     Receive( 40, 0, 1, 0, 0, 0, 0); //FCSerr
     Receive( 40, 0, 0, 1, 0, 0, 0); //NonByteAligned
     Receive( 40, 0, 0, 0, 0, 1, 0); //Drop
-    Receive( 25, 1, 0, 0, 1, 0, 0); //overflow and abort
-    Receive( 127, 0, 0, 0, 0, 0, 0); //normal but with overflow
+    Receive( 127, 1, 0, 0, 1, 0, 0); //Overflow and abort
+    Receive( 127, 0, 0, 0, 0, 0, 0); //Normal but with overflow
 
     //Transmit(40, 0, 0); //normal not functional
 

@@ -14,11 +14,11 @@ Z1 d/home/courses/desdigsys2/2026s/dds226s27/partB/tb
 T_opt
 !i145 1
 !i144 0
-!s110 1776702154
-VeZZEERcL>0]mSo_;jjj<R1
+!s110 1776708177
+VR>RU7`GdUi5V9k]3kH[`=0
 04 9 4 work test_hdlc fast 0
 04 9 4 work bind_hdlc fast 0
-=1-90b11c1d54d8-69e652c7-7e079-3d0329
+=1-90b11c1d54d8-69e66a4e-b0742-3d1f37
 R0
 !s12f OEM100
 !s12b OEM100
@@ -31,7 +31,7 @@ OE;O;2025.2;82
 vAddressIF
 Z3 2../rtl/AddressIF.sv|../rtl/hdlc.sv|../rtl/RxBuff.sv|../rtl/RxChannel.sv|../rtl/RxController.sv|../rtl/RxFCS.sv|../rtl/TxBuff.sv|../rtl/TxChannel.sv|../rtl/TxController.sv|../rtl/TxFCS.sv
 Z4 DXx6 sv_std 3 std 0 22 @5XbY]_OacJl=`ToSm<M^0
-Z5 !s110 1776702148
+Z5 !s110 1776708171
 !i10b 1
 !s100 @WdjNn@U0B^hZLn^6OG4k3
 ID?dH?]3WAde__b0GGY9c00
@@ -47,7 +47,7 @@ Z8 OE;L;2025.2;82
 r1
 !s85 0
 31
-Z9 !s108 1776702147.000000
+Z9 !s108 1776708171.000000
 Z10 !s107 ../rtl/TxFCS.sv|../rtl/TxController.sv|../rtl/TxChannel.sv|../rtl/TxBuff.sv|../rtl/RxFCS.sv|../rtl/RxController.sv|../rtl/RxChannel.sv|../rtl/RxBuff.sv|../rtl/hdlc.sv|../rtl/AddressIF.sv|
 Z11 !s90 -sv|../rtl/AddressIF.sv|../rtl/hdlc.sv|../rtl/RxBuff.sv|../rtl/RxChannel.sv|../rtl/RxController.sv|../rtl/RxFCS.sv|../rtl/TxBuff.sv|../rtl/TxChannel.sv|../rtl/TxController.sv|../rtl/TxFCS.sv|
 !i113 0
@@ -57,7 +57,7 @@ n@address@i@f
 vassertions_hdlc
 Z13 2./assertions_hdlc.sv|./bind_hdlc.sv|./in_hdlc.sv|./test_hdlc.sv|./testPr_hdlc.sv
 R4
-Z14 !s110 1776702149
+Z14 !s110 1776708172
 !i10b 1
 !s100 Qh@>=5EO]Lf[gnLUeASl@3
 I62BTJ_nbbZ1z>IM=nk3BD1
@@ -73,7 +73,7 @@ R8
 r1
 !s85 0
 31
-Z15 !s108 1776702148.000000
+Z15 !s108 1776708172.000000
 Z16 !s107 ./testPr_hdlc.sv|./test_hdlc.sv|./in_hdlc.sv|./bind_hdlc.sv|./assertions_hdlc.sv|
 Z17 !s90 -sv|./assertions_hdlc.sv|./bind_hdlc.sv|./in_hdlc.sv|./test_hdlc.sv|./testPr_hdlc.sv|
 !i113 0
@@ -289,11 +289,11 @@ R13
 R4
 R14
 !i10b 1
-!s100 E8hnWga@kh8hg8KCnDifb0
-IG:2bXdAZE=NI00jYM@=6E0
+!s100 :ka8Jk<i7SmoQ?M^4KCf:2
+IH1[N:^^haTjE`Uk8<zPEz1
 S1
 R1
-w1776686460
+w1776707853
 8./testPr_hdlc.sv
 F./testPr_hdlc.sv
 !i122 1
@@ -391,7 +391,7 @@ n@tx@controller
 vTxFCS
 R3
 R4
-R5
+R14
 !i10b 1
 !s100 O^c0?=mXfDOWiF:GRW4zn1
 IbChRnMiHMoj[7nzVG4AaQ0
