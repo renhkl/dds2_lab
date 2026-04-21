@@ -1,3 +1,3 @@
 #!/bin/bash
 rm ./wlft*
-echo "Files removed successfully"
+echo "Old waveform files removed successfully"

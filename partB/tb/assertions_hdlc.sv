@@ -196,15 +196,15 @@ module assertions_hdlc (
    *  10 Verify correct Rx_Abort_Pattern behavior  *
    ********************************************/
 
-  property RX_Abort_Pattern_AbortSignal; //valid frame for the duration
-    @(posedge Clk) Rx_ValidFrame throughout Rx_Abort_Flag |=> Rx_AbortSignal; 
+  property RX_Abort_Pattern_AbortSignal; 
+    @(posedge Clk) Rx_ValidFrame throughout Rx_Abort_Flag |-> ##3 Rx_AbortSignal; 
   endproperty
 
 
   RX_Abort_Pattern_AbortSignal_Assert : assert property (RX_Abort_Pattern_AbortSignal) begin
     $display("PASS: RX_AbortSignal asserted after abort pattern");
   end else begin 
-    $error("AbortSignal did not go high after abort pattern during validframe"); 
+    $error("FAIL: Rx_AbortSignal did not go high after abort pattern during Rx_ValidFrame"); 
     ErrCntAssertions++; 
   end
   
@@ -236,5 +236,21 @@ module assertions_hdlc (
   sequence Tx_Idle_Pattern;
     Tx[*8]; //1111 1111
   endsequence
+
+
+      /********************************************
+   *  12 Verify correct Tx_Abort_Pattern behavior  *
+   ********************************************/
+
+  property RX_EoF;
+    @(posedge Clk) Rx_FlagDetect ##4 $fell(Rx_ValidFrame) |=> Rx_EoF; 
+  endproperty
+
+  RX_EoF_Assert : assert property (RX_EoF) begin
+    $display("PASS: Rx_EoF asserted");
+  end else begin 
+    $error("FAIL: Rx_EoF not asserted after receiving a whole frame"); 
+    ErrCntAssertions++; 
+  end
 
 endmodule

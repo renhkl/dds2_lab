@@ -1,6 +1,6 @@
 # ** Note: (vsim-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
 # vsim -assertdebug -c -voptargs="+acc" test_hdlc bind_hdlc -do "log -r *; run -all; exit" 
-# Start time: 21:23:23 on Apr 20,2026
+# Start time: 09:43:36 on Apr 21,2026
 # ** Note: (vsim-3812) Design is being optimized...
 # ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
 # ** Note: (vopt-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
@@ -51,10 +51,10 @@
 # Cannot lock WLF file: "vsim.wlf"
 #           errno 11: Resource temporarily unavailable.
 # ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
-#           File in use by: dds226s27  Hostname: venus.tele.ntnu.no  ProcessID: 4021544
-#           Attempting to use alternate WLF file "./wlftG2aQwn".
+#           File in use by: dds226s27  Hostname: venus.tele.ntnu.no  ProcessID: 4121705
+#           Attempting to use alternate WLF file "./wlftgYclTR".
 # ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
-#           Using alternate file: ./wlftG2aQwn
+#           Using alternate file: ./wlftgYclTR
 #  run -all
 # *************************************************************
 #                    0 - Starting Test Program
@@ -64,6 +64,7 @@
 # *************************************************************
 # PASS: Flag detect
 # PASS: Flag detect
+# PASS: Rx_EoF asserted
 # -------- NORMAL RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
 # SUCCESS: No Rx_FrameError (0)
@@ -71,15 +72,15 @@
 # SUCCESS: No Rx_Overflow (0)
 # SUCCESS: RxLen is the same as input size
 # SUCCESS: RxLen is less than 127 bytes
-# Size:          10  10
+# SUCCESS: Rx_FrameSize is the same as RxLen
+# Size:          10  10  10
 # SUCCESS: Data is matching, number of times:         10
 # *************************************************************
 #                79250 - Starting task Receive - Abort
 # *************************************************************
 # PASS: Flag detect
-# ** Error: AbortSignal did not go high after abort pattern during validframe
-#    Time: 262750 ns Started: 258750 ns  Scope: test_hdlc.u_assertion_bind.RX_Abort_Pattern_AbortSignal_Assert File: ./assertions_hdlc.sv Line: 207 Expr: Rx_AbortSignal
 # PASS: Abort signal
+# PASS: RX_AbortSignal asserted after abort pattern
 # -------- ABORT RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: No Rx_FrameError (0)
@@ -92,6 +93,7 @@
 # *************************************************************
 # PASS: Flag detect
 # PASS: Flag detect
+# PASS: Rx_EoF asserted
 # -------- OVERFLOW RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
 # SUCCESS: No Rx_FrameError (0)
@@ -99,13 +101,15 @@
 # SUCCESS: Rx_Overflow asserted (1)
 # SUCCESS: RxLen is the same or less than input size
 # SUCCESS: RxLen is 126 bytes
-# Size:         126 126
+# SUCCESS: Rx_FrameSize is the same as RxLen
+# Size:         126 126 126
 # SUCCESS: Data is matching, number of times:         126
 # *************************************************************
 #               991250 - Starting task Receive - Normal
 # *************************************************************
 # PASS: Flag detect
 # PASS: Flag detect
+# PASS: Rx_EoF asserted
 # -------- NORMAL RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
 # SUCCESS: No Rx_FrameError (0)
@@ -113,13 +117,15 @@
 # SUCCESS: No Rx_Overflow (0)
 # SUCCESS: RxLen is the same as input size
 # SUCCESS: RxLen is less than 127 bytes
-# Size:          45  45
+# SUCCESS: Rx_FrameSize is the same as RxLen
+# Size:          45  45  45
 # SUCCESS: Data is matching, number of times:         45
 # *************************************************************
 #              1247750 - Starting task Receive - Normal
 # *************************************************************
 # PASS: Flag detect
 # PASS: Flag detect
+# PASS: Rx_EoF asserted
 # -------- NORMAL RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
 # SUCCESS: No Rx_FrameError (0)
@@ -127,15 +133,15 @@
 # SUCCESS: No Rx_Overflow (0)
 # SUCCESS: RxLen is the same as input size
 # SUCCESS: RxLen is less than 127 bytes
-# Size:         126 126
+# SUCCESS: Rx_FrameSize is the same as RxLen
+# Size:         126 126 126
 # SUCCESS: Data is matching, number of times:        126
 # *************************************************************
 #              1912250 - Starting task Receive - Abort
 # *************************************************************
 # PASS: Flag detect
-# ** Error: AbortSignal did not go high after abort pattern during validframe
-#    Time: 2423750 ns Started: 2419750 ns  Scope: test_hdlc.u_assertion_bind.RX_Abort_Pattern_AbortSignal_Assert File: ./assertions_hdlc.sv Line: 207 Expr: Rx_AbortSignal
 # PASS: Abort signal
+# PASS: RX_AbortSignal asserted after abort pattern
 # -------- ABORT RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: No Rx_FrameError (0)
@@ -148,6 +154,7 @@
 # *************************************************************
 # PASS: Flag detect
 # PASS: Flag detect
+# PASS: Rx_EoF asserted
 # -------- OVERFLOW RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
 # SUCCESS: No Rx_FrameError (0)
@@ -155,13 +162,15 @@
 # SUCCESS: Rx_Overflow asserted (1)
 # SUCCESS: RxLen is the same or less than input size
 # SUCCESS: RxLen is 126 bytes
-# Size:         126 126
+# SUCCESS: Rx_FrameSize is the same as RxLen
+# Size:         126 126 126
 # SUCCESS: Data is matching, number of times:         126
 # *************************************************************
 #              3234250 - Starting task Receive - Normal
 # *************************************************************
 # PASS: Flag detect
 # PASS: Flag detect
+# PASS: Rx_EoF asserted
 # -------- NORMAL RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
 # SUCCESS: No Rx_FrameError (0)
@@ -169,13 +178,15 @@
 # SUCCESS: No Rx_Overflow (0)
 # SUCCESS: RxLen is the same as input size
 # SUCCESS: RxLen is less than 127 bytes
-# Size:          25  25
+# SUCCESS: Rx_FrameSize is the same as RxLen
+# Size:          25  25  25
 # SUCCESS: Data is matching, number of times:         25
 # *************************************************************
 #              3389750 - Starting task Receive - Normal
 # *************************************************************
 # PASS: Flag detect
 # PASS: Flag detect
+# PASS: Rx_EoF asserted
 # -------- NORMAL RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
 # SUCCESS: No Rx_FrameError (0)
@@ -183,13 +194,15 @@
 # SUCCESS: No Rx_Overflow (0)
 # SUCCESS: RxLen is the same as input size
 # SUCCESS: RxLen is less than 127 bytes
-# Size:          47  47
+# SUCCESS: Rx_FrameSize is the same as RxLen
+# Size:          47  47  47
 # SUCCESS: Data is matching, number of times:         47
 # *************************************************************
 #              3654250 - Starting task Receive - FCS error
 # *************************************************************
 # PASS: Flag detect
 # PASS: Flag detect
+# PASS: Rx_EoF asserted
 # -------- FRAME ERROR RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: Rx_FrameError asserted (1)
@@ -202,6 +215,7 @@
 # *************************************************************
 # PASS: Flag detect
 # PASS: Flag detect
+# PASS: Rx_EoF asserted
 # -------- FRAME ERROR RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: Rx_FrameError asserted (1)
@@ -214,9 +228,8 @@
 # *************************************************************
 # dropped frame
 # PASS: Flag detect
-# ** Error: AbortSignal did not go high after abort pattern during validframe
-#    Time: 4295750 ns Started: 4291750 ns  Scope: test_hdlc.u_assertion_bind.RX_Abort_Pattern_AbortSignal_Assert File: ./assertions_hdlc.sv Line: 207 Expr: Rx_AbortSignal
 # PASS: Abort signal
+# PASS: RX_AbortSignal asserted after abort pattern
 # -------- DROPPED FRAME RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: No Rx_FrameError (0)
@@ -228,9 +241,8 @@
 #              4346250 - Starting task Receive - Abort
 # *************************************************************
 # PASS: Flag detect
-# ** Error: AbortSignal did not go high after abort pattern during validframe
-#    Time: 4895250 ns Started: 4891250 ns  Scope: test_hdlc.u_assertion_bind.RX_Abort_Pattern_AbortSignal_Assert File: ./assertions_hdlc.sv Line: 207 Expr: Rx_AbortSignal
 # PASS: Abort signal
+# PASS: RX_AbortSignal asserted after abort pattern
 # -------- ABORT RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: No Rx_FrameError (0)
@@ -243,6 +255,7 @@
 # *************************************************************
 # PASS: Flag detect
 # PASS: Flag detect
+# PASS: Rx_EoF asserted
 # -------- OVERFLOW RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
 # SUCCESS: No Rx_FrameError (0)
@@ -250,7 +263,8 @@
 # SUCCESS: Rx_Overflow asserted (1)
 # SUCCESS: RxLen is the same or less than input size
 # SUCCESS: RxLen is 126 bytes
-# Size:         127 126
+# SUCCESS: Rx_FrameSize is the same as RxLen
+# Size:         127 126 126
 # SUCCESS: Data is matching, number of times:         126
 # SUCCESS: Data is zero , number of times :           1
 # *************************************************************
@@ -260,17 +274,17 @@
 #    Time: 5717750 ns Started: 5716750 ns  Scope: test_hdlc.u_assertion_bind.TX_Flag_Patter_Assert File: ./assertions_hdlc.sv Line: 138 Expr: ~Tx
 # tx normal
 # *************************************************************
-#              5761250 - Finishing Test Program
+#              5762250 - Finishing Test Program
 # *************************************************************
-# ** Note: $stop    : ./testPr_hdlc.sv(354)
-#    Time: 5761250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
-# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 354
-# Stopped at ./testPr_hdlc.sv line 354
+# ** Note: $stop    : ./testPr_hdlc.sv(356)
+#    Time: 5762250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
+# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 356
+# Stopped at ./testPr_hdlc.sv line 356
 #  exit
 # *********************************
 # *                               *
-# * 	Assertion Errors: 5	  *
+# * 	Assertion Errors: 1	  *
 # *                               *
 # *********************************
-# End time: 21:23:35 on Apr 20,2026, Elapsed time: 0:00:12
-# Errors: 5, Warnings: 7
+# End time: 09:43:48 on Apr 21,2026, Elapsed time: 0:00:12
+# Errors: 1, Warnings: 7

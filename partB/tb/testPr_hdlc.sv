@@ -39,6 +39,7 @@ parameter RXBUFF_ADDRESS = 8'h3;
 parameter RXLEN_ADDRESS = 8'h4;
 int successCounter = 0;
 
+//the values can be gotten by using this syntax uin_hdlc.Rx_Signal
 
   /****************************************************************************
    *                                                                          *
@@ -51,7 +52,7 @@ int successCounter = 0;
   task VerifyAbortReceive(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
     logic [7:0] RxLen; //had to be defined here and not later
-  
+
 
     $display("-------- ABORT RECEIVE --------");
      
@@ -107,7 +108,8 @@ int successCounter = 0;
     ReadAddress(RXLEN_ADDRESS, RxLen);
     assert(RxLen == Size) $display("SUCCESS: RxLen is the same as input size"); else begin $display("FAIL: RxLen isn't the same length as input size"); TbErrorCnt++; end
     assert(RxLen < 127) $display("SUCCESS: RxLen is less than 127 bytes"); else begin $display("FAIL: RxLen is too long"); TbErrorCnt++; end
-    $display("Size: %d %d", Size, RxLen); 
+    assert(uin_hdlc.Rx_FrameSize == RxLen) $display("SUCCESS: Rx_FrameSize is the same as RxLen"); else begin $display("FAIL: Rx_FrameSize isn't the same length as RxLen"); TbErrorCnt++; end
+    $display("Size: %d %d %d", Size, RxLen, uin_hdlc.Rx_FrameSize); 
 
     for (int i = 0; i < Size; i++) begin
       //@(posedge uin_hdlc.Clk);
@@ -156,7 +158,8 @@ int successCounter = 0;
     ReadAddress(RXLEN_ADDRESS, RxLen);
     assert(RxLen <= Size) $display("SUCCESS: RxLen is the same or less than input size"); else begin $display("FAIL: RxLen more than input size"); TbErrorCnt++; end
     assert(RxLen == 126) $display("SUCCESS: RxLen is 126 bytes"); else begin $display("FAIL: RxLen is %d bytes", RxLen); TbErrorCnt++; end
-    $display("Size: %d %d", Size, RxLen);
+    assert(uin_hdlc.Rx_FrameSize == RxLen) $display("SUCCESS: Rx_FrameSize is the same as RxLen"); else begin $display("FAIL: Rx_FrameSize isn't the same length as RxLen"); TbErrorCnt++; end
+    $display("Size: %d %d %d", Size, RxLen, uin_hdlc.Rx_FrameSize);
 
       //checking data buffer
     for (int i = 0; i < Size - (Size - RxLen); i++) begin
@@ -200,7 +203,7 @@ int successCounter = 0;
   task VerifyFrameErrorReceive(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
     logic [7:0] RxLen; //had to be defined here and not later
-  
+    
 
     $display("-------- FRAME ERROR RECEIVE --------");
      
@@ -245,10 +248,7 @@ int successCounter = 0;
 
     $display("-------- DROPPED FRAME RECEIVE --------");
      
-      //WriteData[1] = 1'b1; //set drop frame
-      //WriteAddress(RXSC_ADDRESS, WriteData);
-    //checking rxsc values
-   // wait(!uin_hdlc.Rx_Ready);
+ 
     ReadAddress(RXSC_ADDRESS, ReadData);
     assert(!ReadData[0]) $display("SUCCESS: No Rx_Ready (%d)", ReadData[0]); else begin $display("FAIL: Rx_Ready = %d", ReadData[0]); TbErrorCnt++; end
     assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else begin $display("FAIL: Rx_FrameError = %d", ReadData[2]); TbErrorCnt++; end
@@ -347,6 +347,8 @@ int successCounter = 0;
     Receive( 127, 0, 0, 0, 0, 0, 0); //Normal but with overflow
 
     Transmit(40, 0, 0); //normal not functional
+    
+    
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
@@ -682,7 +684,7 @@ int successCounter = 0;
     
     wait(uin_hdlc.Tx_Done);
     MakeTxStimulus(TransmitData, Size);
-    //InsertFlagOrAbortTx(1); //enable or abort and enable
+    InsertFlagOrAbortTx(1); //enable or abort and enable
  
     
     //if(Overflow) begin
