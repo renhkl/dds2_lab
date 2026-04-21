@@ -125,12 +125,15 @@ module assertions_hdlc (
    ********************************************/
 
   sequence Tx_Flag;
-    !Tx ##1 Tx[*6] ##1 !Tx; //1111 1110
+    !Tx ##1 Tx[*6] ##1 !Tx; //0111_1110
   endsequence
 
   property TX_Flag_Pattern;
     @(posedge Clk) Tx_Done ##1 !Tx_Done |=> Tx_Flag; 
   endproperty
+
+  //Tx_Done ##1 !Tx_Done |=> 
+  //Tx_ValidFrame throughout Tx_Flag; 
 
   TX_Flag_Patter_Assert : assert property (TX_Flag_Pattern) begin
     $display("PASS: TX Flag pattern");

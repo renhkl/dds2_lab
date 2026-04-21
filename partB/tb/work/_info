@@ -14,11 +14,11 @@ Z1 d/home/courses/desdigsys2/2026s/dds226s27/partB/tb
 T_opt
 !i145 1
 !i144 0
-!s110 1776757418
-V=h2FP:YKSQb1fBze2Cdl81
+!s110 1776765135
+VgUcGoL?99lR54l^SD99UN1
 04 9 4 work test_hdlc fast 0
 04 9 4 work bind_hdlc fast 0
-=1-90b11c1d54d8-69e72aa8-61e8e-3f2d09
+=1-90b11c1d54d8-69e748cc-7d6c8-25270
 R0
 !s12f OEM100
 !s12b OEM100
@@ -31,7 +31,7 @@ OE;O;2025.2;82
 vAddressIF
 Z3 2../rtl/AddressIF.sv|../rtl/hdlc.sv|../rtl/RxBuff.sv|../rtl/RxChannel.sv|../rtl/RxController.sv|../rtl/RxFCS.sv|../rtl/TxBuff.sv|../rtl/TxChannel.sv|../rtl/TxController.sv|../rtl/TxFCS.sv
 Z4 DXx6 sv_std 3 std 0 22 @5XbY]_OacJl=`ToSm<M^0
-Z5 !s110 1776757413
+Z5 !s110 1776765129
 !i10b 1
 !s100 @WdjNn@U0B^hZLn^6OG4k3
 ID?dH?]3WAde__b0GGY9c00
@@ -47,7 +47,7 @@ Z8 OE;L;2025.2;82
 r1
 !s85 0
 31
-Z9 !s108 1776757412.000000
+Z9 !s108 1776765128.000000
 Z10 !s107 ../rtl/TxFCS.sv|../rtl/TxController.sv|../rtl/TxChannel.sv|../rtl/TxBuff.sv|../rtl/RxFCS.sv|../rtl/RxController.sv|../rtl/RxChannel.sv|../rtl/RxBuff.sv|../rtl/hdlc.sv|../rtl/AddressIF.sv|
 Z11 !s90 -sv|../rtl/AddressIF.sv|../rtl/hdlc.sv|../rtl/RxBuff.sv|../rtl/RxChannel.sv|../rtl/RxController.sv|../rtl/RxFCS.sv|../rtl/TxBuff.sv|../rtl/TxChannel.sv|../rtl/TxController.sv|../rtl/TxFCS.sv|
 !i113 0
@@ -57,23 +57,23 @@ n@address@i@f
 vassertions_hdlc
 Z13 2./assertions_hdlc.sv|./bind_hdlc.sv|./in_hdlc.sv|./test_hdlc.sv|./testPr_hdlc.sv
 R4
-Z14 !s110 1776757414
+Z14 !s110 1776765130
 !i10b 1
-!s100 BH4_WaU1gicR4HYG<mYYZ3
-IM?6Oh@7c_Fehn@ZXEgG`12
+!s100 26Ob:92F=NWd:di9l;=Ue2
+IGA8RA5=6B`N5RgIK2gFe?3
 S1
 R1
-w1776755119
+w1776762358
 8./assertions_hdlc.sv
 F./assertions_hdlc.sv
 !i122 1
-L0 17 240
+L0 17 243
 R7
 R8
 r1
 !s85 0
 31
-Z15 !s108 1776757413.000000
+Z15 !s108 1776765129.000000
 Z16 !s107 ./testPr_hdlc.sv|./test_hdlc.sv|./in_hdlc.sv|./bind_hdlc.sv|./assertions_hdlc.sv|
 Z17 !s90 -sv|./assertions_hdlc.sv|./bind_hdlc.sv|./in_hdlc.sv|./test_hdlc.sv|./testPr_hdlc.sv|
 !i113 0
@@ -289,11 +289,11 @@ R13
 R4
 R14
 !i10b 1
-!s100 kGWzoXC7_Vd;3e9g>czIb0
-I`B2mEU5[7Y2Tz;N7iN<U41
+!s100 Mii9YCMTz0HT>ga0@Dl2d1
+I55k1Nz2YW4n5gYKGS^QIm0
 S1
 R1
-w1776757258
+w1776765120
 8./testPr_hdlc.sv
 F./testPr_hdlc.sv
 !i122 1

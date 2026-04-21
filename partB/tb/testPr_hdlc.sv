@@ -345,8 +345,20 @@ int successCounter = 0;
     Receive( 40, 0, 0, 0, 0, 1, 0); //Drop
     Receive( 127, 1, 0, 0, 1, 0, 0); //Overflow and abort
     Receive( 127, 0, 0, 0, 0, 0, 0); //Normal but with overflow
+    
+
+    //uin_hdlc.Rx          =   1'b1;
+    //uin_hdlc.Rx        =   1'b0;
+    //uin_hdlc.RxEN        =   1'b0;
+    //uin_hdlc.TxEN        =   1'b1;
+    //WriteAddress(RXSC, 8'h00);
+    
+  
+
 
     Transmit(40, 0, 0); //normal not functional
+    //Transmit(40, 1, 0); //Abort
+    //Transmit(40, 0, 1); //Oveflow
     
     
 
@@ -373,7 +385,7 @@ int successCounter = 0;
     uin_hdlc.WriteEnable =   1'b0;
     uin_hdlc.ReadEnable  =   1'b0;
     uin_hdlc.DataIn      =     '0;
-    uin_hdlc.TxEN        =   1'b1;
+    uin_hdlc.TxEN        =   1'b0;
     uin_hdlc.Rx          =   1'b1;
     uin_hdlc.RxEN        =   1'b1;
     //uin_hdlc.Tx          = 1'b1;
@@ -490,7 +502,8 @@ int successCounter = 0;
 
     for (int i = 0; i < Size; i++) begin
       //for (int j = 0; i < 8; j++) begin
-      //writeaddress takes in one byte at a time
+      //writeaddress takes in one byte at a time¨
+        //wait(uin_hdlc.Tx_Done);
         WriteAddress(TXBUFF_ADDRESS, Data[i]); //Data[i][j]
       //end
     end
@@ -639,13 +652,10 @@ int successCounter = 0;
     logic       [15:0] FCSBytes;
     logic   [2:0][7:0] OverflowData;
 
-    //heavnly inspired/copied from receive task, with few modifications
+
     //i think maybe transmit does things automatically for us, if we just set the registers right
     //fcs, abort and overflow should be done by the dut
     //will it automatically see that the size is too long?
-
-
-    //TODO: overflow
 
     //begin with these three
     string msg;
@@ -657,7 +667,6 @@ int successCounter = 0;
       msg = "- Normal";
 
 
-
     $display("*************************************************************");
     $display("%t - Starting task Transmit %s", $time, msg);
     $display("*************************************************************");
@@ -666,25 +675,36 @@ int successCounter = 0;
     for (int i = 0; i < Size; i++) begin
       TransmitData[i] = $urandom;
     end
-    TransmitData[Size]   = '0;
-    TransmitData[Size+1] = '0;
+    //TransmitData[Size]   = '0;
+    //TransmitData[Size+1] = '0;
 
     //calculate FCS bits;
     //GenerateFCSBytes(TransmitData, Size, FCSBytes);
     //TransmitData[Size]   = FCSBytes[7:0];
     //TransmitData[Size+1] = FCSBytes[15:8];
 
-    //Enable FCS
-    //if(!Overflow && !NonByteAligned)
-    //  WriteAddress(RXSC, 8'h20); //0010_0000, enable fcs
-    //else
-    //  WriteAddress(RXSC, 8'h00); //0000_0000 
-
     //Generate stimulus
+
+  WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable tx 
+
+  //MakeTxStimulus(TransmitData, Size);
+  //wait(uin_hdlc.Tx_Done);
+    for (int j = 0; j < Size; j++) begin
+      //for (int j = 0; i < 8; j++) begin
+      //writeaddress takes in one byte at a time¨
+        //wait(uin_hdlc.Tx_Done);
+        WriteAddress(TXBUFF_ADDRESS, TransmitData[j]); //Data[i][j]
+      //end
+    end
+
+    //if (Abort) 
+    //  WriteAddress(TXSC_ADDRESS, 8'b0000_0110); //abort tx
+    //else //normal and overflow
     
-    wait(uin_hdlc.Tx_Done);
-    MakeTxStimulus(TransmitData, Size);
-    InsertFlagOrAbortTx(1); //enable or abort and enable
+    
+    //wait(uin_hdlc.Tx_Done);
+   
+    //InsertFlagOrAbortTx(1); //enable or abort and enable
  
     
     //if(Overflow) begin
@@ -706,8 +726,6 @@ int successCounter = 0;
     //repeat(8) //idle
     //  @(posedge uin_hdlc.Clk);
 
-
-
     if(Abort)
       $display("tx abort"); //VerifyAbortTransmit(ReceiveData, Size);
     else if(Overflow)
@@ -717,7 +735,7 @@ int successCounter = 0;
        $display("tx normal");
 
 
-    WriteAddress(TXSC_ADDRESS, 8'b0000_0000); //disable tx 
+    //WriteAddress(TXSC_ADDRESS, 8'b0000_0000); //disable tx 
 //make it go to idle
 
 #5000ns;
