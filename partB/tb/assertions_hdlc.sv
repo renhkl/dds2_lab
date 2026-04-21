@@ -129,7 +129,7 @@ module assertions_hdlc (
   endsequence
 
   property TX_Flag_Pattern;
-    @(posedge Clk) Tx_Done ##1 !Tx_Done |=> Tx_Flag; 
+    @(posedge Clk) Tx_Flag; //Tx_Done ##1 !Tx_Done |=> Tx_Flag; 
   endproperty
 
   //Tx_Done ##1 !Tx_Done |=> 

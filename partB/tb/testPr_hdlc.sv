@@ -31,12 +31,12 @@ program testPr_hdlc(
    ****************************************************************************/
 
 //addresses
-parameter RXSC = 8'h2;
-parameter TXSC_ADDRESS = 8'h0;
-parameter TXBUFF_ADDRESS = 8'h1;
-parameter RXSC_ADDRESS = 8'h2;
-parameter RXBUFF_ADDRESS = 8'h3;
-parameter RXLEN_ADDRESS = 8'h4;
+parameter RXSC = 3'h2;
+parameter TXSC_ADDRESS = 3'h0;
+parameter TXBUFF_ADDRESS = 3'h1;
+parameter RXSC_ADDRESS = 3'h2;
+parameter RXBUFF_ADDRESS = 3'h3;
+parameter RXLEN_ADDRESS = 3'h4;
 int successCounter = 0;
 
 //the values can be gotten by using this syntax uin_hdlc.Rx_Signal
@@ -350,7 +350,7 @@ int successCounter = 0;
     //uin_hdlc.Rx          =   1'b1;
     //uin_hdlc.Rx        =   1'b0;
     //uin_hdlc.RxEN        =   1'b0;
-    //uin_hdlc.TxEN        =   1'b1;
+    uin_hdlc.TxEN        =   1'b1;
     //WriteAddress(RXSC, 8'h00);
     
   
@@ -685,7 +685,7 @@ int successCounter = 0;
 
     //Generate stimulus
 
-  WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable tx 
+
 
   //MakeTxStimulus(TransmitData, Size);
   //wait(uin_hdlc.Tx_Done);
@@ -696,6 +696,8 @@ int successCounter = 0;
         WriteAddress(TXBUFF_ADDRESS, TransmitData[j]); //Data[i][j]
       //end
     end
+
+      WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable tx. dont think it matter if before or after writeaddress
 
     //if (Abort) 
     //  WriteAddress(TXSC_ADDRESS, 8'b0000_0110); //abort tx
@@ -738,7 +740,7 @@ int successCounter = 0;
     //WriteAddress(TXSC_ADDRESS, 8'b0000_0000); //disable tx 
 //make it go to idle
 
-#5000ns;
+#50000ns;
   endtask
 
 
