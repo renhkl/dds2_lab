@@ -740,7 +740,7 @@ int successCounter = 0;
     //WriteAddress(TXSC_ADDRESS, 8'b0000_0000); //disable tx 
 //make it go to idle
 
-#50000ns;
+#10000ns;
   endtask
 
 

@@ -74,7 +74,7 @@ module assertions_hdlc (
   end
 
   /*******************************************
-   *  Verify correct Rx_FlagDetect behavior  *
+   * Part A - Verify correct Rx_FlagDetect behavior  *
    *******************************************/
 
   sequence Rx_flag;
@@ -95,7 +95,7 @@ module assertions_hdlc (
   end
 
   /********************************************
-   *  Verify correct Rx_AbortSignal behavior  *
+   *  Part A - Verify correct Rx_AbortSignal behavior  *
    ********************************************/
 
   //If abort is detected during valid frame. then abort signal should go high
@@ -121,7 +121,7 @@ module assertions_hdlc (
 
 
 /********************************************
-   *5   Verify correct Rx_Abort_Pattern behavior  *
+   * Part B - Assertion 5    *
    ********************************************/
 
   sequence Tx_Flag;
@@ -129,7 +129,7 @@ module assertions_hdlc (
   endsequence
 
   property TX_Flag_Pattern;
-    @(posedge Clk) Tx_Flag; //Tx_Done ##1 !Tx_Done |=> Tx_Flag; 
+    @(posedge Clk) Tx_Done ##1 !Tx_Done |=> Tx_Flag; //not functional, but expected
   endproperty
 
   //Tx_Done ##1 !Tx_Done |=> 
@@ -144,11 +144,7 @@ module assertions_hdlc (
 
 
 /********************************************
-   *8   Verify correct Rx_Abort_Pattern behavior  *
-   ********************************************/
-
-    /********************************************
-   *8  Verify correct Tx_Abort_Pattern behavior  *
+   *Part B - Assertion 8  *
    ********************************************/
 
 //need to change the error messsage and property
@@ -196,7 +192,7 @@ module assertions_hdlc (
 */
 
  /********************************************
-   *  10 Verify correct Rx_Abort_Pattern behavior  *
+   * Part B - Assertion 10   *
    ********************************************/
 
   property RX_Abort_Pattern_AbortSignal; 
@@ -213,7 +209,7 @@ module assertions_hdlc (
   
 
     /********************************************
-   *  9 Verify correct Tx_Abort_Pattern behavior  *
+   *  Part B - Assertion 9   *
    ********************************************/
 
 
@@ -230,7 +226,7 @@ module assertions_hdlc (
   end*/
 
     /********************************************
-   *  7 Verify correct Tx_Abort_Pattern behavior  *
+   *  Part B - Assertion 7   *
    ********************************************/
   sequence Rx_Idle_Pattern;
     Rx[*8]; //1111 1111
@@ -242,7 +238,7 @@ module assertions_hdlc (
 
 
       /********************************************
-   *  12 Verify correct Tx_Abort_Pattern behavior  *
+   *  Part B - Assertion 12   *
    ********************************************/
 
   property RX_EoF;

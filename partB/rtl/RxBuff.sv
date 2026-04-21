@@ -46,7 +46,7 @@ module RxBuff(
         RxDataBuffOut     <= '0;
       end
       else if(!RxReady) begin
-        RxDataBuffOut <= '0;
+        RxDataBuffOut <= '0; //here
       end
       else
         RxDataBuffOut <= DataArray[Count];
@@ -116,6 +116,12 @@ module RxBuff(
           NextState <= IDLE;
           RstCount  <= 1'b1;
         end
+        /*else if (Drop) begin
+          RxReady   <= 1'b0;
+          NextState <= IDLE;
+          RstCount  <= 1'b1;
+          $display("yo\n");
+        end*/
         else if((EoF)) begin
           RxReady       <= 1'b1;
           NextState     <= READ;
@@ -133,11 +139,19 @@ module RxBuff(
         EnCount       <= ReadBuff;
         LoadFrameSize <= 1'b0;
         
+        /*if(Drop) begin
+          Overflow  <= 1'b0;
+          RxReady   <= 1'b0;
+          NextState <= IDLE;
+          RstCount  <= 1'b1;
+          $display("ddd\n");
+        end*/
         if((Count == FrameSize) || Drop || FrameError || AbortedFrame) begin
           Overflow  <= 1'b0;
           RxReady   <= 1'b0;
           NextState <= IDLE;
           RstCount  <= 1'b1;
+          //$display("hi\n");
         end
         else begin
           RxReady <= 1'b1;
