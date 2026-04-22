@@ -124,18 +124,28 @@ module assertions_hdlc (
    * Part B - Assertion 5    *
    ********************************************/
 
+   //Tx_ValidFrame throughout Tx_Flag; 
+
   sequence Tx_Flag;
     !Tx ##1 Tx[*6] ##1 !Tx; //0111_1110
   endsequence
 
-  property TX_Flag_Pattern;
-    @(posedge Clk) Tx_Done ##1 !Tx_Done |=> Tx_Flag; //not functional, but expected
+  property TX_Flag_Pattern_Start;
+    @(posedge Clk) $rose(Tx_ValidFrame) |-> ##2 Tx_Flag; //not functional, but expected
   endproperty
 
-  //Tx_Done ##1 !Tx_Done |=> 
-  //Tx_ValidFrame throughout Tx_Flag; 
+  property TX_Flag_Pattern_End;
+    @(posedge Clk) $fell(Tx_ValidFrame) |=> Tx_Flag; //not functional, but expected
+  endproperty
 
-  TX_Flag_Patter_Assert : assert property (TX_Flag_Pattern) begin
+  TX_Flag_Pattern_Start_Assert : assert property (TX_Flag_Pattern_Start) begin
+    $display("PASS: TX Flag pattern");
+  end else begin 
+    $error("Tx flag not detected"); 
+    ErrCntAssertions++; 
+  end
+
+    TX_Flag_Pattern_End_Assert : assert property (TX_Flag_Pattern_End) begin
     $display("PASS: TX Flag pattern");
   end else begin 
     $error("Tx flag not detected"); 
