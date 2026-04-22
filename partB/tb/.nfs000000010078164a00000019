@@ -12,6 +12,30 @@
 # // of the Customer's facilities without the express written permission of SISW,
 # // and may not be used in any way not expressly authorized by SISW.
 # //
-# ** Note: (vish-4074) File vsim.wlf is still open, viewing file in live viewing mode.
 # vsim.wlf opened as dataset "vsim"
+add wave vsim:/test_hdlc/uin_hdlc/*
+find drivers -source -time {6079818 ns} -cause vsim:/test_hdlc/uin_hdlc/Tx_Done
+dataset restart -f
+# vsim:/test_hdlc/uin_hdlc
+add wave vsim:/test_hdlc/uin_hdlc/*
+dataset restart -f
+# vsim:/test_hdlc/uin_hdlc
+add wave vsim:/test_hdlc/uin_hdlc/*
+dataset restart -f
+# vsim:/test_hdlc/uin_hdlc
+add wave vsim:/test_hdlc/uin_hdlc/*
+dataset restart -f
+# vsim:/test_hdlc/uin_hdlc
+add wave vsim:/test_hdlc/uin_hdlc/*
+add wave vsim:/test_hdlc/uin_hdlc/*
+dataset restart f
+# Dataset not found: f
+dataset restart -f
+# vsim:/test_hdlc/uin_hdlc
+add wave vsim:/test_hdlc/uin_hdlc/*
+dataset restart -f
+# vsim:/test_hdlc/uin_hdlc
+add wave vsim:/test_hdlc/uin_hdlc/*
+dataset restart -f
+# vsim:/test_hdlc/uin_hdlc
 add wave vsim:/test_hdlc/uin_hdlc/*

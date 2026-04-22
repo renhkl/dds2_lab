@@ -1,6 +1,6 @@
 # ** Note: (vsim-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
 # vsim -assertdebug -c -voptargs="+acc" test_hdlc bind_hdlc -do "log -r *; run -all; exit" 
-# Start time: 08:45:46 on Apr 22,2026
+# Start time: 15:04:51 on Apr 22,2026
 # ** Note: (vsim-3812) Design is being optimized...
 # ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
 # ** Note: (vopt-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
@@ -45,16 +45,6 @@
 # Loading work.assertions_hdlc(fast)
 # Loading work.bind_hdlc(fast)
 # log -r *
-# Unable to lock WLF file "vsim.wlf". Retrying 1 times, errno 11
-# Unable to lock WLF file "vsim.wlf". Retrying 2 times, errno 11
-# Unable to lock WLF file "vsim.wlf". Retrying 3 times, errno 11
-# Cannot lock WLF file: "vsim.wlf"
-#           errno 11: Resource temporarily unavailable.
-# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
-#           File in use by: dds226s27  Hostname: venus.tele.ntnu.no  ProcessID: 35474
-#           Attempting to use alternate WLF file "./wlftplnqN6".
-# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
-#           Using alternate file: ./wlftplnqN6
 #  run -all
 # *************************************************************
 #                    0 - Starting Test Program
@@ -272,9 +262,7 @@
 # *************************************************************
 #              5715250 - Starting task Transmit - Normal
 # *************************************************************
-# PASS: TX Flag pattern
 # -------- NORMAL TRANSMIT --------
-# SUCCESS: Tx_Done asserted (1)
 # SUCCESS: No Tx_AbortedTrans (0)
 # SUCCESS: No Tx_Full (0)
 # FAIL:   0 != 170
@@ -303,7 +291,6 @@
 # FAIL:   0 != 134
 # FAIL:   0 != 209
 # FAIL:   0 != 250
-# PASS: TX Flag pattern
 # FAIL:   0 != 115
 # FAIL:   0 !=  50
 # FAIL:   0 !=  84
@@ -319,23 +306,55 @@
 # FAIL:   0 != 247
 # FAIL:   0 !=   4
 # *************************************************************
-#              6130750 - Starting task Transmit - Abort
+#              5802750 - Starting task Transmit - Overflow
 # *************************************************************
-# tx abort
-# -------- ABORT TRANSMIT --------
-# FAIL: Tx_Done = 1
-# SUCCESS: Tx_AbortedTrans asserted (1)
-# SUCCESS: No Tx_Full (0)
-# SUCCESS: Data is zero, number of times:          40
-# *************************************************************
-#              6224750 - Starting task Transmit - Overflow
-# *************************************************************
-# tx overflow
 # PASS: TX Flag pattern
+# PASS: TX Flag pattern
+# tx overflow
 # -------- OVERFLOW TRANSMIT --------
-# SUCCESS: Tx_Done asserted (1)
+# FAIL: Tx_Done = 0
 # SUCCESS: No Tx_AbortedTrans (0)
-# FAIL: Tx_Full = 0
+# SUCCESS: Tx_Full asserted (1)
+# FAIL:   0 != 122
+# FAIL:   0 != 246
+# FAIL:   0 != 102
+# FAIL:   0 != 155
+# FAIL:   0 != 204
+# FAIL:   0 != 247
+# FAIL:   0 !=  56
+# FAIL:   0 != 133
+# FAIL:   0 != 108
+# FAIL:   0 !=  62
+# FAIL:   0 != 142
+# FAIL:   0 != 251
+# FAIL:   0 !=  29
+# FAIL:   0 != 104
+# FAIL:   0 != 100
+# FAIL:   0 !=  92
+# FAIL:   0 != 214
+# FAIL:   0 !=  78
+# FAIL:   0 !=  33
+# FAIL:   0 !=   5
+# FAIL:   0 !=  31
+# FAIL:   0 !=  52
+# FAIL:   0 != 231
+# FAIL:   0 != 132
+# FAIL:   0 != 140
+# FAIL:   0 !=  45
+# FAIL:   0 !=  23
+# FAIL:   0 != 142
+# FAIL:   0 != 246
+# FAIL:   0 != 101
+# FAIL:   0 !=  17
+# FAIL:   0 != 136
+# FAIL:   0 !=  46
+# FAIL:   0 !=   8
+# FAIL:   0 !=  41
+# FAIL:   0 !=  42
+# FAIL:   0 != 131
+# FAIL:   0 != 146
+# FAIL:   0 != 232
+# FAIL:   0 != 253
 # FAIL:   0 !=  58
 # FAIL:   0 !=  31
 # FAIL:   0 !=  89
@@ -362,7 +381,6 @@
 # FAIL:   0 != 206
 # FAIL:   0 != 188
 # FAIL:   0 !=  73
-# PASS: TX Flag pattern
 # FAIL:   0 != 162
 # FAIL:   0 != 188
 # FAIL:   0 !=  29
@@ -423,59 +441,36 @@
 # FAIL:   0 != 191
 # FAIL:   0 != 100
 # FAIL:   0 !=   2
-# FAIL:   0 != 203
-# FAIL:   0 != 131
-# FAIL:   0 != 136
-# FAIL:   0 != 166
-# FAIL:   0 !=  25
-# FAIL:   0 != 173
-# FAIL:   0 !=  91
-# FAIL:   0 != 115
-# FAIL:   0 != 127
-# FAIL:   0 !=  92
-# FAIL:   0 !=  20
-# FAIL:   0 != 108
-# FAIL:   0 != 121
-# FAIL:   0 != 244
-# FAIL:   0 != 171
-# FAIL:   0 !=  44
-# FAIL:   0 !=  63
-# FAIL:   0 != 148
-# FAIL:   0 !=  23
-# FAIL:   0 != 124
-# FAIL:   0 !=  61
-# FAIL:   0 != 209
-# FAIL:   0 != 222
-# FAIL:   0 !=  79
-# FAIL:   0 !=  19
-# FAIL:   0 != 158
-# FAIL:   0 != 113
-# FAIL:   0 != 112
-# FAIL:   0 !=  48
-# FAIL:   0 != 210
-# FAIL:   0 !=  52
-# FAIL:   0 != 228
-# FAIL:   0 !=  91
-# FAIL:   0 != 192
-# FAIL:   0 !=  43
-# FAIL:   0 !=   1
-# FAIL:   0 != 175
-# FAIL:   0 !=  39
-# FAIL:   0 != 219
-# FAIL:   0 !=  86
 # SUCCESS: Data is zero , number of times :           1
 # *************************************************************
-#              7508750 - Finishing Test Program
+#              6341750 - Starting task Transmit - Abort
 # *************************************************************
-# ** Note: $stop    : ./testPr_hdlc.sv(469)
-#    Time: 7508750 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
-# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 469
-# Stopped at ./testPr_hdlc.sv line 469
+# PASS: TX Flag pattern
+# PASS: TX Flag pattern
+# PASS: TX Flag pattern
+# tx abort
+# -------- ABORT TRANSMIT --------
+# PASS: TX_AbortedTrans asserted
+# ** Error: FAIL: Tx abort pattern didn't happen on abort
+#    Time: 7445250 ns Started: 7444750 ns  Scope: test_hdlc.u_assertion_bind.TX_Abort_Pattern_Assert File: ./assertions_hdlc.sv Line: 174 Expr: Tx
+# FAIL: Tx_Done = 1
+# SUCCESS: Tx_AbortedTrans asserted (1)
+# SUCCESS: No Tx_Full (0)
+# ** Error: Tx flag not detected
+#    Time: 7445750 ns Started: 7444750 ns  Scope: test_hdlc.u_assertion_bind.TX_Flag_Pattern_End_Assert File: ./assertions_hdlc.sv Line: 151 Expr: Tx
+# SUCCESS: Data is zero, number of times:          40
+# *************************************************************
+#              7490250 - Finishing Test Program
+# *************************************************************
+# ** Note: $stop    : ./testPr_hdlc.sv(472)
+#    Time: 7490250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
+# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 472
+# Stopped at ./testPr_hdlc.sv line 472
 #  exit
 # *********************************
 # *                               *
-# * 	Assertion Errors: 169	  *
+# * 	Assertion Errors: 171	  *
 # *                               *
 # *********************************
-# End time: 08:45:58 on Apr 22,2026, Elapsed time: 0:00:12
-# Errors: 1, Warnings: 7
+# End time: 15:04:58 on Apr 22,2026, Elapsed time: 0:00:07
+# Errors: 3, Warnings: 5

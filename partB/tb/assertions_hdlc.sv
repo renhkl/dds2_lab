@@ -100,7 +100,7 @@ module assertions_hdlc (
 
   //If abort is detected during valid frame. then abort signal should go high
 
-    sequence Abort_Flag;
+  sequence Abort_Flag;
     Rx[*7] ##1 !Rx && Rx_ValidFrame; //1111 1110
   endsequence
 
@@ -131,11 +131,11 @@ module assertions_hdlc (
   endsequence
 
   property TX_Flag_Pattern_Start;
-    @(posedge Clk) $rose(Tx_ValidFrame) |-> ##2 Tx_Flag; //not functional, but expected
+    @(posedge Clk) $rose(Tx_ValidFrame) |-> ##2 Tx_Flag; 
   endproperty
 
   property TX_Flag_Pattern_End;
-    @(posedge Clk) $fell(Tx_ValidFrame) |=> Tx_Flag; //not functional, but expected
+    @(posedge Clk) $fell(Tx_ValidFrame) |=> Tx_Flag; 
   endproperty
 
   TX_Flag_Pattern_Start_Assert : assert property (TX_Flag_Pattern_Start) begin
@@ -159,23 +159,47 @@ module assertions_hdlc (
 
 //need to change the error messsage and property
 
-  /*sequence Rx_Abort_Flag;
-    Rx[*7] ##1 !Rx; //1111 1110
-  endsequence*/
-
-  sequence Rx_Abort_Flag;
-   !Rx  ##1 Rx[*7] ; //0111 1111, this is abort on the receive side
+  sequence Tx_Abort_Flag;
+    Tx[*7]  ##1 !Tx; //1111 1110
   endsequence
 
-  sequence TX_Abort_Flag;
-    !Tx ##1 Tx[*7]; //0111 1111
+  property TX_Abort_Pattern; 
+    @(posedge Clk) $rose(Tx_AbortedTrans) |=> Tx_Abort_Flag; 
+  endproperty
+
+
+  TX_Abort_Pattern_Assert : assert property (TX_Abort_Pattern) begin
+    $display("PASS: Tx abort pattern");
+  end else begin 
+    $error("FAIL: Tx abort pattern didn't happen on abort"); 
+    ErrCntAssertions++; 
+  end
+
+
+
+  /********************************************
+   *Part B - Assertion 6  *
+   ********************************************/
+  /*
+  sequence ZeroInsertionBitTx;
+    Tx[*5];
   endsequence
 
-  sequence ValidFrame_Sequence;
-  Rx_ValidFrame[*8];
-  endsequence
 
+  property TX_ZeroInsertion;
+    @(posedge Clk) TX_ZeroInsertion && !TxEN && !Tx_AbortFrame |=> !Tx; 
+  endproperty
+
+  Hvis 5 enere er sett, og TX ikke er idle eller aborted eller på flag i frame så burde den være aktiv?
+  Burde kanskje se på TxEN for å finne ut om man er i starten av et flag, og kanskje sjekke om 6 enere
+  kanskje følges av en end-of-frame tag i Tx. 
+
+  Hittil bare sjekk for zeroinsertion, abort, og idle. 
+
+
+  */
 /*
+
 
   property TX_Abort_Pattern;
     @(posedge Clk) Rx_ValidFrame && Rx_AbortDetect |=> Rx_AbortSignal; 
@@ -205,6 +229,10 @@ module assertions_hdlc (
    * Part B - Assertion 10   *
    ********************************************/
 
+  sequence Rx_Abort_Flag;
+   !Rx  ##1 Rx[*7] ; //0111 1111, this is abort on the receive side
+  endsequence
+
   property RX_Abort_Pattern_AbortSignal; 
     @(posedge Clk) Rx_ValidFrame throughout Rx_Abort_Flag |-> ##3 Rx_AbortSignal; 
   endproperty
@@ -223,17 +251,19 @@ module assertions_hdlc (
    ********************************************/
 
 
-/*
-  property TX_Aborted_Trans;
-    @(posedge Clk) Tx_AbortFrame |=> Tx_AbortedTrans; 
+
+  property TX_AbortedTrans;
+    @(posedge Clk) Tx_AbortFrame |-> ##2 Tx_AbortedTrans; 
   endproperty
 
-  TX_AbortedTrans_Assert : assert property (TX_Aborted_Trans) begin
-    $display("PASS: TX AbortedTrans asserted");
+  TX_AbortedTrans_Assert : assert property (TX_AbortedTrans) begin
+    $display("PASS: TX_AbortedTrans asserted");
   end else begin 
-    $error("AbortedTrans did not go high after AbortFrame"); 
+    $error("Tx_AbortedTrans did not go high after Tx_AbortFrame"); 
     ErrCntAssertions++; 
-  end*/
+  end
+
+//trenger denne å passe på at den ikke er idle også kanskje?
 
     /********************************************
    *  Part B - Assertion 7   *

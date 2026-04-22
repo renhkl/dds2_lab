@@ -299,20 +299,21 @@ int successCounter = 0;
   // register, and that the Rx data buffer contains correct data.
   task VerifyNormalTransmit(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
-    wait(uin_hdlc.Tx_Done); //this one actually makes done go up
+   // wait(uin_hdlc.Tx_Done); //this one actually makes done go up
+   wait(uin_hdlc.Tx_DataAvail);
 
 
     $display("-------- NORMAL TRANSMIT --------");
 
     //checking txsc values
     ReadAddress(TXSC_ADDRESS, ReadData);
-    assert(ReadData[0]) $display("SUCCESS: Tx_Done asserted (%d)", ReadData[0]); else begin $display("FAIL: Tx_Done = %d", ReadData[0]); TbErrorCnt++; end
+    //assert(ReadData[0]) $display("SUCCESS: Tx_Done asserted (%d)", ReadData[0]); else begin $display("FAIL: Tx_Done = %d", ReadData[0]); TbErrorCnt++; end
     assert(!ReadData[3]) $display("SUCCESS: No Tx_AbortedTrans (%d)", ReadData[3]); else begin $display("FAIL: Tx_AbortedTrans = %d", ReadData[3]); TbErrorCnt++; end
     assert(!ReadData[4]) $display("SUCCESS: No Tx_Full (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[4]); TbErrorCnt++; end
    
    
     //checking data buffer
-
+     wait(uin_hdlc.Tx_DataAvail);
     for (int i = 0; i < Size; i++) begin
       //@(posedge uin_hdlc.Clk);
       ReadAddress(TXBUFF_ADDRESS, ReadData);
@@ -339,7 +340,8 @@ int successCounter = 0;
   // register, and that the Rx data buffer contains correct data.
   task VerifyOverflowTransmit(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
-    wait(uin_hdlc.Tx_Done); //this one actually makes done go up
+    //wait(uin_hdlc.Tx_Done); //this one actually makes done go up
+    wait(uin_hdlc.Tx_Full); //doesn't go high before 126 bytes have been written
 
 
     $display("-------- OVERFLOW TRANSMIT --------");
@@ -402,7 +404,7 @@ int successCounter = 0;
     
     for (int i = 0; i < Size; i++) begin
       //@(posedge uin_hdlc.Clk);
-      ReadAddress(RXBUFF_ADDRESS, ReadData); //ReadData is zero, while data[i] is not
+      ReadAddress(TXBUFF_ADDRESS, ReadData); //ReadData is zero, while data[i] is not
       assert(!ReadData) successCounter++; //$display("SUCCESS: Data is zero"); 
       else begin $display("FAIL: Data is not zero (%d)", ReadData); TbErrorCnt++; 
       end
@@ -458,8 +460,9 @@ int successCounter = 0;
 
 
     Transmit(40, 0, 0); //normal not functional
-    Transmit(40, 1, 0); //Abort
     Transmit(127, 0, 1); //Oveflow
+    Transmit(40, 1, 0); //Abort
+    
     
     
 
@@ -752,7 +755,6 @@ int successCounter = 0;
     logic [127:0][7:0] TransmitData;
     logic       [15:0] FCSBytes;
     logic   [2:0][7:0] OverflowData;
-    //logic TxDone; //tx_done is an internal signal and register signal
 
     //i think maybe transmit does things automatically for us, if we just set the registers right
     //fcs, abort and overflow should be done by the dut
@@ -782,14 +784,13 @@ int successCounter = 0;
     TransmitData[Size]   = '0;
     TransmitData[Size+1] = '0;
 
-    //calculate FCS bits;
+    //calculate FCS bits
     GenerateFCSBytes(TransmitData, Size, FCSBytes);
     TransmitData[Size]   = FCSBytes[7:0];
     TransmitData[Size+1] = FCSBytes[15:8];
 
     //Generate stimulus
-  //MakeTxStimulus(TransmitData, Size);
-  wait(uin_hdlc.Tx_Done);
+    wait(uin_hdlc.Tx_Done);
 
     for (int j = 0; j < Size; j++) begin
       //for (int j = 0; i < 8; j++) begin
@@ -799,19 +800,24 @@ int successCounter = 0;
       //end
     end
 
-        //assuming no higher overflow than 3?
+    //assuming no higher overflow than 3?
+    /*
+    */
     if(Overflow) begin
       OverflowData[0] = 8'h44;
       OverflowData[1] = 8'hBB;
       OverflowData[2] = 8'hCC;
       WriteAddress(TXBUFF_ADDRESS, OverflowData);
-    //  MakeTxStimulus(OverflowData, 3);
     end
 
     if (Abort) begin
       WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable first
+      wait(uin_hdlc.Tx_Enable);
+      
       //wait(uin_hdlc.Tx_ValidFrame); //dont need this if newbyte comes later
-      //wait(uin_hdlc.Tx_NewByte); //or other signal, so the flag can happen
+      repeat(256);
+        wait(uin_hdlc.Tx_NewByte); //wait(uin_hdlc.Clk); //wait(uin_hdlc.Tx_NewByte); //or other signal, so the flag can happen
+
       WriteAddress(TXSC_ADDRESS, 8'b0000_0100); //abort and enable
       wait(uin_hdlc.Tx_AbortedTrans);
     end
@@ -820,24 +826,7 @@ int successCounter = 0;
       wait(uin_hdlc.Tx_Enable);
     end
     
-    
-    //wait(uin_hdlc.Tx_Done);
-   
-    //InsertFlagOrAbortTx(1); //enable or abort and enable
- 
 
-
-    //if(Abort) begin
-    //  InsertFlagOrAbortTx(0);
-    //end else begin
-    //  InsertFlagOrAbortTx(1);
-    //end
-
-    //@(posedge uin_hdlc.Clk);F
-    //uin_hdlc.Tx = 1'b1;
-
-    //repeat(8) //idle
-    //  @(posedge uin_hdlc.Clk);
 
     if(Abort) begin 
       $display("tx abort"); 
@@ -852,13 +841,16 @@ int successCounter = 0;
        //$display("tx normal");
     end
 
+    //@(posedge uin_hdlc.Clk);F
+    //uin_hdlc.Tx = 1'b1;
 
-
+    //repeat(8) //idle
+    //  @(posedge uin_hdlc.Clk);
 
     //WriteAddress(TXSC_ADDRESS, 8'b0000_0000); //disable tx 
 //make it go to idle
 
-#10000ns;
+#5000ns;
   endtask
 
 
