@@ -135,20 +135,20 @@ module assertions_hdlc (
   endproperty
 
   property TX_Flag_Pattern_End;
-    @(posedge Clk) $fell(Tx_ValidFrame) |=> Tx_Flag; 
+    @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) |=> Tx_Flag; 
   endproperty
 
   TX_Flag_Pattern_Start_Assert : assert property (TX_Flag_Pattern_Start) begin
     $display("PASS: TX Flag pattern");
   end else begin 
-    $error("Tx flag not detected"); 
+    $error("Tx flag not detected (start)"); 
     ErrCntAssertions++; 
   end
 
     TX_Flag_Pattern_End_Assert : assert property (TX_Flag_Pattern_End) begin
     $display("PASS: TX Flag pattern");
   end else begin 
-    $error("Tx flag not detected"); 
+    $error("Tx flag not detected (end)"); 
     ErrCntAssertions++; 
   end
 
@@ -178,16 +178,19 @@ module assertions_hdlc (
 
 
   /********************************************
-   *Part B - Assertion 6  *
+   *Part B - Assertion 6  * Kanskje scrap
    ********************************************/
   /*
-  sequence ZeroInsertionBitTx;
-    Tx[*5];
+  sequence FiveOnesTx;
+    Tx[*5] ##1 !Tx;
   endsequence
 
 
   property TX_ZeroInsertion;
-    @(posedge Clk) TX_ZeroInsertion && !TxEN && !Tx_AbortFrame |=> !Tx; 
+    @(posedge Clk) Tx_ValidFrame
+    ##8 FiveOnesTx 
+    ##8 !Tx_ValidFrame//&& !Tx_AbortFrame 
+    |-> !Tx; 
   endproperty
 
   Hvis 5 enere er sett, og TX ikke er idle eller aborted eller på flag i frame så burde den være aktiv?
@@ -275,7 +278,8 @@ module assertions_hdlc (
   sequence Tx_Idle_Pattern;
     Tx[*8]; //1111 1111
   endsequence
-
+  
+  
 
       /********************************************
    *  Part B - Assertion 12   *
@@ -289,6 +293,45 @@ module assertions_hdlc (
     $display("PASS: Rx_EoF asserted");
   end else begin 
     $error("FAIL: Rx_EoF not asserted after receiving a whole frame"); 
+    ErrCntAssertions++; 
+  end
+
+
+  /********************************************
+   *  Part B - Assertion 17   *
+   ********************************************/
+
+   //Tx_RdBuff ##8 !Tx_RdBuff |=> Tx_Done;
+
+  property Tx_Done_Reading_Transmit;
+    @(posedge Clk) disable iff (!Rst) $fell(Tx_RdBuff) ##[0:1] Tx_Done |=> !Tx_DataAvail;
+  endproperty
+
+
+  Tx_Done_Reading_Transmit_Assert : assert property (Tx_Done_Reading_Transmit) begin
+    $display("PASS: Tx_Done asserted after reading buffer for transmit");
+  end else begin 
+    $error("FAIL: Tx_Done NOT asserted after reading buffer for transmit"); 
+    ErrCntAssertions++; 
+  end
+  
+
+  /********************************************
+   *  Part B - Assertion 18   *
+   ********************************************/
+
+   //$fell(Tx_WrBuff) ##1 $stable(Tx_WrBuff). it gets asserted before wrbuff is finished
+
+  property Tx_Full_126;
+    @(posedge Clk) disable iff(!Rst) $fell(Tx_Full) |-> Tx_DataAvail && (Tx_FrameSize == 126);
+  endproperty
+
+  //@(posedge Clk)  Tx_Full |-> ##6 Tx_DataAvail && (Tx_FrameSize == 126); //this is spammy and prints several times
+
+  Tx_Full_126_Assert : assert property (Tx_Full_126) begin
+    $display("PASS: Tx_Full asserted after writing 126 bytes");
+  end else begin 
+    $error("FAIL: Tx_Full NOT asserted after writing 126 bytes"); 
     ErrCntAssertions++; 
   end
 
