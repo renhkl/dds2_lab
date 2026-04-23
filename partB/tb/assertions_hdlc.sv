@@ -150,28 +150,6 @@ module assertions_hdlc (
   end
 
 
-/********************************************
-   *Part B - Assertion 8  *
-   ********************************************/
-
-  sequence Tx_Abort_Flag;
-    !Tx ##1 Tx[*7]; //0111 1111
-  endsequence
-
-  property Tx_Abort_Pattern; 
-    @(posedge Clk) $rose(Tx_AbortFrame) |=> ##3 Tx_Abort_Flag; 
-  endproperty
-
-
-  Tx_Abort_Pattern_Assert : assert property (Tx_Abort_Pattern) begin
-    $display("PASS: TX abort pattern");
-  end else begin 
-    $error("FAIL: TX abort pattern didn't happen on abort"); 
-    ErrCntAssertions++; 
-  end
-
-
-
   /********************************************
    *Part B - Assertion 6  * Kanskje scrap
    ********************************************/
@@ -193,43 +171,6 @@ module assertions_hdlc (
 
   Hittil bare sjekk for zeroinsertion, abort, og idle. 
   */
-
-
- /********************************************
-   * Part B - Assertion 10   *
-  ********************************************/
-
-  sequence Rx_Abort_Flag;
-   !Rx  ##1 Rx[*7] ; //0111 1111, this is abort on the receive side
-  endsequence
-
-  property Rx_Abort_Pattern_AbortSignal; 
-    @(posedge Clk) Rx_ValidFrame throughout Rx_Abort_Flag |-> ##3 Rx_AbortSignal; 
-  endproperty
-
-
-  Rx_Abort_Pattern_AbortSignal_Assert : assert property (Rx_Abort_Pattern_AbortSignal) begin
-    $display("PASS: Rx_AbortSignal asserted after abort pattern");
-  end else begin 
-    $error("FAIL: Rx_AbortSignal did not go high after abort pattern during Rx_ValidFrame"); 
-    ErrCntAssertions++; 
-  end
-  
-
-  /********************************************
-   *  Part B - Assertion 9   *
-   ********************************************/
-
-  property TX_AbortedTrans;
-    @(posedge Clk) Tx_AbortFrame |-> ##2 Tx_AbortedTrans; 
-  endproperty
-
-  TX_AbortedTrans_Assert : assert property (TX_AbortedTrans) begin
-    $display("PASS: Tx_AbortedTrans asserted");
-  end else begin 
-    $error("FAIL: Tx_AbortedTrans did not go high after Tx_AbortFrame"); 
-    ErrCntAssertions++; 
-  end
 
 
   /********************************************
@@ -257,6 +198,64 @@ module assertions_hdlc (
       $error("FAIL: Idle pattern was broken");
       ErrCntAssertions++; 
   end
+
+  
+/********************************************
+   *Part B - Assertion 8  *
+   ********************************************/
+
+  sequence Tx_Abort_Flag;
+    !Tx ##1 Tx[*7]; //0111 1111
+  endsequence
+
+  property Tx_Abort_Pattern; 
+    @(posedge Clk) $rose(Tx_AbortFrame) |=> ##3 Tx_Abort_Flag; 
+  endproperty
+
+
+  Tx_Abort_Pattern_Assert : assert property (Tx_Abort_Pattern) begin
+    $display("PASS: TX abort pattern");
+  end else begin 
+    $error("FAIL: TX abort pattern didn't happen on abort"); 
+    ErrCntAssertions++; 
+  end
+
+
+   /********************************************
+   *  Part B - Assertion 9   *
+   ********************************************/
+
+  property TX_AbortedTrans;
+    @(posedge Clk) Tx_AbortFrame |-> ##2 Tx_AbortedTrans; 
+  endproperty
+
+  TX_AbortedTrans_Assert : assert property (TX_AbortedTrans) begin
+    $display("PASS: Tx_AbortedTrans asserted");
+  end else begin 
+    $error("FAIL: Tx_AbortedTrans did not go high after Tx_AbortFrame"); 
+    ErrCntAssertions++; 
+  end
+
+   /********************************************
+   * Part B - Assertion 10   *
+  ********************************************/
+
+  sequence Rx_Abort_Flag;
+   !Rx  ##1 Rx[*7] ; //0111 1111, this is abort on the receive side
+  endsequence
+
+  property Rx_Abort_Pattern_AbortSignal; 
+    @(posedge Clk) Rx_ValidFrame throughout Rx_Abort_Flag |-> ##3 Rx_AbortSignal; 
+  endproperty
+
+
+  Rx_Abort_Pattern_AbortSignal_Assert : assert property (Rx_Abort_Pattern_AbortSignal) begin
+    $display("PASS: Rx_AbortSignal asserted after abort pattern");
+  end else begin 
+    $error("FAIL: Rx_AbortSignal did not go high after abort pattern during Rx_ValidFrame"); 
+    ErrCntAssertions++; 
+  end
+
 
   /********************************************
    *  Part B - Assertion 12   *
@@ -311,4 +310,29 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end
 
+
+
+    /********************************************
+   *  Part B - Cover statements   *
+   ********************************************/
+
+/*
+  property RX_FlagDetect_Antecedent;
+    @(posedge Clk) Rx_flag ##1 Rx_FlagDetect;
+  endproperty
+
+cover property(RX_FlagDetect_Antecedent)
+
+  property RX_AbortSignal_Antecedent;
+    @(posedge Clk) Rx_ValidFrame && Rx_AbortDetect; 
+  endproperty
+
+cover property(RX_AbortSignal_Antecedent)
+*/
+
+
 endmodule
+
+
+
+

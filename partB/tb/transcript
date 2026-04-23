@@ -1,18 +1,19 @@
 # ** Note: (vsim-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
-# vsim -coverage -voptargs="+fcover=sbcfet. +cover=sbcfet" -c test_hdlc bind_hdlc -do "coverage save -onexit -codeAll -assert -cvg coverage.ucdb; run -all; exit" 
-# Start time: 08:32:59 on Apr 23,2026
+# vsim -assertdebug -c -voptargs="+acc" test_hdlc bind_hdlc -do "log -r *; run -all; exit" 
+# Start time: 10:53:32 on Apr 23,2026
 # ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
 # ** Note: (vopt-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
-# ** Warning: ../rtl/TxFCS.sv(13): (vopt-13314) Defaulting port 'DataBuff' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
 # ** Warning: ./assertions_hdlc.sv(63): (vopt-13314) Defaulting port 'Tx_DataArray' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: ../rtl/TxFCS.sv(13): (vopt-13314) Defaulting port 'DataBuff' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxFCS(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "RxBuff(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxController(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "RxController(fast)".
 # ** Warning: ./test_hdlc.sv(69): (vopt-2685) [TFMPC] - Too few port connections for 'u_dut'.  Expected 13, found 12.
 # ** Warning: ./test_hdlc.sv(69): (vopt-2718) [TFMPC] - Missing connection for port 'Tx_Done'.
-# ** Note: (vopt-143) Recognized 1 FSM in module "RxBuff(fast)".
 # ** Note: (vopt-143) Recognized 1 FSM in module "TxBuff(fast)".
-# ** Note: (vopt-143) Recognized 1 FSM in module "RxController(fast)".
-# ** Note: (vopt-143) Recognized 1 FSM in module "TxController(fast)".
-# ** Note: (vopt-143) Recognized 1 FSM in module "TxFCS(fast)".
-# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=4.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=5.
 # //  Questa Sim
 # //  Version 2025.2 linux May 31 2025
 # //
@@ -29,9 +30,21 @@
 # //
 # Loading sv_std.std
 # Loading work.test_hdlc(fast)
+# Loading work.in_hdlc(fast__1)
+# Loading work.Hdlc(fast)
+# Loading work.AddressIF(fast)
+# Loading work.TxController(fast)
+# Loading work.TxBuff(fast)
+# Loading work.TxFCS(fast)
+# Loading work.TxChannel(fast)
+# Loading work.RxController(fast)
+# Loading work.RxBuff(fast)
+# Loading work.RxFCS(fast)
+# Loading work.RxChannel(fast)
 # Loading work.testPr_hdlc(fast)
+# Loading work.assertions_hdlc(fast)
 # Loading work.bind_hdlc(fast)
-# coverage save -onexit -codeAll -assert -cvg coverage.ucdb
+# log -r *
 #  run -all
 # *************************************************************
 #                    0 - Starting Test Program
@@ -576,10 +589,10 @@
 #              6099750 - Starting task Transmit - Overflow
 # *************************************************************
 # ** Error: FAIL: Idle pattern was broken
-#    Time: 6103750 ns Started: 6103250 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 257
+#    Time: 6103750 ns Started: 6103250 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 198 Expr: Tx
 # PASS: TX Flag pattern
 # ** Error: FAIL: Idle pattern was broken
-#    Time: 6107250 ns Started: 6106750 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 257
+#    Time: 6107250 ns Started: 6106750 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 198 Expr: Tx
 # tx overflow
 # -------- OVERFLOW TRANSMIT --------
 # PASS: Tx_Full asserted after writing 126 bytes
@@ -1600,10 +1613,10 @@
 #              7264750 - Starting task Transmit - Abort
 # *************************************************************
 # ** Error: FAIL: Idle pattern was broken
-#    Time: 7268750 ns Started: 7268250 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 257
+#    Time: 7268750 ns Started: 7268250 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 198 Expr: Tx
 # PASS: TX Flag pattern
 # ** Error: FAIL: Idle pattern was broken
-#    Time: 7272250 ns Started: 7271750 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 257
+#    Time: 7272250 ns Started: 7271750 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 198 Expr: Tx
 # PASS: TX Flag pattern
 # tx abort
 # -------- ABORT TRANSMIT --------
@@ -1612,14 +1625,14 @@
 # SUCCESS: Tx_AbortedTrans asserted (1)
 # SUCCESS: No Tx_Full (0)
 # ** Error: FAIL: Idle pattern was broken
-#    Time: 7484750 ns Started: 7484250 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 257
+#    Time: 7484750 ns Started: 7484250 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 198 Expr: Tx
 # PASS: TX abort pattern
 # SUCCESS: Data is zero, number of times:          40
 # *************************************************************
 #              7529250 - Finishing Test Program
 # *************************************************************
 # ** Note: $stop    : ./testPr_hdlc.sv(533)
-#    Time: 7529250 ns  Iteration: 0  Instance: /test_hdlc/u_testPr
+#    Time: 7529250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
 # Break in Module testPr_hdlc at ./testPr_hdlc.sv line 533
 # Stopped at ./testPr_hdlc.sv line 533
 #  exit
@@ -1628,6 +1641,5 @@
 # * 	Assertion Errors: 5	  *
 # *                               *
 # *********************************
-# Saving coverage database on exit...
-# End time: 08:33:05 on Apr 23,2026, Elapsed time: 0:00:06
-# Errors: 5, Warnings: 4
+# End time: 10:53:39 on Apr 23,2026, Elapsed time: 0:00:07
+# Errors: 5, Warnings: 5
