@@ -11,6 +11,7 @@ else
 	exit 1
 fi
 
+
 if ./simulate.sh
 then
 	echo "Success"
@@ -28,13 +29,6 @@ if vsim -coverage -voptargs="+fcover=sbcfet. +cover=sbcfet" -c test_hdlc bind_hd
 		exit 1
 	fi
 
-
-#vsim -coverage \
-#     -voptargs="+fcover=sbcfet. +cover=sbcfet" \
-#	 -c \
-#	 test_hdlc bind_hdlc \
-#	 -do "coverage save -onexit -codeAll -assert -cvg coverage.ucdb; run -all exit"
-	 
 
 vcover report -html -output htmlReport -details coverage.ucdb
 

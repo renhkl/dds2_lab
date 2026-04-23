@@ -1,0 +1,2 @@
+var g_data = {"29":{"pr":"/test_hdlc/u_assertion_bind","ty":2,"dui":14,"dun":"work.assertions_hdlc","cvgs":[{"h":["\\/test_hdlc/u_assertion_bind/cg_inst ",2,1,38,30],"cov":[19,19,100.00],"opts":{"goal":"100"}},{"h":["/test_hdlc/u_assertion_bind/cg",1,1,30],"cov":[19,19,100.00],"opts":{"goal":"100"}}]}};
+processCovergroupsData(g_data);

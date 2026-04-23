@@ -303,12 +303,12 @@ bins non_zeros = {[8'h01:8'hfe]};
 }
 c2: coverpoint Rx_Data {
 bins zeros = {'0};
-//bins ones = {'1};
+bins ones = {'1};
 bins non_zeros = {[8'h01:8'hfe]};
 }
 c3: coverpoint Tx_FrameSize {
 bins zeros = {'0};
-bins ones = {'1};
+//bins ones = {'1};
 bins non_zeros = {[8'h01:8'h7e]}; //126
 ignore_bins Invalid = {[8'h7f:8'hfe]};
 }
@@ -328,8 +328,16 @@ bins zeros = {'0};
 bins non_zeros = {[8'h01:8'h7e]}; //126
 ignore_bins Invalid = {[8'h7f:8'hfe]}; 
 }
+c7: coverpoint Rx_DataBuffOut {
+bins zeros = {'0};
+bins ones = {'1};
+bins non_zeros = {[8'h01:8'hfe]};
+}
 
 endgroup: cg
+
+//instantiate and create covergroup
+cg cg_inst = new();
 
 /********************************************
   *  Part B - Cover statements   *
