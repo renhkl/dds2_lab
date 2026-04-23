@@ -1,0 +1,2 @@
+var g_data = {"17":[16,"uin_hdlc",1],"19":[18,"u_AddressIF",1],"20":[18,"u_TxController",1],"21":[18,"u_TxBuff",1],"22":[18,"u_TxFCS",1],"23":[18,"u_TxChannel",1],"24":[18,"u_RxController",1],"25":[18,"u_RxBuff",1],"26":[18,"u_RxFCS",1],"27":[18,"u_RxChannel",1],"18":[16,"u_dut",1],"28":[16,"u_testPr",1],"29":[16,"u_assertion_bind",1],"16":[-1,"test_hdlc",1]};
+processInstLinks(g_data);

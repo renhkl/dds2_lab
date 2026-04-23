@@ -1,0 +1,2 @@
+var g_data = ["","./test_hdlc.sv","./in_hdlc.sv","../rtl/hdlc.sv","../rtl/AddressIF.sv","../rtl/TxController.sv","../rtl/TxBuff.sv","../rtl/TxFCS.sv","../rtl/TxChannel.sv","../rtl/RxController.sv","../rtl/RxBuff.sv","../rtl/RxFCS.sv","../rtl/RxChannel.sv","./bind_hdlc.sv","./assertions_hdlc.sv","./testPr_hdlc.sv"];
+processSrcNamesData(g_data);

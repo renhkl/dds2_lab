@@ -1,0 +1,37 @@
+# ** Note: (vsim-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
+# vsim -coverage -voptargs="+fcover=sbcfet. +cover=sbcfet" -c test_hdlc bind_hdlc -do "coverage save -onexit -codeAll -assert -cvg coverage.ucdb; run -all exit" 
+# Start time: 08:28:23 on Apr 23,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Note: (vopt-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
+# ** Warning: ../rtl/TxFCS.sv(13): (vopt-13314) Defaulting port 'DataBuff' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: ./assertions_hdlc.sv(63): (vopt-13314) Defaulting port 'Tx_DataArray' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: ./test_hdlc.sv(69): (vopt-2685) [TFMPC] - Too few port connections for 'u_dut'.  Expected 13, found 12.
+# ** Warning: ./test_hdlc.sv(69): (vopt-2718) [TFMPC] - Missing connection for port 'Tx_Done'.
+# ** Note: (vopt-143) Recognized 1 FSM in module "RxBuff(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxBuff(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "RxController(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxController(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxFCS(fast)".
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=4.
+# //  Questa Sim
+# //  Version 2025.2 linux May 31 2025
+# //
+# // Unpublished work. Copyright 2025 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.test_hdlc(fast)
+# Loading work.testPr_hdlc(fast)
+# Loading work.bind_hdlc(fast)
+# coverage save -onexit -codeAll -assert -cvg coverage.ucdb
+#  run -all exit
+# ** UI-Msg (Error): (vsim-4001) Incorrect number of arguments.
+# Usage: run [<timesteps> [<time_units>]] | -all | -continue | -next | -step | -over | -out | -init | -final

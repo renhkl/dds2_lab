@@ -132,7 +132,7 @@ module assertions_hdlc (
   endproperty
 
   property Tx_Flag_Pattern_End;
-    @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) |=> Tx_Flag; 
+    @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) && !Tx_AbortedTrans |=> Tx_Flag; 
   endproperty
 
   Tx_Flag_Pattern_Start_Assert : assert property (Tx_Flag_Pattern_Start) begin
