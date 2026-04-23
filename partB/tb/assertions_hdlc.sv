@@ -117,6 +117,25 @@ module assertions_hdlc (
   end
 
 
+  /********************************************
+   *  Part B - Assertion 18   *
+   ********************************************/
+
+/*
+  property RX_Drop;
+    @(posedge Clk) Rx_Drop |=> !Rx_Ready && !Rx_DataBuffOut; 
+  endproperty
+
+  RX_Drop_Assert : assert property (RX_Drop) begin
+    $display("PASS: Rx drop");
+  end else begin 
+    $error("FAIL: Not RX drop"); 
+    ErrCntAssertions++; 
+  end
+  */
+
+
+
 /********************************************
    * Part B - Assertion 5    *
    ********************************************/
@@ -151,43 +170,25 @@ module assertions_hdlc (
 
 
   /********************************************
-   *Part B - Assertion 6  * Kanskje scrap
-   ********************************************/
-  /*
-  sequence FiveOnesTx;
-    Tx[*5] ##1 !Tx;
-  endsequence
-
-  property TX_ZeroInsertion;
-    @(posedge Clk) Tx_ValidFrame
-    ##8 FiveOnesTx 
-    ##8 !Tx_ValidFrame//&& !Tx_AbortFrame 
-    |-> !Tx; 
-  endproperty
-
-  Hvis 5 enere er sett, og TX ikke er idle eller aborted eller på flag i frame så burde den være aktiv?
-  Burde kanskje se på TxEN for å finne ut om man er i starten av et flag, og kanskje sjekke om 6 enere
-  kanskje følges av en end-of-frame tag i Tx. 
-
-  Hittil bare sjekk for zeroinsertion, abort, og idle. 
-  */
-
-
-  /********************************************
    *  Part B - Assertion 7   *
    ********************************************/
 
-  sequence Rx_Idle_Pattern;
+  /*sequence Rx_Idle_Pattern;
     Rx[*8]; //1111 1111
   endsequence
 
   sequence Tx_Idle_Pattern;
     Tx[*8]; //1111 1111
   endsequence
+  */
+
+  sequence Tx_ValidFrame_Idle_Guarantee;
+    !Tx_ValidFrame[*10]; //00 0000 0000
+  endsequence
 
   property Tx_Idle_Pattern_Disruptions;
-    @(posedge Clk) !Tx_ValidFrame and 
-    TxEN |=> 
+    @(posedge Clk) Tx_ValidFrame_Idle_Guarantee and 
+    TxEN |-> 
     Tx;
   endproperty
 
@@ -310,6 +311,25 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end
 
+/*
+ covergroup cg @ ( posedge tb_if . clk ) ;
+c1 : coverpoint tb_if . wr_data {
+bins zeros = { '0 } ;
+bins ones = { '1 } ;
+bins non_zeros = { [ 8'h01 : 8'hfe ] } ;
+// bins xs = { 'x };
+// bins zs = { 'z };
+}
+9
+10 c2 : coverpoint tb_if . wr_en ;
+11
+12 wr_en_X_wr_data : cross c1 , c2 ;
+13
+14 endgroup : cg
+15
+16 // instantiate and create covergroup
+17 cg cg_inst = new ( ) ;
+*/
 
 
     /********************************************
