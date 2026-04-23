@@ -261,24 +261,23 @@ shortint successCounter = 0;
     logic [7:0] ReadData;
     logic [7:0] WriteData;
     logic [7:0] RxLen;
-//wait(!uin_hdlc.Rx_Ready);
+
     $display("-------- DROPPED FRAME RECEIVE --------");
-      WriteAddress(RXSC, 8'b0000_0010); //discard frame
+
+    WriteAddress(RXSC, 8'b0000_0010); //it works here!
 
     ReadAddress(RXSC_ADDRESS, ReadData);
     assert(!ReadData[0]) $display("SUCCESS: No Rx_Ready (%d)", ReadData[0]); else begin $display("FAIL: Rx_Ready = %d", ReadData[0]); TbErrorCnt++; end
     assert(!ReadData[2]) $display("SUCCESS: No Rx_FrameError (%d)", ReadData[2]); else begin $display("FAIL: Rx_FrameError = %d", ReadData[2]); TbErrorCnt++; end
-    assert(!ReadData[3]) $display("SUCCESS:no Rx_AbortSignal asserted (%d)", ReadData[3]); else begin $display("FAIL: Rx_AbortSignal = %d", ReadData[3]); TbErrorCnt++; end
+    assert(!ReadData[3]) $display("SUCCESS: No Rx_AbortSignal (%d)", ReadData[3]); else begin $display("FAIL: Rx_AbortSignal = %d", ReadData[3]); TbErrorCnt++; end
     assert(!ReadData[4]) $display("SUCCESS: No Rx_Overflow (%d)", ReadData[4]); else begin $display("FAIL: Rx_Overflow = %d", ReadData[4]); TbErrorCnt++; end
 
 
     //checking data buffer
-    //ReadAddress(RXLEN_ADDRESS, RxLen); //RxLen is not zero
-    //$display("Size: %d %d", Size, RxLen);
+    ReadAddress(RXLEN_ADDRESS, RxLen); //RxLen is not zero
+    $display("Size: %d %d", Size, RxLen);
 
-@(posedge uin_hdlc.Clk);
     for (int i = 0; i < Size; i++) begin
-      //
       ReadAddress(RXBUFF_ADDRESS, ReadData); //ReadData is zero, while data[i] is not
       assert(!ReadData) successCounter++; //$display("SUCCESS: Data is zero"); 
       else begin $display("FAIL: Data is not zero (%d)%d", ReadData, uin_hdlc.Rx_DataBuffOut); TbErrorCnt++; 
@@ -310,14 +309,14 @@ shortint successCounter = 0;
     repeat(9)
       @(posedge uin_hdlc.Clk);
 
-    //Assertion 6 and 4, checking output and zero instertion
+    //Assertion 6 and 4 - checking TX output and zero instertion
     //Checks Tx_FrameSize and not Size in case of Overflow
     for (int i = 0; i < uin_hdlc.Tx_FrameSize; i++) begin
 
 
         for (int j = 0; j < 8; ++j) begin
 
-          //assertion 6 - Zero insertion
+          //Assertion 6 - Zero insertion
 
           @(posedge uin_hdlc.Clk);
           if (zeroInsertion == 5) begin
@@ -336,7 +335,7 @@ shortint successCounter = 0;
 
         end
 
-        //Assertion 4 Data buffer quality check
+        //Assertion 4 - Data buffer quality check
         assert(data[i] == ReadData) begin
             successCounter++; $display("SUCCESS: Data is matching:  %d == %d", ReadData, data[i]); 
         end
@@ -349,7 +348,7 @@ shortint successCounter = 0;
     //Overflow check for FCS Bytes
     if (Size < 127) begin
 
-    //Assertion 11; FCS Byte Check
+    //Assertion 11 - FCS Byte Check
     GenerateFCSBytes(data, Size, FCSBytes);
     for (int i = 0; i < 2; i++) begin
       for (int j = 0; j < 8; ++j) begin
@@ -379,20 +378,6 @@ shortint successCounter = 0;
       $display("FAIL: %d == %d", ReadFCSBytes, FCSBytes); TbErrorCnt++; end
 
     end
-      //@(posedge uin_hdlc.Clk);
-      
-      //Er ikke lov å lese fra TXBUFF, så prøver å lese fra Tx stream
-      //ReadAddress(TXBUFF_ADDRESS, ReadData);
-
-
-      //comparing data in function argument and in tx buffer
-      
-      //assert(data[i] == ReadData) successCounter++; //$display("SUCCESS: Data is matching"); 
-      //else begin $display("FAIL: %d != %d", ReadData, data[i]); TbErrorCnt++; 
-      //end
-    
-      
-    //end
 
   endtask
 
@@ -407,11 +392,8 @@ shortint successCounter = 0;
   task VerifyNormalTransmit(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
     logic [2:0] zeroInsertion;
+    //wait(uin_hdlc.Tx_Done); this one actually makes done go up
     zeroInsertion = 0;
-   // wait(uin_hdlc.Tx_Done); //this one actually makes done go up
-   //wait(uin_hdlc.Tx_ValidFrame);
-   wait(uin_hdlc.Tx_DataAvail);
-
 
     $display("-------- NORMAL TRANSMIT --------");
 
@@ -421,24 +403,8 @@ shortint successCounter = 0;
     assert(!ReadData[3]) $display("SUCCESS: No Tx_AbortedTrans (%d)", ReadData[3]); else begin $display("FAIL: Tx_AbortedTrans = %d", ReadData[3]); TbErrorCnt++; end
     assert(!ReadData[4]) $display("SUCCESS: No Tx_Full (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[4]); TbErrorCnt++; end
    
-   //checking for start flag
-   // for (int i = 0; i < 8; i++) begin
-   //  if (i == 0 || i == 7) 
-   //     assert(uin_hdlc.Tx) successCounter++;
-   //     else begin $display("FAIL %d != 1", Tx); TbErrorCnt++; 
-   //    end
-   //   else begin
-   //     assert(!uin_hdlc.Tx) successCounter++;
-   //     else begin $display("FAIL %d != 0", Tx); TbErrorCnt++; 
-   //     end
-   //   end
-    // end
-  
-
     //checking data buffer
     StandardTransmitProcedure(data, Size);
-    
-
 
     if (successCounter > 0)
       $display("SUCCESS: Data is matching, number of times:%d", successCounter);
@@ -457,7 +423,6 @@ shortint successCounter = 0;
   // register, and that the Rx data buffer contains correct data.
   task VerifyOverflowTransmit(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
-    //wait(uin_hdlc.Tx_Done); //this one actually makes done go up
     wait(uin_hdlc.Tx_Full); //doesn't go high before 126 bytes have been written
 
 
@@ -465,39 +430,15 @@ shortint successCounter = 0;
 
     //checking txsc values
     ReadAddress(TXSC_ADDRESS, ReadData);
-    //assert(ReadData[0]) $display("SUCCESS: Tx_Done asserted (%d)", ReadData[0]); else begin $display("FAIL: Tx_Done = %d", ReadData[0]); TbErrorCnt++; end
     assert(!ReadData[3]) $display("SUCCESS: No Tx_AbortedTrans (%d)", ReadData[3]); else begin $display("FAIL: Tx_AbortedTrans = %d", ReadData[3]); TbErrorCnt++; end
     assert(ReadData[4]) $display("SUCCESS: Tx_Full asserted (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[4]); TbErrorCnt++; end
     
       //checking data buffer
       StandardTransmitProcedure(data, Size);
-      /*
-    for (int i = 0; i < Size - (Size - uin_hdlc.Tx_FrameSize); i++) begin
-      //@(posedge uin_hdlc.Clk);
-      ReadAddress(TXBUFF_ADDRESS, ReadData);
-      //comparing data in function argument and in rx buffer
-      assert(data[i] == ReadData) successCounter++; //$display("SUCCESS: Data is matching");  
-      else begin $display("FAIL: %d != %d", ReadData, data[i]); TbErrorCnt++; 
-      end
-    end
-      */
+     
     if (successCounter > 0)
       $display("SUCCESS: Data is matching, number of times: %d", successCounter);
-    successCounter = 0; //reset before checking the overflown bytes
-
-    //the overflown bytes should be zero
-    /*
-    for (int j = 0; j < (Size - uin_hdlc.Tx_FrameSize); j++) begin
-      ReadAddress(TXBUFF_ADDRESS, ReadData);
-      assert(!ReadData) successCounter++; 
-      else begin $display("FAIL: Data is not zero (%d)", ReadData); TbErrorCnt++; 
-      end
-    end
-    */
-
-    if (successCounter > 0)
-      $display("SUCCESS: Data is zero , number of times : %d", successCounter);
-    successCounter = 0;
+    successCounter = 0; 
 
   endtask
 
@@ -512,14 +453,12 @@ shortint successCounter = 0;
   // register, and that the Rx data buffer contains correct data.
   task VerifyAbortTransmit(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
-    //wait(uin_hdlc.Tx_Done); this one actually makes done go up
-
+  
 
     $display("-------- ABORT TRANSMIT --------");
 
     //checking txsc values
     ReadAddress(TXSC_ADDRESS, ReadData);
-    //assert(!ReadData[0]) $display("SUCCESS: No Tx_Done (%d)", ReadData[0]); else begin $display("FAIL: Tx_Done = %d", ReadData[0]); TbErrorCnt++; end
     assert(ReadData[3]) $display("SUCCESS: Tx_AbortedTrans asserted (%d)", ReadData[3]); else begin $display("FAIL: Tx_AbortedTrans = %d", ReadData[3]); TbErrorCnt++; end
     assert(!ReadData[4]) $display("SUCCESS: No Tx_Full (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[4]); TbErrorCnt++; end
     
