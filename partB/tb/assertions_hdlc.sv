@@ -290,30 +290,50 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end
 
-/*
- covergroup cg @ ( posedge tb_if . clk ) ;
-c1 : coverpoint tb_if . wr_data {
-bins zeros = { '0 } ;
-bins ones = { '1 } ;
-bins non_zeros = { [ 8'h01 : 8'hfe ] } ;
-// bins xs = { 'x };
-// bins zs = { 'z };
+/********************************************
+  *  Part B - Cover groups   *
+********************************************/
+
+covergroup cg @(posedge Clk);
+
+c1: coverpoint Tx_Data {
+bins zeros = {'0};
+bins ones = {'1};
+bins non_zeros = {[8'h01:8'hfe]};
 }
-9
-10 c2 : coverpoint tb_if . wr_en ;
-11
-12 wr_en_X_wr_data : cross c1 , c2 ;
-13
-14 endgroup : cg
-15
-16 // instantiate and create covergroup
-17 cg cg_inst = new ( ) ;
-*/
+c2: coverpoint Rx_Data {
+bins zeros = {'0};
+//bins ones = {'1};
+bins non_zeros = {[8'h01:8'hfe]};
+}
+c3: coverpoint Tx_FrameSize {
+bins zeros = {'0};
+bins ones = {'1};
+bins non_zeros = {[8'h01:8'h7e]}; //126
+ignore_bins Invalid = {[8'h7f:8'hfe]};
+}
+c4: coverpoint Tx_DataOutBuff {
+bins zeros = {'0};
+bins ones = {'1};
+bins non_zeros = {[8'h01:8'hfe]};
+}
+c5: coverpoint Tx_DataInBuff {
+bins zeros = {'0};
+bins ones = {'1};
+bins non_zeros = {[8'h01:8'hfe]};
+}
+c6: coverpoint Rx_FrameSize {
+bins zeros = {'0};
+//bins ones = {'1};
+bins non_zeros = {[8'h01:8'h7e]}; //126
+ignore_bins Invalid = {[8'h7f:8'hfe]}; 
+}
 
+endgroup: cg
 
-    /********************************************
-   *  Part B - Cover statements   *
-   ********************************************/
+/********************************************
+  *  Part B - Cover statements   *
+********************************************/
 
 //part A: both 
 

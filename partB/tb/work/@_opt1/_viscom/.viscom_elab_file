@@ -1,0 +1,1 @@
+/eda/tools/siemens/questasim.2025.2/linux/VisualizerRls/bin/viscom -nolock -quiet -jmem_size 786432 work.test_hdlc work.bind_hdlc -quiet -auto_acc_if_foreign -work work +fcover=sbcfet. +cover=sbcfet -allow_unnamed -o _opt1 -id 1-90b11c1d54d8-69ea7f31-8eb45-192011 +__betafsm
