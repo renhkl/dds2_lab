@@ -21,6 +21,8 @@
 program testPr_hdlc(
   in_hdlc uin_hdlc
 );
+
+//internal signals can be gotten by using this syntax uin_hdlc.Rx_Signal
   
   int TbErrorCnt;
 
@@ -53,7 +55,7 @@ parameter [7:0]   RXSC_READY_BIT        = 8'b0000_0001;
 
 int successCounter = 0;
 
-//the values can be gotten by using this syntax uin_hdlc.Rx_Signal
+
 
   /****************************************************************************
    *                                                                          *
@@ -257,8 +259,7 @@ int successCounter = 0;
   task VerifyDroppedFrameReceive(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
     logic [7:0] WriteData;
-    logic [7:0] RxLen; //had to be defined here and not later
-
+    logic [7:0] RxLen;
 
     $display("-------- DROPPED FRAME RECEIVE --------");
       
@@ -322,7 +323,7 @@ endtask
             successCounter++; $display("SUCCESS: Data is matching:  %b != %b", uin_hdlc.Tx, data[i][j]); 
           end
           else begin 
-            $display("FAIL: %b != %b", uin_hdlc.Tx, data[i][j]); TbErrorCnt++; 
+            $display("FAIL: %b == %b", uin_hdlc.Tx, data[i][j]); TbErrorCnt++; 
           end
 
         end
@@ -367,20 +368,19 @@ endtask
     assert(!ReadData[3]) $display("SUCCESS: No Tx_AbortedTrans (%d)", ReadData[3]); else begin $display("FAIL: Tx_AbortedTrans = %d", ReadData[3]); TbErrorCnt++; end
     assert(!ReadData[4]) $display("SUCCESS: No Tx_Full (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[4]); TbErrorCnt++; end
    
-/*
    //checking for start flag
-    for (int i = 0; i < 8; i++) begin
-      if (i == 0 || i == 7) 
-        assert(uin_hdlc.Tx) successCounter++;
-        else begin $display("FAIL %d != 1", Tx); TbErrorCnt++; 
-        end
-      else begin
-        assert(!uin_hdlc.Tx) successCounter++;
-        else begin $display("FAIL %d != 0", Tx); TbErrorCnt++; 
-        end
-      end
-    end
-    */
+   // for (int i = 0; i < 8; i++) begin
+   //  if (i == 0 || i == 7) 
+   //     assert(uin_hdlc.Tx) successCounter++;
+   //     else begin $display("FAIL %d != 1", Tx); TbErrorCnt++; 
+   //    end
+   //   else begin
+   //     assert(!uin_hdlc.Tx) successCounter++;
+   //     else begin $display("FAIL %d != 0", Tx); TbErrorCnt++; 
+   //     end
+   //   end
+    // end
+  
 
     //checking data buffer
     StandardTransmitProcedure(data, Size);
@@ -470,6 +470,8 @@ endtask
     assert(ReadData[3]) $display("SUCCESS: Tx_AbortedTrans asserted (%d)", ReadData[3]); else begin $display("FAIL: Tx_AbortedTrans = %d", ReadData[3]); TbErrorCnt++; end
     assert(!ReadData[4]) $display("SUCCESS: No Tx_Full (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[4]); TbErrorCnt++; end
     
+
+    //read
     for (int i = 0; i < Size; i++) begin
       //@(posedge uin_hdlc.Clk);
       ReadAddress(TXBUFF_ADDRESS, ReadData); //ReadData is zero, while data[i] is not
@@ -517,15 +519,12 @@ endtask
     Receive( 127, 1, 0, 0, 1, 0, 0); //Overflow and abort
     Receive( 127, 0, 0, 0, 0, 0, 0); //Normal but with overflow
     
-
-    //uin_hdlc.Rx          =   1'b1;
-    //uin_hdlc.Rx        =   1'b0;
-    //uin_hdlc.RxEN        =   1'b0;
     uin_hdlc.TxEN        =   1'b1;
+    //uin_hdlc.RxEN        =   1'b0;
     //WriteAddress(RXSC, 8'h00);
     
-    Transmit(40, 0, 0); //normal not functional
-    Transmit(127, 0, 1); //Overflow
+    Transmit(40, 0, 0); //Normal
+    Transmit(126, 0, 1); //Overflow
     Transmit(40, 1, 0); //Abort
 
     $display("*************************************************************");
@@ -561,8 +560,6 @@ endtask
     #1000ns;
     uin_hdlc.Rst         =   1'b1;
   endtask
-
-
 
 
   /****************************************************************************
@@ -622,19 +619,6 @@ endtask
       uin_hdlc.Rx = 1'b1;
   endtask
 
-
-
-  //Tx
-  //Flag:  0111_1110
-  //Abort: 0111_1111??
-   task InsertFlagOrAbortTx(int abort);
-    if (abort) 
-      WriteAddress(TXSC_ADDRESS, 8'b0000_0110); //abort tx
-    else
-      WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable tx 
-  endtask
-
-
   /****************************************************************************
    *                                                                          *
    *                             Rx/Tx stimulus                               *
@@ -663,26 +647,12 @@ endtask
     end
   endtask
 
-
-  task MakeTxStimulus(logic [127:0][7:0] Data, int Size);
-
-    for (int i = 0; i < Size; i++) begin
-      //for (int j = 0; i < 8; j++) begin
-      //writeaddress takes in one byte at a time¨
-        //wait(uin_hdlc.Tx_Done);
-        WriteAddress(TXBUFF_ADDRESS, Data[i]); //Data[i][j]
-      //end
-    end
-
-  endtask
-
-
   /****************************************************************************
    *                                                                          *
    *                             Receive task                                 *
    *                                                                          *
    ****************************************************************************/
-  
+
 
   task Receive(int Size, int Abort, int FCSerr, int NonByteAligned, int Overflow, int Drop, int SkipRead);
     logic [127:0][7:0] ReceiveData;
@@ -787,8 +757,6 @@ endtask
     repeat(8) //idle
       @(posedge uin_hdlc.Clk);
 
-      // Abort, int FCSerr, int NonByteAligned, int Overflow, int Drop, int SkipRead
-
     if(Abort)
       VerifyAbortReceive(ReceiveData, Size);
     else if(Overflow)
@@ -799,12 +767,9 @@ endtask
       VerifyFrameErrorReceive(ReceiveData, Size);
     else if (Drop)
     VerifyDroppedFrameReceive(ReceiveData, Size);
-
     else if(!SkipRead)
       VerifyNormalReceive(ReceiveData, Size);
    
-
-
     #5000ns;
   endtask
 
@@ -815,13 +780,13 @@ endtask
    *                                                                          *
    ****************************************************************************/
 
-  task Transmit(int Size, int Abort, int Overflow); //fcs errors in transmit do exist, but do we need it for this project? i think not
+  task Transmit(int Size, int Abort, int Overflow); 
     logic [127:0][7:0] TransmitData;
     logic       [15:0] FCSBytes;
     logic   [2:0][7:0] OverflowData;
 
-    //i think maybe transmit does things automatically for us, if we just set the registers right
-    //fcs, abort and overflow should be done by the dut
+    //transmit does some things automatically for us, if we set the registers right
+    //fcs, abort and overflow should be done by the dut, but need to provide data to it
     //will it automatically see that the size is too long?
 
     //begin with these three
@@ -840,7 +805,7 @@ endtask
     $display("%t - Starting task Transmit %s", $time, msg);
     $display("*************************************************************");
 
-    //generate random data to transmit. the tx module doesn't generate the data
+    //generate random data to transmit. tx module doesn't generate the data
     for (int i = 0; i < Size; i++) begin
       TransmitData[i] = $urandom;
     end
@@ -865,25 +830,20 @@ endtask
     end
 
     //assuming no higher overflow than 3?
-    /*
-    */
     if(Overflow) begin
       OverflowData[0] = 8'h44;
       OverflowData[1] = 8'hBB;
       OverflowData[2] = 8'hCC;
-
-
-
       WriteAddress(TXBUFF_ADDRESS, OverflowData);
     end
 
     if (Abort) begin
       WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable first
       wait(uin_hdlc.Tx_Enable);
-      
+    
       //wait(uin_hdlc.Tx_ValidFrame); //dont need this if newbyte comes later
-      repeat(256);
-        wait(uin_hdlc.Tx_NewByte); //wait(uin_hdlc.Clk); //wait(uin_hdlc.Tx_NewByte); //or other signal, so the flag can happen
+      repeat(32);
+        wait(uin_hdlc.Tx_NewByte);  //long enough delay so, the flag and abort pattern at the end can happen
 
       WriteAddress(TXSC_ADDRESS, 8'b0000_0110); //abort and enable
       wait(uin_hdlc.Tx_AbortedTrans);
@@ -892,7 +852,6 @@ endtask
       WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable tx. dont think it matter if before or after writeaddress
       wait(uin_hdlc.Tx_Enable);
     end
-    
 
 
     if(Abort) begin 
@@ -908,14 +867,8 @@ endtask
        //$display("tx normal");
     end
 
-    //@(posedge uin_hdlc.Clk);F
-    //uin_hdlc.Tx = 1'b1;
-
-    //repeat(8) //idle
-    //  @(posedge uin_hdlc.Clk);
-
+    //make it go to idle
     //WriteAddress(TXSC_ADDRESS, 8'b0000_0000); //disable tx 
-//make it go to idle
 
 #5000ns;
   endtask

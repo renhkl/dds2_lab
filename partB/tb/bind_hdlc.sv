@@ -12,6 +12,8 @@ module bind_hdlc ();
     .Rst                (uin_hdlc.Rst),
     .Rx                 (uin_hdlc.Rx),
     .Tx                 (uin_hdlc.Tx),
+    .TxEN               (uin_hdlc.TxEN),
+    .RxEN               (uin_hdlc.TxEN),
       
     .Rx_ValidFrame      (uin_hdlc.Rx_ValidFrame),     
     .Rx_WrBuff          (uin_hdlc.Rx_WrBuff),         

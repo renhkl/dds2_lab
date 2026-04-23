@@ -1,10 +1,10 @@
 # ** Note: (vsim-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
 # vsim -assertdebug -c -voptargs="+acc" test_hdlc bind_hdlc -do "log -r *; run -all; exit" 
-# Start time: 21:53:01 on Apr 22,2026
+# Start time: 07:37:16 on Apr 23,2026
 # ** Note: (vsim-3812) Design is being optimized...
 # ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
 # ** Note: (vopt-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
-# ** Warning: ./assertions_hdlc.sv(61): (vopt-13314) Defaulting port 'Tx_DataArray' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: ./assertions_hdlc.sv(63): (vopt-13314) Defaulting port 'Tx_DataArray' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
 # ** Warning: ../rtl/TxFCS.sv(13): (vopt-13314) Defaulting port 'DataBuff' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
 # ** Note: (vopt-143) Recognized 1 FSM in module "TxFCS(fast)".
 # ** Note: (vopt-143) Recognized 1 FSM in module "RxBuff(fast)".
@@ -52,8 +52,8 @@
 # *************************************************************
 #                 1000 - Starting task Receive - Normal
 # *************************************************************
-# PASS: Flag detect
-# PASS: Flag detect
+# PASS: RX Flag detect
+# PASS: RX Flag detect
 # PASS: Rx_EoF asserted
 # -------- NORMAL RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
@@ -68,9 +68,9 @@
 # *************************************************************
 #                79250 - Starting task Receive - Abort
 # *************************************************************
-# PASS: Flag detect
-# PASS: Abort signal
-# PASS: RX_AbortSignal asserted after abort pattern
+# PASS: RX Flag detect
+# PASS: Rx_AbortSignal asserted
+# PASS: Rx_AbortSignal asserted after abort pattern
 # -------- ABORT RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: No Rx_FrameError (0)
@@ -81,8 +81,8 @@
 # *************************************************************
 #               313250 - Starting task Receive - Overflow
 # *************************************************************
-# PASS: Flag detect
-# PASS: Flag detect
+# PASS: RX Flag detect
+# PASS: RX Flag detect
 # PASS: Rx_EoF asserted
 # -------- OVERFLOW RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
@@ -97,8 +97,8 @@
 # *************************************************************
 #               991250 - Starting task Receive - Normal
 # *************************************************************
-# PASS: Flag detect
-# PASS: Flag detect
+# PASS: RX Flag detect
+# PASS: RX Flag detect
 # PASS: Rx_EoF asserted
 # -------- NORMAL RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
@@ -113,8 +113,8 @@
 # *************************************************************
 #              1247750 - Starting task Receive - Normal
 # *************************************************************
-# PASS: Flag detect
-# PASS: Flag detect
+# PASS: RX Flag detect
+# PASS: RX Flag detect
 # PASS: Rx_EoF asserted
 # -------- NORMAL RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
@@ -129,9 +129,9 @@
 # *************************************************************
 #              1912250 - Starting task Receive - Abort
 # *************************************************************
-# PASS: Flag detect
-# PASS: Abort signal
-# PASS: RX_AbortSignal asserted after abort pattern
+# PASS: RX Flag detect
+# PASS: Rx_AbortSignal asserted
+# PASS: Rx_AbortSignal asserted after abort pattern
 # -------- ABORT RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: No Rx_FrameError (0)
@@ -142,8 +142,8 @@
 # *************************************************************
 #              2556250 - Starting task Receive - Overflow
 # *************************************************************
-# PASS: Flag detect
-# PASS: Flag detect
+# PASS: RX Flag detect
+# PASS: RX Flag detect
 # PASS: Rx_EoF asserted
 # -------- OVERFLOW RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
@@ -158,8 +158,8 @@
 # *************************************************************
 #              3234250 - Starting task Receive - Normal
 # *************************************************************
-# PASS: Flag detect
-# PASS: Flag detect
+# PASS: RX Flag detect
+# PASS: RX Flag detect
 # PASS: Rx_EoF asserted
 # -------- NORMAL RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
@@ -174,8 +174,8 @@
 # *************************************************************
 #              3389750 - Starting task Receive - Normal
 # *************************************************************
-# PASS: Flag detect
-# PASS: Flag detect
+# PASS: RX Flag detect
+# PASS: RX Flag detect
 # PASS: Rx_EoF asserted
 # -------- NORMAL RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
@@ -190,8 +190,8 @@
 # *************************************************************
 #              3654250 - Starting task Receive - FCS error
 # *************************************************************
-# PASS: Flag detect
-# PASS: Flag detect
+# PASS: RX Flag detect
+# PASS: RX Flag detect
 # PASS: Rx_EoF asserted
 # -------- FRAME ERROR RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
@@ -203,8 +203,8 @@
 # *************************************************************
 #              3885250 - Starting task Receive - Non-byte aligned
 # *************************************************************
-# PASS: Flag detect
-# PASS: Flag detect
+# PASS: RX Flag detect
+# PASS: RX Flag detect
 # PASS: Rx_EoF asserted
 # -------- FRAME ERROR RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
@@ -216,9 +216,9 @@
 # *************************************************************
 #              4115250 - Starting task Receive - Drop
 # *************************************************************
-# PASS: Flag detect
-# PASS: Abort signal
-# PASS: RX_AbortSignal asserted after abort pattern
+# PASS: RX Flag detect
+# PASS: Rx_AbortSignal asserted
+# PASS: Rx_AbortSignal asserted after abort pattern
 # -------- DROPPED FRAME RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: No Rx_FrameError (0)
@@ -229,9 +229,9 @@
 # *************************************************************
 #              4346250 - Starting task Receive - Abort
 # *************************************************************
-# PASS: Flag detect
-# PASS: Abort signal
-# PASS: RX_AbortSignal asserted after abort pattern
+# PASS: RX Flag detect
+# PASS: Rx_AbortSignal asserted
+# PASS: Rx_AbortSignal asserted after abort pattern
 # -------- ABORT RECEIVE --------
 # SUCCESS: No Rx_Ready (0)
 # SUCCESS: No Rx_FrameError (0)
@@ -242,8 +242,8 @@
 # *************************************************************
 #              5032750 - Starting task Receive - Normal
 # *************************************************************
-# PASS: Flag detect
-# PASS: Flag detect
+# PASS: RX Flag detect
+# PASS: RX Flag detect
 # PASS: Rx_EoF asserted
 # -------- OVERFLOW RECEIVE --------
 # SUCCESS: Rx_Ready asserted (1)
@@ -588,7 +588,11 @@
 # *************************************************************
 #              6099750 - Starting task Transmit - Overflow
 # *************************************************************
+# ** Error: FAIL: Idle pattern was broken
+#    Time: 6103750 ns Started: 6103250 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 257 Expr: Tx
 # PASS: TX Flag pattern
+# ** Error: FAIL: Idle pattern was broken
+#    Time: 6107250 ns Started: 6106750 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 257 Expr: Tx
 # tx overflow
 # -------- OVERFLOW TRANSMIT --------
 # PASS: Tx_Full asserted after writing 126 bytes
@@ -1604,43 +1608,40 @@
 # SUCCESS: Data is matching:  0 != 0
 # SUCCESS: Data is matching:  0 != 0
 # SUCCESS: Data is matching:  0 != 0
-# FAIL: 0 != 1
-# FAIL: 0 != 1
-# FAIL: 1 != 0
-# SUCCESS: Data is matching:  1 != 1
-# FAIL: 1 != 0
-# SUCCESS: Data is matching:  0 != 0
-# FAIL: 0 != 1
-# FAIL: 0 != 1
-# SUCCESS: Data is matching, number of times:        1010
+# SUCCESS: Data is matching, number of times:        1008
 # *************************************************************
-#              7269750 - Starting task Transmit - Abort
+#              7264750 - Starting task Transmit - Abort
 # *************************************************************
+# ** Error: FAIL: Idle pattern was broken
+#    Time: 7268750 ns Started: 7268250 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 257 Expr: Tx
 # PASS: TX Flag pattern
+# ** Error: FAIL: Idle pattern was broken
+#    Time: 7272250 ns Started: 7271750 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 257 Expr: Tx
 # PASS: TX Flag pattern
 # tx abort
 # -------- ABORT TRANSMIT --------
-# PASS: TX_AbortedTrans asserted
+# PASS: Tx_AbortedTrans asserted
 # PASS: Tx_Done asserted after reading buffer for transmit
-# ** Error: FAIL: Tx abort pattern didn't happen on abort
-#    Time: 7489250 ns Started: 7488750 ns  Scope: test_hdlc.u_assertion_bind.TX_Abort_Pattern_Assert File: ./assertions_hdlc.sv Line: 174 Expr: Tx
+# ** Error: FAIL: TX flag not detected (end)
+#    Time: 7484250 ns Started: 7483750 ns  Scope: test_hdlc.u_assertion_bind.Tx_Flag_Pattern_End_Assert File: ./assertions_hdlc.sv Line: 148 Expr: ~Tx
 # SUCCESS: Tx_AbortedTrans asserted (1)
 # SUCCESS: No Tx_Full (0)
-# ** Error: Tx flag not detected (end)
-#    Time: 7489750 ns Started: 7488750 ns  Scope: test_hdlc.u_assertion_bind.TX_Flag_Pattern_End_Assert File: ./assertions_hdlc.sv Line: 151 Expr: Tx
+# ** Error: FAIL: Idle pattern was broken
+#    Time: 7484750 ns Started: 7484250 ns  Scope: test_hdlc.u_assertion_bind.Idle_Pattern_Assert File: ./assertions_hdlc.sv Line: 257 Expr: Tx
+# PASS: TX abort pattern
 # SUCCESS: Data is zero, number of times:          40
 # *************************************************************
-#              7534250 - Finishing Test Program
+#              7529250 - Finishing Test Program
 # *************************************************************
-# ** Note: $stop    : ./testPr_hdlc.sv(534)
-#    Time: 7534250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
-# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 534
-# Stopped at ./testPr_hdlc.sv line 534
+# ** Note: $stop    : ./testPr_hdlc.sv(533)
+#    Time: 7529250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
+# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 533
+# Stopped at ./testPr_hdlc.sv line 533
 #  exit
 # *********************************
 # *                               *
-# * 	Assertion Errors: 8	  *
+# * 	Assertion Errors: 6	  *
 # *                               *
 # *********************************
-# End time: 21:53:11 on Apr 22,2026, Elapsed time: 0:00:10
-# Errors: 2, Warnings: 5
+# End time: 07:37:22 on Apr 23,2026, Elapsed time: 0:00:06
+# Errors: 6, Warnings: 5

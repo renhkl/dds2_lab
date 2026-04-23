@@ -19,7 +19,9 @@ module assertions_hdlc (
   input  logic Clk,
   input  logic Rst,
   input  logic Rx,
+  input  logic RxEN,
   input  logic Tx,
+  input  logic TxEN,
 
   input logic       Rx_ValidFrame,
   input logic       Rx_WrBuff,
@@ -64,9 +66,6 @@ module assertions_hdlc (
   input logic Tx_Enable,
   input logic [7:0] Tx_DataInBuff,
   input logic Tx_AbortFrame
-
-
-
 );
 
   initial begin
@@ -78,7 +77,6 @@ module assertions_hdlc (
    *******************************************/
 
   sequence Rx_flag;
-    // INSERT CODE HERE
     !Rx ##1 Rx[*6] ##1 !Rx; //0111 1110
   endsequence
 
@@ -88,9 +86,9 @@ module assertions_hdlc (
   endproperty
 
   RX_FlagDetect_Assert : assert property (RX_FlagDetect) begin
-    $display("PASS: Flag detect");
+    $display("PASS: RX Flag detect");
   end else begin 
-    $error("Flag sequence did not generate FlagDetect"); 
+    $error("FAIL: RX flag sequence did not generate FlagDetect"); 
     ErrCntAssertions++; 
   end
 
@@ -106,16 +104,15 @@ module assertions_hdlc (
 
 
   property RX_AbortSignal;
-    // INSERT CODE HERE
     @(posedge Clk) Rx_ValidFrame && Rx_AbortDetect |=> Rx_AbortSignal; 
     //@(posedge Clk) Rx_ValidFrame throughout Abort_Flag |=> Rx_AbortSignal;   
     //@(posedge Clk) Abort_Flag ##1 Rx_ValidFramSe && Rx_AbortDetect |=> Rx_AbortSignal; 
   endproperty
 
   RX_AbortSignal_Assert : assert property (RX_AbortSignal) begin
-    $display("PASS: Abort signal");
+    $display("PASS: Rx_AbortSignal asserted");
   end else begin 
-    $error("AbortSignal did not go high after AbortDetect during validframe"); 
+    $error("FAIL: Rx_AbortSignal did not go high after AbortDetect during validframe"); 
     ErrCntAssertions++; 
   end
 
@@ -130,25 +127,25 @@ module assertions_hdlc (
     !Tx ##1 Tx[*6] ##1 !Tx; //0111_1110
   endsequence
 
-  property TX_Flag_Pattern_Start;
+  property Tx_Flag_Pattern_Start;
     @(posedge Clk) $rose(Tx_ValidFrame) |-> ##2 Tx_Flag; 
   endproperty
 
-  property TX_Flag_Pattern_End;
+  property Tx_Flag_Pattern_End;
     @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) |=> Tx_Flag; 
   endproperty
 
-  TX_Flag_Pattern_Start_Assert : assert property (TX_Flag_Pattern_Start) begin
+  Tx_Flag_Pattern_Start_Assert : assert property (Tx_Flag_Pattern_Start) begin
     $display("PASS: TX Flag pattern");
   end else begin 
-    $error("Tx flag not detected (start)"); 
+    $error("FAIL TX flag not detected (start)"); 
     ErrCntAssertions++; 
   end
 
-    TX_Flag_Pattern_End_Assert : assert property (TX_Flag_Pattern_End) begin
+    Tx_Flag_Pattern_End_Assert : assert property (Tx_Flag_Pattern_End) begin
     $display("PASS: TX Flag pattern");
   end else begin 
-    $error("Tx flag not detected (end)"); 
+    $error("FAIL: TX flag not detected (end)"); 
     ErrCntAssertions++; 
   end
 
@@ -157,21 +154,19 @@ module assertions_hdlc (
    *Part B - Assertion 8  *
    ********************************************/
 
-//need to change the error messsage and property
-
   sequence Tx_Abort_Flag;
-    Tx[*7]  ##1 !Tx; //1111 1110
+    !Tx ##1 Tx[*7]; //0111 1111
   endsequence
 
-  property TX_Abort_Pattern; 
-    @(posedge Clk) $rose(Tx_AbortedTrans) |=> Tx_Abort_Flag; 
+  property Tx_Abort_Pattern; 
+    @(posedge Clk) $rose(Tx_AbortFrame) |=> ##3 Tx_Abort_Flag; 
   endproperty
 
 
-  TX_Abort_Pattern_Assert : assert property (TX_Abort_Pattern) begin
-    $display("PASS: Tx abort pattern");
+  Tx_Abort_Pattern_Assert : assert property (Tx_Abort_Pattern) begin
+    $display("PASS: TX abort pattern");
   end else begin 
-    $error("FAIL: Tx abort pattern didn't happen on abort"); 
+    $error("FAIL: TX abort pattern didn't happen on abort"); 
     ErrCntAssertions++; 
   end
 
@@ -185,7 +180,6 @@ module assertions_hdlc (
     Tx[*5] ##1 !Tx;
   endsequence
 
-
   property TX_ZeroInsertion;
     @(posedge Clk) Tx_ValidFrame
     ##8 FiveOnesTx 
@@ -198,79 +192,50 @@ module assertions_hdlc (
   kanskje følges av en end-of-frame tag i Tx. 
 
   Hittil bare sjekk for zeroinsertion, abort, og idle. 
-
-
   */
-/*
 
-
-  property TX_Abort_Pattern;
-    @(posedge Clk) Rx_ValidFrame && Rx_AbortDetect |=> Rx_AbortSignal; 
-  endproperty
-
-  RX_AbortSignal_Assert : assert property (TX_Abort_Pattern) begin
-    $display("PASS: TX Abort pattern");
-  end else begin 
-    $error("AbortSignal did not go high after AbortDetect during validframe"); 
-    ErrCntAssertions++; 
-  end
-
-  
-  property RX_Abort_Pattern;
-    @(posedge Clk) Rx_ValidFrame && Rx_AbortDetect |=> Rx_AbortSignal; 
-  endproperty
-
-  RX_AbortSignal_Assert : assert property (RX_Abort_Pattern) begin
-    $display("PASS: RX Abort pattern");
-  end else begin 
-    $error("AbortSignal did not go high after AbortDetect during validframe"); 
-    ErrCntAssertions++; 
-  end
-*/
 
  /********************************************
    * Part B - Assertion 10   *
-   ********************************************/
+  ********************************************/
 
   sequence Rx_Abort_Flag;
    !Rx  ##1 Rx[*7] ; //0111 1111, this is abort on the receive side
   endsequence
 
-  property RX_Abort_Pattern_AbortSignal; 
+  property Rx_Abort_Pattern_AbortSignal; 
     @(posedge Clk) Rx_ValidFrame throughout Rx_Abort_Flag |-> ##3 Rx_AbortSignal; 
   endproperty
 
 
-  RX_Abort_Pattern_AbortSignal_Assert : assert property (RX_Abort_Pattern_AbortSignal) begin
-    $display("PASS: RX_AbortSignal asserted after abort pattern");
+  Rx_Abort_Pattern_AbortSignal_Assert : assert property (Rx_Abort_Pattern_AbortSignal) begin
+    $display("PASS: Rx_AbortSignal asserted after abort pattern");
   end else begin 
     $error("FAIL: Rx_AbortSignal did not go high after abort pattern during Rx_ValidFrame"); 
     ErrCntAssertions++; 
   end
   
 
-    /********************************************
+  /********************************************
    *  Part B - Assertion 9   *
    ********************************************/
-
-
 
   property TX_AbortedTrans;
     @(posedge Clk) Tx_AbortFrame |-> ##2 Tx_AbortedTrans; 
   endproperty
 
   TX_AbortedTrans_Assert : assert property (TX_AbortedTrans) begin
-    $display("PASS: TX_AbortedTrans asserted");
+    $display("PASS: Tx_AbortedTrans asserted");
   end else begin 
-    $error("Tx_AbortedTrans did not go high after Tx_AbortFrame"); 
+    $error("FAIL: Tx_AbortedTrans did not go high after Tx_AbortFrame"); 
     ErrCntAssertions++; 
   end
 
-//trenger denne å passe på at den ikke er idle også kanskje?
 
-    /********************************************
+  /********************************************
    *  Part B - Assertion 7   *
    ********************************************/
+
   sequence Rx_Idle_Pattern;
     Rx[*8]; //1111 1111
   endsequence
@@ -278,10 +243,22 @@ module assertions_hdlc (
   sequence Tx_Idle_Pattern;
     Tx[*8]; //1111 1111
   endsequence
-  
-  
 
-      /********************************************
+  property Tx_Idle_Pattern_Disruptions;
+    @(posedge Clk) !Tx_ValidFrame and 
+    TxEN |=> 
+    Tx;
+  endproperty
+
+  Idle_Pattern_Assert : assert property (Tx_Idle_Pattern_Disruptions) begin
+      //$display("PASS: IDLE IS GOOD asserted");
+      ;
+    end else begin 
+      $error("FAIL: Idle pattern was broken");
+      ErrCntAssertions++; 
+  end
+
+  /********************************************
    *  Part B - Assertion 12   *
    ********************************************/
 
@@ -321,12 +298,11 @@ module assertions_hdlc (
    ********************************************/
 
    //$fell(Tx_WrBuff) ##1 $stable(Tx_WrBuff). it gets asserted before wrbuff is finished
+   //@(posedge Clk)  Tx_Full |-> ##6 Tx_DataAvail && (Tx_FrameSize == 126); //this is spammy and prints several times
 
   property Tx_Full_126;
     @(posedge Clk) disable iff(!Rst) $fell(Tx_Full) |-> Tx_DataAvail && (Tx_FrameSize == 126);
   endproperty
-
-  //@(posedge Clk)  Tx_Full |-> ##6 Tx_DataAvail && (Tx_FrameSize == 126); //this is spammy and prints several times
 
   Tx_Full_126_Assert : assert property (Tx_Full_126) begin
     $display("PASS: Tx_Full asserted after writing 126 bytes");
