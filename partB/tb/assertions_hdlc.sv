@@ -316,20 +316,76 @@ module assertions_hdlc (
    *  Part B - Cover statements   *
    ********************************************/
 
-/*
+//part A: both 
+
   property RX_FlagDetect_Antecedent;
     @(posedge Clk) Rx_flag ##1 Rx_FlagDetect;
   endproperty
 
-cover property(RX_FlagDetect_Antecedent)
+cover property(RX_FlagDetect_Antecedent);
 
   property RX_AbortSignal_Antecedent;
     @(posedge Clk) Rx_ValidFrame && Rx_AbortDetect; 
   endproperty
 
-cover property(RX_AbortSignal_Antecedent)
-*/
+cover property(RX_AbortSignal_Antecedent);
 
+//part B properties: 5(x2), !6, !7, 8, 9, 10, 12, 17, 18
+
+//Assertion 5
+  property Tx_Flag_Pattern_Start_Antecedent;
+    @(posedge Clk) $rose(Tx_ValidFrame) |-> ##2 Tx_Flag; 
+  endproperty
+
+  cover property(Tx_Flag_Pattern_Start_Antecedent);
+
+  property Tx_Flag_Pattern_End_Antecedent;
+    @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) && !Tx_AbortedTrans |=> Tx_Flag; 
+  endproperty
+
+  cover property(Tx_Flag_Pattern_End_Antecedent);
+
+//Assertion 8
+  property Tx_Abort_Pattern_Antecedent; 
+    @(posedge Clk) $rose(Tx_AbortFrame) |=> ##3 Tx_Abort_Flag; 
+  endproperty
+
+  cover property(Tx_Abort_Pattern_Antecedent);
+
+//Assertion 9
+  property TX_AbortedTrans_Antecedent;
+    @(posedge Clk) Tx_AbortFrame |-> ##2 Tx_AbortedTrans; 
+  endproperty
+
+  cover property(TX_AbortedTrans_Antecedent);
+
+//Assertion 10
+  property Rx_Abort_Pattern_AbortSignal_Antecedent; 
+    @(posedge Clk) Rx_ValidFrame throughout Rx_Abort_Flag; 
+  endproperty
+
+  cover property(Rx_Abort_Pattern_AbortSignal_Antecedent);
+
+//Assertion 12
+  property RX_EoF_Antecedent;
+    @(posedge Clk) Rx_FlagDetect ##4 $fell(Rx_ValidFrame); 
+  endproperty
+
+  cover property(RX_EoF_Antecedent);
+
+//Assertion 17
+ property Tx_Done_Reading_Transmit_Antecedent;
+    @(posedge Clk) disable iff (!Rst) $fell(Tx_RdBuff) ##[0:1] Tx_Done;
+  endproperty
+
+  cover property(Tx_Done_Reading_Transmit_Antecedent);
+
+//Assertion 18
+property Tx_Full_126_Antecedent;
+    @(posedge Clk) disable iff(!Rst) $fell(Tx_Full);
+endproperty
+
+cover property(Tx_Full_126_Antecedent);
 
 endmodule
 

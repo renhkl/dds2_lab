@@ -524,7 +524,7 @@ endtask
     //WriteAddress(RXSC, 8'h00);
     
     Transmit(40, 0, 0); //Normal
-    Transmit(126, 0, 1); //Overflow
+    Transmit(127, 0, 1); //Overflow
     Transmit(40, 1, 0); //Abort
 
     $display("*************************************************************");
