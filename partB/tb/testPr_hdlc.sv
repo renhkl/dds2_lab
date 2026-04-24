@@ -434,7 +434,7 @@ shortint successCounter = 0;
     assert(ReadData[4]) $display("SUCCESS: Tx_Full asserted (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[4]); TbErrorCnt++; end
     
       //checking data buffer
-      StandardTransmitProcedure(data, Size);
+StandardTransmitProcedure(data, Size);
      
     if (successCounter > 0)
       $display("SUCCESS: Data is matching, number of times: %d", successCounter);
@@ -453,6 +453,8 @@ shortint successCounter = 0;
   // register, and that the Rx data buffer contains correct data.
   task VerifyAbortTransmit(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
+    logic [2:0] zeroInsertion;
+    zeroInsertion = 0;
   
 
     $display("-------- ABORT TRANSMIT --------");
@@ -462,14 +464,44 @@ shortint successCounter = 0;
     assert(ReadData[3]) $display("SUCCESS: Tx_AbortedTrans asserted (%d)", ReadData[3]); else begin $display("FAIL: Tx_AbortedTrans = %d", ReadData[3]); TbErrorCnt++; end
     assert(!ReadData[4]) $display("SUCCESS: No Tx_Full (%d)", ReadData[4]); else begin $display("FAIL: Tx_Full = %d", ReadData[4]); TbErrorCnt++; end
     
+    //wait(uin_hdlc.Tx_ValidFrame);
+    repeat(9)
+      @(posedge uin_hdlc.Clk);
 
-    //read
-    for (int i = 0; i < Size; i++) begin
-      //@(posedge uin_hdlc.Clk);
-      ReadAddress(TXBUFF_ADDRESS, ReadData); //ReadData is zero, while data[i] is not
-      assert(!ReadData) successCounter++; //$display("SUCCESS: Data is zero"); 
-      else begin $display("FAIL: Data is not zero (%d)", ReadData); TbErrorCnt++; 
-      end
+    //Assertion 6 and 4 - checking TX output and zero instertion
+    //Checks Tx_FrameSize and not Size in case of Overflow
+    for (int i = 0; i < uin_hdlc.Tx_FrameSize; i++) begin
+        if (uin_hdlc.Tx_ValidFrame) begin
+
+        for (int j = 0; j < 8; ++j) begin
+
+          //Assertion 6 - Zero insertion
+
+          @(posedge uin_hdlc.Clk);
+          if (zeroInsertion == 5) begin
+            zeroInsertion = 0;
+            @(posedge uin_hdlc.Clk);
+          end
+          if (uin_hdlc.Tx) begin
+            zeroInsertion += 1;
+          end
+          else begin
+            zeroInsertion = 0;
+          end
+
+          //Data reading for assertion 4
+          ReadData[j] = uin_hdlc.Tx;
+
+        end
+
+        //Assertion 4 - Data buffer quality check
+        assert(data[i] == ReadData) begin
+            successCounter++; $display("SUCCESS: Data is matching:  %d == %d", ReadData, data[i]); 
+        end
+        else begin 
+            $display("FAIL: %d == %d", ReadData, data[i]); TbErrorCnt++; 
+        end
+        end
     end
 
     if (successCounter > 0)
@@ -517,7 +549,7 @@ shortint successCounter = 0;
     
     Transmit(40, 0, 0); //Normal
     Transmit(127, 0, 1); //Overflow
-    Transmit(40, 1, 0); //Abort
+    Transmit(100, 1, 0); //Abort
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
@@ -834,9 +866,9 @@ shortint successCounter = 0;
       WriteAddress(TXSC_ADDRESS, 8'b0000_0010); //enable first
       wait(uin_hdlc.Tx_Enable);
     
-      //wait(uin_hdlc.Tx_ValidFrame); //dont need this if newbyte comes later
-      repeat(32)
-        wait(uin_hdlc.Tx_NewByte);  //long enough delay so, the flag and abort pattern at the end can happen
+      wait(uin_hdlc.Tx_ValidFrame); //dont need this if newbyte comes later
+      repeat(50)
+        @(posedge uin_hdlc.Tx_NewByte);  //long enough delay so, the flag and abort pattern at the end can happen
 
       WriteAddress(TXSC_ADDRESS, 8'b0000_0110); //abort and enable
       wait(uin_hdlc.Tx_AbortedTrans);

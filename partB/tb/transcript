@@ -1,19 +1,18 @@
 # ** Note: (vsim-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
-# vsim -assertdebug -c -voptargs="+acc" test_hdlc bind_hdlc -do "log -r *; run -all; exit" 
-# Start time: 00:41:32 on Apr 24,2026
+# vsim -coverage -voptargs="+fcover=sbcfet. +cover=sbcfet" -c test_hdlc bind_hdlc -do "coverage save -onexit -codeAll -assert -cvg coverage.ucdb; run -all; exit" 
+# Start time: 13:04:25 on Apr 24,2026
 # ** Note: (vsim-3812) Design is being optimized...
-# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
 # ** Note: (vopt-220) '/eda/tools/siemens/questasim.2025.2/linux/../modelsim.ini' is used as the ini file.
-# ** Warning: ./assertions_hdlc.sv(63): (vopt-13314) Defaulting port 'Tx_DataArray' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
 # ** Warning: ../rtl/TxFCS.sv(13): (vopt-13314) Defaulting port 'DataBuff' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
-# ** Note: (vopt-143) Recognized 1 FSM in module "TxFCS(fast)".
-# ** Note: (vopt-143) Recognized 1 FSM in module "RxBuff(fast)".
-# ** Note: (vopt-143) Recognized 1 FSM in module "TxController(fast)".
-# ** Note: (vopt-143) Recognized 1 FSM in module "RxController(fast)".
+# ** Warning: ./assertions_hdlc.sv(63): (vopt-13314) Defaulting port 'Tx_DataArray' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
 # ** Warning: ./test_hdlc.sv(69): (vopt-2685) [TFMPC] - Too few port connections for 'u_dut'.  Expected 13, found 12.
 # ** Warning: ./test_hdlc.sv(69): (vopt-2718) [TFMPC] - Missing connection for port 'Tx_Done'.
+# ** Note: (vopt-143) Recognized 1 FSM in module "RxBuff(fast)".
 # ** Note: (vopt-143) Recognized 1 FSM in module "TxBuff(fast)".
-# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=5.
+# ** Note: (vopt-143) Recognized 1 FSM in module "RxController(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxController(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxFCS(fast)".
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=4.
 # //  Questa Sim
 # //  Version 2025.2 linux May 31 2025
 # //
@@ -30,21 +29,9 @@
 # //
 # Loading sv_std.std
 # Loading work.test_hdlc(fast)
-# Loading work.in_hdlc(fast__1)
-# Loading work.Hdlc(fast)
-# Loading work.AddressIF(fast)
-# Loading work.TxController(fast)
-# Loading work.TxBuff(fast)
-# Loading work.TxFCS(fast)
-# Loading work.TxChannel(fast)
-# Loading work.RxController(fast)
-# Loading work.RxBuff(fast)
-# Loading work.RxFCS(fast)
-# Loading work.RxChannel(fast)
 # Loading work.testPr_hdlc(fast)
-# Loading work.assertions_hdlc(fast)
 # Loading work.bind_hdlc(fast)
-# log -r *
+# coverage save -onexit -codeAll -assert -cvg coverage.ucdb
 #  run -all
 # *************************************************************
 #                    0 - Starting Test Program
@@ -454,19 +441,19 @@
 # SUCCESS: Tx_AbortedTrans asserted (1)
 # SUCCESS: No Tx_Full (0)
 # PASS: TX abort pattern
-# SUCCESS: Data is zero, number of times:     40
 # *************************************************************
-#              7539250 - Finishing Test Program
+#              8002750 - Finishing Test Program
 # *************************************************************
-# ** Note: $stop    : ./testPr_hdlc.sv(525)
-#    Time: 7539250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
-# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 525
-# Stopped at ./testPr_hdlc.sv line 525
+# ** Note: $stop    : ./testPr_hdlc.sv(557)
+#    Time: 8002750 ns  Iteration: 0  Instance: /test_hdlc/u_testPr
+# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 557
+# Stopped at ./testPr_hdlc.sv line 557
 #  exit
 # *********************************
 # *                               *
 # * 	Assertion Errors: 0	  *
 # *                               *
 # *********************************
-# End time: 00:41:39 on Apr 24,2026, Elapsed time: 0:00:07
-# Errors: 0, Warnings: 5
+# Saving coverage database on exit...
+# End time: 13:04:31 on Apr 24,2026, Elapsed time: 0:00:06
+# Errors: 0, Warnings: 4
